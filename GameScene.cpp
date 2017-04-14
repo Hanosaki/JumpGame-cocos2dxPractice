@@ -20,11 +20,12 @@ bool Game::init()
 	}
 #pragma region グローバル変数の初期化
 	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto origin = Director::getInstance()->getVisibleOrigin();
 	counter = 0;
 	hitCounter = 0;
 	endflag = false;
 	hitOnlyOne = false;
-	defoultPoint = Vec2(visibleSize.width / 6, visibleSize.height / 5);
+	defoultPoint = Vec2(visibleSize.width / 7 + origin.x, visibleSize.height / 5 + origin.y);
 #pragma endregion
 #pragma region BGMの設定
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM.mp3");
@@ -40,8 +41,8 @@ bool Game::init()
 	auto backGround2 = Sprite::create("bg.png");
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
 	backGround2->setContentSize(backGround->getContentSize());
-	backGround->setPosition(visibleSize.width / 2, visibleSize.height /2);
-	backGround2->setPosition(visibleSize.width + visibleSize.width / 2, visibleSize.height / 2);
+	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height /2 + origin.y);
+	backGround2->setPosition(visibleSize.width + visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setTag(51);
 	backGround2->setTag(52);
 	this->addChild(backGround);
@@ -49,14 +50,14 @@ bool Game::init()
 #pragma endregion
 #pragma region 立ち絵背景の初期設定
 	auto whiteBack = Sprite::create("whiteBack.png");
-	whiteBack->setScaleX(1.3f);
-	whiteBack->setScaleY(2.0f);
-	whiteBack->setPosition(visibleSize.width - whiteBack->getContentSize().width/2, visibleSize.height / 1.9);
+	whiteBack->setContentSize((Size)Vec2(visibleSize.width/5+origin.x,visibleSize.height+origin.y));
+	whiteBack->setPosition(visibleSize.width + origin.x -
+							whiteBack->getContentSize().width / 2, visibleSize.height / 2 + origin.y);
 	this->addChild(whiteBack, 2);	
 #pragma endregion
 #pragma region 主人公(SD)スプライトの初期設定
 	auto yukari = Sprite::create("Normal.png");
-	yukari->setScale(visibleSize.height / (yukari->getContentSize().height*3));
+	yukari->setScale((visibleSize.height + origin.y) / (yukari->getContentSize().height*3));
 	yukari->setPosition(defoultPoint);
 	yukari->setTag(1);
 	this->addChild(yukari);
@@ -65,16 +66,18 @@ bool Game::init()
 #pragma endregion
 #pragma region 主人公(立ち絵)の初期設定
 	auto yukari2 = Sprite::create("1.png");
-	yukari2->setScale(visibleSize.height / (yukari2->getContentSize().height));
-	yukari2->setPosition(visibleSize.width-(yukari2->getContentSize().width/1.4), 
-						visibleSize.height-(1.5*yukari2->getContentSize().height));
+	yukari2->setScale((visibleSize.height + origin.y) / (yukari2->getContentSize().height));
+	yukari2->setPosition(visibleSize.width + origin.x - (yukari2->getContentSize().width / 4 * yukari2->getScale())
+						,visibleSize.height/2+origin.y) ;
+	//yukari2->setPosition(visibleSize.width-(yukari2->getContentSize().width/1.4), 
+	//					visibleSize.height-(1.5*yukari2->getContentSize().height));
 	yukari2->setTag(2);
 	this->addChild(yukari2,3);
 #pragma endregion
 #pragma region 敵の初期設定
 	auto enemy = Sprite::create("enemy.png");
-	enemy->setPosition(3 * visibleSize.width / 2, visibleSize.height / 7);
-	enemy->setScale(visibleSize.height / (enemy->getContentSize().height*3));
+	enemy->setPosition(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 7 + origin.y);
+	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*3));
 	enemy->setTag(11);
 	this->addChild(enemy);
 #pragma endregion
@@ -99,7 +102,8 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 	if (!endflag)
 	{
 		auto visibleSize = Director::getInstance()->getVisibleSize();
-		auto maxPoint = Point(visibleSize.width / 6, 4 * visibleSize.height / 5);
+		auto origin = Director::getInstance()->getVisibleOrigin();
+		auto maxPoint = Point(defoultPoint.x, origin.y + 4 * visibleSize.height / 5);
 		auto defaultPointed = Point(defoultPoint);
 		/*アクションの作成*/
 		auto moveJump = MoveTo::create(0.73f, maxPoint);

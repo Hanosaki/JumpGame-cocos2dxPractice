@@ -42,7 +42,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("JumpGameForAdult", cocos2d::Rect(0, 0, HIVision.width, HIVision.height));
+        glview = GLViewImpl::createWithRect("JumpGameForAdult", cocos2d::Rect(0, 0, basicSize.width, basicSize.height));
 #else
         glview = GLViewImpl::create("JumpGameForAdult");
 #endif
