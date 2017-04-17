@@ -27,6 +27,8 @@ bool Game::init()
 	endflag = false;
 	hitOnlyOne = false;
 	defoultPoint = Vec2(visibleSize.width / 7 + origin.x, visibleSize.height / 5 + origin.y);
+	enemyDefPoint = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
+
 #pragma endregion
 #pragma region BGM‚ÌÝ’è
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM.mp3");
@@ -77,7 +79,7 @@ bool Game::init()
 #pragma endregion
 #pragma region “G‚Ì‰ŠúÝ’è
 	auto enemy = Sprite::create("enemy.png");
-	enemy->setPosition(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 7 + origin.y);
+	enemy->setPosition(enemyDefPoint);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*3));
 	enemy->setTag(11);
 	this->addChild(enemy);
@@ -163,7 +165,7 @@ void Game::update(float dt)
 	float rand = random(0.5f, 2.0f);
 	enemyPos += 2 * moveVec*rand;
 	if (enemyPos.x + enemy->getContentSize().width < 0){
-		enemyPos = Vec2(visibleSize.width + visibleSize.width / 2, visibleSize.height / 7);
+		enemyPos = Vec2(/*visibleSize.width + visibleSize.width / 2, visibleSize.height / 6*/enemyDefPoint);
 		++counter;
 		hitOnlyOne = false;
 		label->setString("score:" + StringUtils::toString(counter));

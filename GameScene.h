@@ -21,6 +21,7 @@ public:
 	int counter, hitCounter;
 	bool endflag, hitOnlyOne;
 	cocos2d::Vec2 defoultPoint;
+	cocos2d::Vec2 enemyDefPoint;
 	cocos2d::Label* label;//ヘッダーで宣言した変数は，継承クラスで再度定義する必要はない．(この時点でグローバル変数化しているため)
 };
 

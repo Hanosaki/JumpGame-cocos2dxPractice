@@ -25,13 +25,13 @@ bool Title::init()
 #pragma endregion
 
 #pragma region SE用意
+	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
 	SimpleAudioEngine::getInstance()->preloadEffect("start.mp3");
-	SimpleAudioEngine::getInstance()->setEffectsVolume(0.3f);
 #pragma endregion
 
 #pragma region タイトル表記
-	auto titleLabel = Label::createWithTTF("ゆかりさんがぴょんぴょんするげ～む", "fonts/HGRPP1.TTC", 48);
-	titleLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (5 * visibleSize.height) / 6);
+	auto titleLabel = Label::createWithTTF("Yukari RUN", "fonts/Marker Felt.ttf", 64);
+	titleLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(titleLabel,4);
 #pragma endregion
 
@@ -40,7 +40,7 @@ bool Title::init()
 	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 6);
 	this->addChild(pushText, 4);
 	/*文字点滅処理*/
-	auto action = FadeTo::create(0.9f,128);
+	auto action = FadeTo::create(0.9f,64);
 	auto action2 = FadeTo::create(0.9f,255);
 	auto seq = Sequence::create(action, action2, NULL);
 	auto repeat = RepeatForever::create(seq);
@@ -82,11 +82,10 @@ bool Title::init()
 
 bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-	auto scene = Game::creatScene();
 	auto yukari = (Sprite*)this->getChildByTag(2);
 	yukari->setTexture("start.png");
-	//TransitionFade(フェード時間，移動先のシーン，フェードアウトの色)
-	Director::getInstance()->replaceScene(TransitionFade::create(0.8f, scene, Color3B::WHITE));
 	SimpleAudioEngine::getInstance()->playEffect("start.mp3");
+	//TransitionFade(フェード時間，移動先のシーン，フェードアウトの色)
+	Director::getInstance()->replaceScene(TransitionFade::create(0.6f, Game::creatScene(), Color3B::WHITE));
 	return true;
 }

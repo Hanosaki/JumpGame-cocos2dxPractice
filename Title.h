@@ -13,6 +13,7 @@ public:
 	CREATE_FUNC(Title);
 
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+	
 
 };
 
