@@ -16,7 +16,6 @@ public:
 	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 	void roop(float dt);
 	void update(float dt);
-	void ended();
 
 	int counter, hitCounter;
 	bool endflag, hitOnlyOne;

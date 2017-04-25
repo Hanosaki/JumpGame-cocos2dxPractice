@@ -1,9 +1,12 @@
 #pragma execution_character_set("utf-8")
 #include "GameScene.h"
+#include "GameoverScene.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
+
+void nextScene();
 
 Scene* Game::creatScene()
 {
@@ -94,7 +97,8 @@ bool Game::init()
 	SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM.mp3",true);
 #pragma endregion
 #pragma region ŒJ‚è•Ô‚µˆ—‚Ì‰ŠúÝ’è
-	this->scheduleUpdate();
+	this->runAction(Sequence::create(DelayTime::create(1), 
+		CallFunc::create([this](){this->scheduleUpdate(); }), NULL));
 #pragma endregion
 	return true;
 }
@@ -124,7 +128,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 	}
 	else
 	{
-		Game::ended();
+		Director::getInstance()->replaceScene(GameOver::creatScene());
 	}
 #pragma endregion
 	return true;
@@ -190,6 +194,9 @@ void Game::update(float dt)
 			this->addChild(gameoverLabel);
 			this->unscheduleUpdate();
 			yukari->setTexture("HIT.png");
+			yukari->stopAllActions();
+			UserDefault::sharedUserDefault()->setIntegerForKey("score", counter);//ƒXƒRƒA‚Ì•Û‘¶
+			UserDefault::sharedUserDefault()->flush();
 			endflag = true;
 		}
 		else
@@ -214,7 +221,7 @@ void Game::update(float dt)
 #pragma endregion
 }
 
-void Game::ended()
+void nextScene()
 {
-	Director::getInstance()->end();
+	Director::getInstance()->replaceScene(GameOver::creatScene());
 }
