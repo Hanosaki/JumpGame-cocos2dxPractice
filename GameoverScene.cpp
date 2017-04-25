@@ -32,14 +32,25 @@ bool GameOver::init()
 
 	auto scoreLabel = Label::createWithTTF("Score:" + StringUtils::toString(score),
 										"fonts/Marker Felt.ttf", 64);
-	scoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (visibleSize.height / 2));
+	scoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (3*visibleSize.height / 5));
 	this->addChild(scoreLabel, 4);
-
+	Label* hiScoreLabel;
+	if (hiScore < score)
+	{
+		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(score) + "NEW RECORED!",
+			"fonts/Marker Felt.ttf", 64);
+		UserDefault::sharedUserDefault()->setIntegerForKey("hiScore", score);
+	}
+	else
+		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(hiScore),
+		"fonts/Marker Felt.ttf", 64);
+	hiScoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (2*visibleSize.height / 5));
+	this->addChild(hiScoreLabel,4);
 #pragma endregion
 
 #pragma region pushEnd•\‹L
 	auto pushText = Label::createWithTTF("push End", "fonts/Marker Felt.ttf", 24);
-	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 6);
+	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 8);
 	this->addChild(pushText, 4);
 	/*•¶š“_–Åˆ—*/
 	auto action = FadeTo::create(0.9f, 64);
