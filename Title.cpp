@@ -84,7 +84,7 @@ bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
 	auto yukari = (Sprite*)this->getChildByTag(2);
 	yukari->setTexture("start.png");
-	SimpleAudioEngine::getInstance()->playEffect("start.mp3");
+	SimpleAudioEngine::getInstance()->playEffect("start.wav");
 	//TransitionFade(フェード時間，移動先のシーン，フェードアウトの色)
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
 	return true;

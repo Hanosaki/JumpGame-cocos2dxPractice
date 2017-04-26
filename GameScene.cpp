@@ -37,6 +37,10 @@ bool Game::init()
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM.mp3");
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 #pragma endregion
+#pragma region SE‚ÌÝ’è
+	SimpleAudioEngine::getInstance()->preloadEffect("damage.mp3");
+	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
+#pragma endregion
 #pragma region ƒXƒRƒA¶¬
 	label = Label::createWithTTF("score:" + StringUtils::toString(counter), "fonts/Marker Felt.ttf", 24);
 	label->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - label->getContentSize().height));
@@ -183,6 +187,7 @@ void Game::update(float dt)
 	auto rectEnemy = enemy->getBoundingBox();
 	if (rectyukari.intersectsRect(rectEnemy) && !hitOnlyOne){
 		++hitCounter;
+		SimpleAudioEngine::getInstance()->playEffect("damage.mp3");
 		yukari->setTexture("HIT.png");
 		if (hitCounter >= 4)
 		{
