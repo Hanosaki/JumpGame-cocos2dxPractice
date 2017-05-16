@@ -160,6 +160,7 @@ void Game::update(float dt)
 	auto backGround = this->getChildByTag(51);
 	auto backGround2 = this->getChildByTag(52);
 #pragma endregion
+
 #pragma region 背景アニメーション
 	auto pos = backGround->getPosition();
 	auto pos2 = backGround2->getPosition();
@@ -175,19 +176,21 @@ void Game::update(float dt)
 	backGround->setPosition(pos);
 	backGround2->setPosition(pos2);
 #pragma endregion
+
 #pragma region エネミーの行動
 	auto enemy = this->getChildByTag(11);
 	auto enemyPos = enemy->getPosition();
 	float rand = random(0.5f, 2.0f);
 	enemyPos += 2 * moveVec*rand;
 	if (enemyPos.x + enemy->getContentSize().width < 0){
-		enemyPos = Vec2(/*visibleSize.width + visibleSize.width / 2, visibleSize.height / 6*/enemyDefaultPos);
+		enemyPos = Vec2(enemyDefaultPos);
 		++score;
 		hitOnlyOne = false;
 		label->setString("score:" + StringUtils::toString(score));
 	}
 	enemy->setPosition(enemyPos);
 #pragma endregion
+
 #pragma region 接触判定
 	auto mainCharactor = (Sprite*)this->getChildByTag(1);
 	auto characterImage = (Sprite*)this->getChildByTag(2);
@@ -228,6 +231,7 @@ void Game::update(float dt)
 		}
 	}
 #pragma endregion
+
 #pragma region 立ち絵の更新
 	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->numberOfRunningActions() == 0 && !endFlag)
 		mainCharactor->setTexture("Normal.png");
