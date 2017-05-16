@@ -30,7 +30,7 @@ bool Title::init()
 #pragma endregion
 
 #pragma region タイトル表記
-	auto titleLabel = Label::createWithTTF("Yukari RUN", "fonts/Marker Felt.ttf", 64);
+	auto titleLabel = Label::createWithTTF("mainCharactor RUN", "fonts/Marker Felt.ttf", 64);
 	titleLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(titleLabel,4);
 #pragma endregion
@@ -63,12 +63,12 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto yukari = Sprite::create("1.png");
-	yukari->setScale((visibleSize.height + origin.y) / (yukari->getContentSize().height));
-	yukari->setPosition(visibleSize.width + origin.x - (yukari->getContentSize().width / 4 * yukari->getScale())
+	auto mainCharactor = Sprite::create("1.png");
+	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height));
+	mainCharactor->setPosition(visibleSize.width + origin.x - (mainCharactor->getContentSize().width / 4 * mainCharactor->getScale())
 		, visibleSize.height / 2 + origin.y);
-	yukari->setTag(2);
-	this->addChild(yukari, 3);
+	mainCharactor->setTag(2);
+	this->addChild(mainCharactor, 3);
 #pragma endregion
 
 #pragma region クリックリスナー
@@ -82,8 +82,8 @@ bool Title::init()
 
 bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-	auto yukari = (Sprite*)this->getChildByTag(2);
-	yukari->setTexture("start.png");
+	auto mainCharactor = (Sprite*)this->getChildByTag(2);
+	mainCharactor->setTexture("start.png");
 	SimpleAudioEngine::getInstance()->playEffect("start.wav");
 	//TransitionFade(フェード時間，移動先のシーン，フェードアウトの色)
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));

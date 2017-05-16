@@ -18,10 +18,12 @@ Scene* Game::creatScene()
 
 bool Game::init()
 {
+
 	if (!Layer::init())
 	{
 		return false;
 	}
+
 #pragma region グローバル変数の初期化
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
@@ -33,31 +35,37 @@ bool Game::init()
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
 
 #pragma endregion
+
 #pragma region BGMの設定
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM.mp3");
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 #pragma endregion
+
 #pragma region SEの設定
 	SimpleAudioEngine::getInstance()->preloadEffect("damage.mp3");
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 #pragma endregion
+
 #pragma region スコア生成
 	label = Label::createWithTTF("score:" + StringUtils::toString(score), "fonts/Marker Felt.ttf", 24);
 	label->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - label->getContentSize().height));
 	this->addChild(label,1);
 #pragma endregion
+
 #pragma region 背景初期設定
 	auto backGround = Sprite::create("bg.png");
-	auto backGround2 = Sprite::create("bg.png");
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
-	backGround2->setContentSize(backGround->getContentSize());
-	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height /2 + origin.y);
-	backGround2->setPosition(visibleSize.width + visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setTag(51);
-	backGround2->setTag(52);
 	this->addChild(backGround);
+
+	auto backGround2 = Sprite::create("bg.png");
+	backGround2->setContentSize(backGround->getContentSize());
+	backGround2->setPosition(visibleSize.width + visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	backGround2->setTag(52);
 	this->addChild(backGround2);
 #pragma endregion
+
 #pragma region 立ち絵背景の初期設定
 	auto whiteBack = Sprite::create("whiteBack.png");
 	whiteBack->setContentSize((Size)Vec2(visibleSize.width/5+origin.x,visibleSize.height+origin.y));
@@ -65,25 +73,26 @@ bool Game::init()
 							whiteBack->getContentSize().width / 2, visibleSize.height / 2 + origin.y);
 	this->addChild(whiteBack, 2);	
 #pragma endregion
+
 #pragma region 主人公(SD)スプライトの初期設定
-	auto yukari = Sprite::create("Normal.png");
-	yukari->setScale((visibleSize.height + origin.y) / (yukari->getContentSize().height*3));
-	yukari->setPosition(defoultPos);
-	yukari->setTag(1);
-	this->addChild(yukari);
+	auto mainCharactor = Sprite::create("Normal.png");
+	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height*3));
+	mainCharactor->setPosition(defoultPos);
+	mainCharactor->setTag(1);
+	this->addChild(mainCharactor);
 	auto flip = FlipX::create(true);//左右反転処理
-	yukari->runAction(flip);
+	mainCharactor->runAction(flip);
 #pragma endregion
+
 #pragma region 主人公(立ち絵)の初期設定
-	auto yukari2 = Sprite::create("1.png");
-	yukari2->setScale((visibleSize.height + origin.y) / (yukari2->getContentSize().height));
-	yukari2->setPosition(visibleSize.width + origin.x - (yukari2->getContentSize().width / 4 * yukari2->getScale())
+	auto characterImage = Sprite::create("1.png");
+	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
+	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 						,visibleSize.height/2+origin.y) ;
-	//yukari2->setPosition(visibleSize.width-(yukari2->getContentSize().width/1.4), 
-	//					visibleSize.height-(1.5*yukari2->getContentSize().height));
-	yukari2->setTag(2);
-	this->addChild(yukari2,3);
+	characterImage->setTag(2);
+	this->addChild(characterImage,3);
 #pragma endregion
+
 #pragma region 敵の初期設定
 	auto enemy = Sprite::create("enemy.png");
 	enemy->setPosition(enemyDefaultPos);
@@ -91,19 +100,23 @@ bool Game::init()
 	enemy->setTag(11);
 	this->addChild(enemy);
 #pragma endregion
+
 #pragma region クリックリスナーの初期設定
 	auto listner = EventListenerTouchOneByOne::create();
 	listner->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan, this);
 	listner->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded, this);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
+
 #pragma region BGM再生
 	SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM.mp3",true);
 #pragma endregion
+
 #pragma region 繰り返し処理の初期設定
 	this->runAction(Sequence::create(DelayTime::create(1), 
 		CallFunc::create([this](){this->scheduleUpdate(); }), NULL));
 #pragma endregion
+
 	return true;
 }
 
@@ -115,19 +128,19 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 		auto visibleSize = Director::getInstance()->getVisibleSize();
 		auto origin = Director::getInstance()->getVisibleOrigin();
 		auto maxPoint = Point(defoultPos.x, origin.y + 4 * visibleSize.height / 5);
-		auto defaultPointed = Point(defoultPos);
+		/*auto defaultPointed = Point(defoultPos);*/
 		/*アクションの作成*/
-		auto moveJump = MoveTo::create(0.73f, maxPoint);
-		auto moveDown = MoveTo::create(0.73f, defaultPointed);
+		auto moveUp = MoveTo::create(0.73f, maxPoint);
+		auto moveDown = MoveTo::create(0.73f, defoultPos);
 		/*スプライトの作成*/
-		auto yukari = (Sprite*)this->getChildByTag(1);
+		auto mainCharactor = (Sprite*)this->getChildByTag(1);
 		/*アニメーション状態の確認*/
-		if (yukari->numberOfRunningActions() == 0){
-			yukari->setTexture("JUMP.png");
+		if (mainCharactor->numberOfRunningActions() == 0){
+			mainCharactor->setTexture("JUMP.png");
 			/*シークエンス作成*/
-			auto sequence = Sequence::create(moveJump, moveDown, NULL);
+			auto sequence = Sequence::create(moveUp, moveDown, NULL);
 			//アニメーション開始
-			yukari->runAction(sequence);
+			mainCharactor->runAction(sequence);
 		}
 	}
 	else
@@ -176,14 +189,14 @@ void Game::update(float dt)
 	enemy->setPosition(enemyPos);
 #pragma endregion
 #pragma region 接触判定
-	auto yukari = (Sprite*)this->getChildByTag(1);
-	auto yukari2 = (Sprite*)this->getChildByTag(2);
-	auto rectyukari = yukari->getBoundingBox();
+	auto mainCharactor = (Sprite*)this->getChildByTag(1);
+	auto characterImage = (Sprite*)this->getChildByTag(2);
+	auto rectmainCharactor = mainCharactor->getBoundingBox();
 	auto rectEnemy = enemy->getBoundingBox();
-	if (rectyukari.intersectsRect(rectEnemy) && !hitOnlyOne){
+	if (rectmainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
 		++hitCounter;
 		SimpleAudioEngine::getInstance()->playEffect("damage.mp3");
-		yukari->setTexture("HIT.png");
+		mainCharactor->setTexture("HIT.png");
 		if (hitCounter >= 4)
 		{
 			auto gameoverLabel = Label::create();
@@ -193,8 +206,8 @@ void Game::update(float dt)
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			this->addChild(gameoverLabel);
 			this->unscheduleUpdate();
-			yukari->setTexture("HIT.png");
-			yukari->stopAllActions();
+			mainCharactor->setTexture("HIT.png");
+			mainCharactor->stopAllActions();
 			UserDefault::sharedUserDefault()->setIntegerForKey("score", score);//スコアの保存
 			UserDefault::sharedUserDefault()->flush();
 			endFlag = true;
@@ -204,11 +217,11 @@ void Game::update(float dt)
 			switch (hitCounter)
 			{
 			case 1:
-				yukari2->setTexture("2.png"); hitOnlyOne = true; break;
+				characterImage->setTexture("2.png"); hitOnlyOne = true; break;
 			case 2:
-				yukari2->setTexture("3.png"); hitOnlyOne = true; break;
+				characterImage->setTexture("3.png"); hitOnlyOne = true; break;
 			case 3:
-				yukari2->setTexture("4.png"); hitOnlyOne = true;
+				characterImage->setTexture("4.png"); hitOnlyOne = true;
 			default:
 				break;
 			}
@@ -216,8 +229,8 @@ void Game::update(float dt)
 	}
 #pragma endregion
 #pragma region 立ち絵の更新
-	if (yukari->getPosition() == defoultPos && !hitOnlyOne && yukari->numberOfRunningActions() == 0 && !endFlag)
-		yukari->setTexture("Normal.png");
+	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->numberOfRunningActions() == 0 && !endFlag)
+		mainCharactor->setTexture("Normal.png");
 #pragma endregion
 }
 

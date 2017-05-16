@@ -76,12 +76,12 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto yukari = Sprite::create("4.png");
-	yukari->setScale((visibleSize.height + origin.y) / (yukari->getContentSize().height));
-	yukari->setPosition(visibleSize.width + origin.x - (yukari->getContentSize().width / 4 * yukari->getScale())
+	auto mainCharactor = Sprite::create("4.png");
+	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height));
+	mainCharactor->setPosition(visibleSize.width + origin.x - (mainCharactor->getContentSize().width / 4 * mainCharactor->getScale())
 		, visibleSize.height / 2 + origin.y);
-	yukari->setTag(2);
-	this->addChild(yukari, 3);
+	mainCharactor->setTag(2);
+	this->addChild(mainCharactor, 3);
 #pragma endregion
 
 #pragma region クリックリスナー
