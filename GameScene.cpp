@@ -25,12 +25,12 @@ bool Game::init()
 #pragma region グローバル変数の初期化
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
-	counter = 0;
+	score = 0;
 	hitCounter = 0;
-	endflag = false;
+	endFlag = false;
 	hitOnlyOne = false;
-	defoultPoint = Vec2(visibleSize.width / 7 + origin.x, visibleSize.height / 5 + origin.y);
-	enemyDefPoint = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
+	defoultPos = Vec2(visibleSize.width / 7 + origin.x, visibleSize.height / 5 + origin.y);
+	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
 
 #pragma endregion
 #pragma region BGMの設定
@@ -42,7 +42,7 @@ bool Game::init()
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 #pragma endregion
 #pragma region スコア生成
-	label = Label::createWithTTF("score:" + StringUtils::toString(counter), "fonts/Marker Felt.ttf", 24);
+	label = Label::createWithTTF("score:" + StringUtils::toString(score), "fonts/Marker Felt.ttf", 24);
 	label->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - label->getContentSize().height));
 	this->addChild(label,1);
 #pragma endregion
@@ -68,7 +68,7 @@ bool Game::init()
 #pragma region 主人公(SD)スプライトの初期設定
 	auto yukari = Sprite::create("Normal.png");
 	yukari->setScale((visibleSize.height + origin.y) / (yukari->getContentSize().height*3));
-	yukari->setPosition(defoultPoint);
+	yukari->setPosition(defoultPos);
 	yukari->setTag(1);
 	this->addChild(yukari);
 	auto flip = FlipX::create(true);//左右反転処理
@@ -86,7 +86,7 @@ bool Game::init()
 #pragma endregion
 #pragma region 敵の初期設定
 	auto enemy = Sprite::create("enemy.png");
-	enemy->setPosition(enemyDefPoint);
+	enemy->setPosition(enemyDefaultPos);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*3));
 	enemy->setTag(11);
 	this->addChild(enemy);
@@ -110,12 +110,12 @@ bool Game::init()
 bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
 #pragma region ジャンプ処理
-	if (!endflag)
+	if (!endFlag)
 	{
 		auto visibleSize = Director::getInstance()->getVisibleSize();
 		auto origin = Director::getInstance()->getVisibleOrigin();
-		auto maxPoint = Point(defoultPoint.x, origin.y + 4 * visibleSize.height / 5);
-		auto defaultPointed = Point(defoultPoint);
+		auto maxPoint = Point(defoultPos.x, origin.y + 4 * visibleSize.height / 5);
+		auto defaultPointed = Point(defoultPos);
 		/*アクションの作成*/
 		auto moveJump = MoveTo::create(0.73f, maxPoint);
 		auto moveDown = MoveTo::create(0.73f, defaultPointed);
@@ -136,11 +136,6 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 	}
 #pragma endregion
 	return true;
-}
-
-void Game::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event)
-{
-	auto yukari = (Sprite*)this->getChildByTag(1);
 }
 
 void Game::update(float dt)
@@ -173,10 +168,10 @@ void Game::update(float dt)
 	float rand = random(0.5f, 2.0f);
 	enemyPos += 2 * moveVec*rand;
 	if (enemyPos.x + enemy->getContentSize().width < 0){
-		enemyPos = Vec2(/*visibleSize.width + visibleSize.width / 2, visibleSize.height / 6*/enemyDefPoint);
-		++counter;
+		enemyPos = Vec2(/*visibleSize.width + visibleSize.width / 2, visibleSize.height / 6*/enemyDefaultPos);
+		++score;
 		hitOnlyOne = false;
-		label->setString("score:" + StringUtils::toString(counter));
+		label->setString("score:" + StringUtils::toString(score));
 	}
 	enemy->setPosition(enemyPos);
 #pragma endregion
@@ -200,9 +195,9 @@ void Game::update(float dt)
 			this->unscheduleUpdate();
 			yukari->setTexture("HIT.png");
 			yukari->stopAllActions();
-			UserDefault::sharedUserDefault()->setIntegerForKey("score", counter);//スコアの保存
+			UserDefault::sharedUserDefault()->setIntegerForKey("score", score);//スコアの保存
 			UserDefault::sharedUserDefault()->flush();
-			endflag = true;
+			endFlag = true;
 		}
 		else
 		{
@@ -221,7 +216,7 @@ void Game::update(float dt)
 	}
 #pragma endregion
 #pragma region 立ち絵の更新
-	if (yukari->getPosition() == defoultPoint && !hitOnlyOne && yukari->numberOfRunningActions() == 0 && !endflag)
+	if (yukari->getPosition() == defoultPos && !hitOnlyOne && yukari->numberOfRunningActions() == 0 && !endFlag)
 		yukari->setTexture("Normal.png");
 #pragma endregion
 }
