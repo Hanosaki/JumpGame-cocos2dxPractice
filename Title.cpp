@@ -30,7 +30,7 @@ bool Title::init()
 #pragma endregion
 
 #pragma region タイトル表記
-	auto titleLabel = Label::createWithTTF("mainCharactor RUN", "fonts/Marker Felt.ttf", 64);
+	auto titleLabel = Label::createWithTTF("characterImage RUN", "fonts/Marker Felt.ttf", 64);
 	titleLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(titleLabel,4);
 #pragma endregion
@@ -40,9 +40,9 @@ bool Title::init()
 	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 6);
 	this->addChild(pushText, 4);
 	/*文字点滅処理*/
-	auto action = FadeTo::create(0.9f,64);
-	auto action2 = FadeTo::create(0.9f,255);
-	auto seq = Sequence::create(action, action2, NULL);
+	auto fadeOut = FadeTo::create(0.9f,64);
+	auto fadeIn = FadeTo::create(0.9f,255);
+	auto seq = Sequence::create(fadeOut, fadeIn, NULL);
 	auto repeat = RepeatForever::create(seq);
 	pushText->runAction(repeat);
 #pragma endregion
@@ -63,12 +63,12 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto mainCharactor = Sprite::create("1.png");
-	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height));
-	mainCharactor->setPosition(visibleSize.width + origin.x - (mainCharactor->getContentSize().width / 4 * mainCharactor->getScale())
+	auto characterImage = Sprite::create("1.png");
+	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
+	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 		, visibleSize.height / 2 + origin.y);
-	mainCharactor->setTag(2);
-	this->addChild(mainCharactor, 3);
+	characterImage->setTag(2);
+	this->addChild(characterImage, 3);
 #pragma endregion
 
 #pragma region クリックリスナー
@@ -82,10 +82,9 @@ bool Title::init()
 
 bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-	auto mainCharactor = (Sprite*)this->getChildByTag(2);
-	mainCharactor->setTexture("start.png");
+	auto characterImage = (Sprite*)this->getChildByTag(2);
+	characterImage->setTexture("start.png");
 	SimpleAudioEngine::getInstance()->playEffect("start.wav");
-	//TransitionFade(フェード時間，移動先のシーン，フェードアウトの色)
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
 	return true;
 }

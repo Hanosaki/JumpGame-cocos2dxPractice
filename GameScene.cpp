@@ -128,11 +128,10 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 		auto visibleSize = Director::getInstance()->getVisibleSize();
 		auto origin = Director::getInstance()->getVisibleOrigin();
 		auto maxPoint = Point(defoultPos.x, origin.y + 4 * visibleSize.height / 5);
-		/*auto defaultPointed = Point(defoultPos);*/
 		/*アクションの作成*/
 		auto moveUp = MoveTo::create(0.73f, maxPoint);
 		auto moveDown = MoveTo::create(0.73f, defoultPos);
-		/*スプライトの作成*/
+		//スプライトの作成
 		auto mainCharactor = (Sprite*)this->getChildByTag(1);
 		/*アニメーション状態の確認*/
 		if (mainCharactor->numberOfRunningActions() == 0){
