@@ -1,5 +1,6 @@
 #ifndef __TITLE_H__
 #define __TITLE_H__
+#define MISAKI_FONTS "fonts/misaki_gothic.ttf"
 
 #include "cocos2d.h"
 
