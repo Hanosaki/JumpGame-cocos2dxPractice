@@ -37,7 +37,7 @@ bool GameOver::init()
 	Label* hiScoreLabel;
 	if (hiScore < score)
 	{
-		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(score) + "NEW RECORED!",
+		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(score) + "\tNEW RECORED!",
 			"fonts/Marker Felt.ttf", 64);
 		UserDefault::sharedUserDefault()->setIntegerForKey("hiScore", score);
 	}
@@ -52,10 +52,9 @@ bool GameOver::init()
 	auto pushText = Label::createWithTTF("push End", "fonts/Marker Felt.ttf", 24);
 	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 8);
 	this->addChild(pushText, 4);
-	/*•¶Žš“_–Åˆ—*/
-	auto action = FadeTo::create(0.9f, 64);
-	auto action2 = FadeTo::create(0.9f, 255);
-	auto seq = Sequence::create(action, action2, NULL);
+	auto fadeOut = FadeTo::create(0.9f, 64);
+	auto fadeIn = FadeTo::create(0.9f, 255);
+	auto seq = Sequence::create(fadeOut, fadeIn, NULL);
 	auto repeat = RepeatForever::create(seq);
 	pushText->runAction(repeat);
 #pragma endregion
