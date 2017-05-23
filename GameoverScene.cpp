@@ -37,7 +37,7 @@ bool GameOver::init()
 	Label* hiScoreLabel;
 	if (hiScore < score)
 	{
-		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(score) + "\tNEW RECORED!",
+		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(score) + "  NEW RECORED!",
 			"fonts/Marker Felt.ttf", 64);
 		UserDefault::sharedUserDefault()->setIntegerForKey("hiScore", score);
 	}
