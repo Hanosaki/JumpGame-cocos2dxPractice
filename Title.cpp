@@ -30,7 +30,7 @@ bool Title::init()
 #pragma endregion
 
 #pragma region タイトル表記
-	auto titleLabel = Label::createWithTTF("Yukari RUN", "fonts/Marker Felt.ttf", 64);
+	auto titleLabel = Label::createWithTTF("ゆかりさんゲーム", JPN_FONTS, 64);
 	titleLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(titleLabel,4);
 #pragma endregion
