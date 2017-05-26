@@ -1,4 +1,4 @@
-#pragma execution_character_set("utf-8")
+ï»¿#pragma execution_character_set("utf-8")
 #include "GameScene.h"
 #include "GameoverScene.h"
 #include "SimpleAudioEngine.h"
@@ -24,7 +24,7 @@ bool Game::init()
 		return false;
 	}
 
-#pragma region ƒOƒ[ƒoƒ‹•Ï”‚Ì‰Šú‰»
+#pragma region ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®åˆæœŸåŒ–
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	score = 0;
@@ -36,23 +36,23 @@ bool Game::init()
 
 #pragma endregion
 
-#pragma region BGM‚ÌÝ’è
+#pragma region BGMã®è¨­å®š
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM.mp3");
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 #pragma endregion
 
-#pragma region SE‚ÌÝ’è
+#pragma region SEã®è¨­å®š
 	SimpleAudioEngine::getInstance()->preloadEffect("damage.mp3");
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 #pragma endregion
 
-#pragma region ƒXƒRƒA¶¬
+#pragma region ã‚¹ã‚³ã‚¢ç”Ÿæˆ
 	label = Label::createWithTTF("score:" + StringUtils::toString(score), "fonts/Marker Felt.ttf", 24);
 	label->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - label->getContentSize().height));
 	this->addChild(label,1);
 #pragma endregion
 
-#pragma region ”wŒi‰ŠúÝ’è
+#pragma region èƒŒæ™¯åˆæœŸè¨­å®š
 	auto backGround = Sprite::create("bg.png");
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
@@ -66,7 +66,7 @@ bool Game::init()
 	this->addChild(backGround2);
 #pragma endregion
 
-#pragma region —§‚¿ŠG”wŒi‚Ì‰ŠúÝ’è
+#pragma region ç«‹ã¡çµµèƒŒæ™¯ã®åˆæœŸè¨­å®š
 	auto whiteBack = Sprite::create("whiteBack.png");
 	whiteBack->setContentSize((Size)Vec2(visibleSize.width/5+origin.x,visibleSize.height+origin.y));
 	whiteBack->setPosition(visibleSize.width + origin.x -
@@ -74,17 +74,17 @@ bool Game::init()
 	this->addChild(whiteBack, 2);	
 #pragma endregion
 
-#pragma region ŽålŒö(SD)ƒXƒvƒ‰ƒCƒg‚Ì‰ŠúÝ’è
+#pragma region ä¸»äººå…¬(SD)ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®åˆæœŸè¨­å®š
 	auto mainCharactor = Sprite::create("Normal.png");
 	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height*3));
 	mainCharactor->setPosition(defoultPos);
 	mainCharactor->setTag(1);
 	this->addChild(mainCharactor);
-	auto flip = FlipX::create(true);//¶‰E”½“]ˆ—
+	auto flip = FlipX::create(true);//å·¦å³åè»¢å‡¦ç†
 	mainCharactor->runAction(flip);
 #pragma endregion
 
-#pragma region ŽålŒö(—§‚¿ŠG)‚Ì‰ŠúÝ’è
+#pragma region ä¸»äººå…¬(ç«‹ã¡çµµ)ã®åˆæœŸè¨­å®š
 	auto characterImage = Sprite::create("1.png");
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
@@ -93,7 +93,7 @@ bool Game::init()
 	this->addChild(characterImage,3);
 #pragma endregion
 
-#pragma region “G‚Ì‰ŠúÝ’è
+#pragma region æ•µã®åˆæœŸè¨­å®š
 	auto enemy = Sprite::create("enemy.png");
 	enemy->setPosition(enemyDefaultPos);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*3));
@@ -101,18 +101,18 @@ bool Game::init()
 	this->addChild(enemy);
 #pragma endregion
 
-#pragma region ƒNƒŠƒbƒNƒŠƒXƒi[‚Ì‰ŠúÝ’è
+#pragma region ã‚¯ãƒªãƒƒã‚¯ãƒªã‚¹ãƒŠãƒ¼ã®åˆæœŸè¨­å®š
 	auto listner = EventListenerTouchOneByOne::create();
 	listner->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan, this);
 	listner->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded, this);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
-#pragma region BGMÄ¶
+#pragma region BGMå†ç”Ÿ
 	SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM.mp3",true);
 #pragma endregion
 
-#pragma region ŒJ‚è•Ô‚µˆ—‚Ì‰ŠúÝ’è
+#pragma region ç¹°ã‚Šè¿”ã—å‡¦ç†ã®åˆæœŸè¨­å®š
 	this->runAction(Sequence::create(DelayTime::create(1), 
 		CallFunc::create([this](){this->scheduleUpdate(); }), NULL));
 #pragma endregion
@@ -122,23 +122,23 @@ bool Game::init()
 
 bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-#pragma region ƒWƒƒƒ“ƒvˆ—
+#pragma region ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†
 	if (!endFlag)
 	{
 		auto visibleSize = Director::getInstance()->getVisibleSize();
 		auto origin = Director::getInstance()->getVisibleOrigin();
 		auto maxPoint = Point(defoultPos.x, origin.y + 4 * visibleSize.height / 5);
-		/*ƒAƒNƒVƒ‡ƒ“‚Ìì¬*/
+		/*ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®ä½œæˆ*/
 		auto moveUp = MoveTo::create(0.73f, maxPoint);
 		auto moveDown = MoveTo::create(0.73f, defoultPos);
-		//ƒXƒvƒ‰ƒCƒg‚Ìì¬
+		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ä½œæˆ
 		auto mainCharactor = (Sprite*)this->getChildByTag(1);
-		/*ƒAƒjƒ[ƒVƒ‡ƒ“ó‘Ô‚ÌŠm”F*/
+		/*ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çŠ¶æ…‹ã®ç¢ºèª*/
 		if (mainCharactor->numberOfRunningActions() == 0){
 			mainCharactor->setTexture("JUMP.png");
-			/*ƒV[ƒNƒGƒ“ƒXì¬*/
+			/*ã‚·ãƒ¼ã‚¯ã‚¨ãƒ³ã‚¹ä½œæˆ*/
 			auto sequence = Sequence::create(moveUp, moveDown, NULL);
-			//ƒAƒjƒ[ƒVƒ‡ƒ“ŠJŽn
+			//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹
 			mainCharactor->runAction(sequence);
 		}
 	}
@@ -152,7 +152,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 
 void Game::update(float dt)
 {
-#pragma region •Ï”‚ÌéŒ¾
+#pragma region å¤‰æ•°ã®å®£è¨€
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto visibleOrigin = Director::getInstance()->getVisibleOrigin();
 	auto moveVec = Vec2(-5.5f, 0);
@@ -160,7 +160,7 @@ void Game::update(float dt)
 	auto backGround2 = this->getChildByTag(52);
 #pragma endregion
 
-#pragma region ”wŒiƒAƒjƒ[ƒVƒ‡ƒ“
+#pragma region èƒŒæ™¯ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	auto pos = backGround->getPosition();
 	auto pos2 = backGround2->getPosition();
 	pos += moveVec;
@@ -176,7 +176,7 @@ void Game::update(float dt)
 	backGround2->setPosition(pos2);
 #pragma endregion
 
-#pragma region ƒGƒlƒ~[‚Ìs“®
+#pragma region ã‚¨ãƒãƒŸãƒ¼ã®è¡Œå‹•
 	auto enemy = this->getChildByTag(11);
 	auto enemyPos = enemy->getPosition();
 	float rand = random(0.5f, 2.0f);
@@ -190,7 +190,7 @@ void Game::update(float dt)
 	enemy->setPosition(enemyPos);
 #pragma endregion
 
-#pragma region ÚG”»’è
+#pragma region æŽ¥è§¦åˆ¤å®š
 	auto mainCharactor = (Sprite*)this->getChildByTag(1);
 	auto characterImage = (Sprite*)this->getChildByTag(2);
 	auto rectmainCharactor = mainCharactor->getBoundingBox();
@@ -210,7 +210,7 @@ void Game::update(float dt)
 			this->unscheduleUpdate();
 			mainCharactor->setTexture("HIT.png");
 			mainCharactor->stopAllActions();
-			UserDefault::sharedUserDefault()->setIntegerForKey("score", score);//ƒXƒRƒA‚Ì•Û‘¶
+			UserDefault::sharedUserDefault()->setIntegerForKey("score", score);//ã‚¹ã‚³ã‚¢ã®ä¿å­˜
 			UserDefault::sharedUserDefault()->flush();
 			endFlag = true;
 		}
@@ -231,7 +231,7 @@ void Game::update(float dt)
 	}
 #pragma endregion
 
-#pragma region —§‚¿ŠG‚ÌXV
+#pragma region ç«‹ã¡çµµã®æ›´æ–°
 	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->numberOfRunningActions() == 0 && !endFlag)
 		mainCharactor->setTexture("Normal.png");
 #pragma endregion

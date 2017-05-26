@@ -1,5 +1,6 @@
-#ifndef __GAMEOVER_SCENE_H__
+﻿#ifndef __GAMEOVER_SCENE_H__
 #define __GAMEOVER_SCENE_H__
+#define JPN_FONTS "fonts/HGRPP1.TTC"
 
 #include "cocos2d.h"
 
@@ -13,16 +14,16 @@ public:
 	CREATE_FUNC(GameOver);
 
 	/// <summary>
-	///  ��ʂ��^�b�`���ꂽ�ۂɌĂяo�����C�}�E�X�̃N���b�N�ł��Ăяo�����D
-	/// <para>�A�j���[�V�����̊J�n�������s���D</para> 
+	///  画面がタッチされた際に呼び出される，マウスのクリックでも呼び出される．
+	/// <para>アニメーションの開始処理を行う．</para> 
 	/// </summary>
-	/// <param name="touch">�w(�}�E�X)���(�����Ŏ擾�����)</param>
-	/// <param name="event">������(�����Ŏ擾�����)</param>
-	/// <returns>true...�^�b�`���ꂽ��Ԃ�Ԃ�</returns>
+	/// <param name="touch">指(マウス)情報(自動で取得される)</param>
+	/// <param name="event">操作情報(自動で取得される)</param>
+	/// <returns>true...タッチされた状態を返す</returns>
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 
 	/// <summary>
-	/// �Q�[���I�����ɌĂяo���֐�
+	/// ゲーム終了時に呼び出す関数
 	/// </summary>
 	void ended();
 

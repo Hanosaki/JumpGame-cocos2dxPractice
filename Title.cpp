@@ -1,4 +1,4 @@
-#pragma execution_character_set("utf-8")
+ï»¿#pragma execution_character_set("utf-8")
 #include "Title.h"
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
@@ -19,27 +19,27 @@ bool Title::init()
 	if (!Layer::init())
 		return false;
 
-#pragma region •Ï”éŒ¾
+#pragma region å¤‰æ•°å®£è¨€
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 #pragma endregion
 
-#pragma region SE—pˆÓ
+#pragma region SEç”¨æ„
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
 	SimpleAudioEngine::getInstance()->preloadEffect("start.mp3");
 #pragma endregion
 
-#pragma region ƒ^ƒCƒgƒ‹•\‹L
+#pragma region ã‚¿ã‚¤ãƒˆãƒ«è¡¨è¨˜
 	auto titleLabel = Label::createWithTTF("Yukari RUN", "fonts/Marker Felt.ttf", 64);
 	titleLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(titleLabel,4);
 #pragma endregion
 
-#pragma region pushStart•\‹L
-	auto pushText = Label::createWithTTF("‚Õ‚Á‚µ‚ã‚·‚½`‚Æ",MISAKI_FONTS,24);
+#pragma region pushStartè¡¨è¨˜
+	auto pushText = Label::createWithTTF( "ã·ã£ã—ã‚…ã™ãŸï½žã¨",JPN_FONTS,24);
 	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 6);
 	this->addChild(pushText, 4);
-	/*•¶Žš“_–Åˆ—*/
+	/*æ–‡å­—ç‚¹æ»…å‡¦ç†*/
 	auto fadeOut = FadeTo::create(0.9f,64);
 	auto fadeIn = FadeTo::create(0.9f,255);
 	auto seq = Sequence::create(fadeOut, fadeIn, NULL);
@@ -47,14 +47,14 @@ bool Title::init()
 	pushText->runAction(repeat);
 #pragma endregion
 
-#pragma region ”wŒiéŒ¾
+#pragma region èƒŒæ™¯å®£è¨€
 	auto backGround = Sprite::create("bg.png");
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(backGround,1);
 #pragma endregion
 
-#pragma region —§‚¿ŠG”wŒi‚Ì‰ŠúÝ’è
+#pragma region ç«‹ã¡çµµèƒŒæ™¯ã®åˆæœŸè¨­å®š
 	auto whiteBack = Sprite::create("whiteBack.png");
 	whiteBack->setContentSize((Size)Vec2(visibleSize.width / 5 + origin.x, visibleSize.height + origin.y));
 	whiteBack->setPosition(visibleSize.width + origin.x -
@@ -62,7 +62,7 @@ bool Title::init()
 	this->addChild(whiteBack, 2);
 #pragma endregion
 
-#pragma region ŽålŒö(—§‚¿ŠG)‚Ì‰ŠúÝ’è
+#pragma region ä¸»äººå…¬(ç«‹ã¡çµµ)ã®åˆæœŸè¨­å®š
 	auto characterImage = Sprite::create("1.png");
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
@@ -71,7 +71,7 @@ bool Title::init()
 	this->addChild(characterImage, 3);
 #pragma endregion
 
-#pragma region ƒNƒŠƒbƒNƒŠƒXƒi[
+#pragma region ã‚¯ãƒªãƒƒã‚¯ãƒªã‚¹ãƒŠãƒ¼
 	auto listner = EventListenerTouchOneByOne::create();
 	listner->onTouchBegan = CC_CALLBACK_2(Title::onTouchBegan, this);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
