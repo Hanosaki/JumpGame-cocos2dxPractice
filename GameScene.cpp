@@ -54,7 +54,7 @@ bool Game::init()
 
 #pragma region 背景初期設定
 	auto backGround = Sprite::create("bg.png");
-	backGround->setContentSize(Director::getInstance()->getVisibleSize());
+	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1*visibleSize.width, visibleSize.height));
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setTag(51);
 	this->addChild(backGround);
@@ -167,10 +167,10 @@ void Game::update(float dt)
 	pos2 += moveVec;
 
 	if (pos.x + backGround->getContentSize().width / 2 < 0){
-		pos = Vec2(visibleSize.width + 0.95*visibleSize.width / 2 + visibleOrigin.x, visibleSize.height / 2);
+		pos = Vec2(visibleSize.width + visibleSize.width / 2 + visibleOrigin.x, visibleSize.height / 2);
 	}
 	if (pos2.x + backGround2->getContentSize().width / 2 < 0){
-		pos2 = Vec2(visibleSize.width + 0.95*visibleSize.width / 2 + visibleOrigin.x, visibleSize.height / 2);
+		pos2 = Vec2(visibleSize.width + visibleSize.width / 2 + visibleOrigin.x, visibleSize.height / 2);
 	}
 	backGround->setPosition(pos);
 	backGround2->setPosition(pos2);
