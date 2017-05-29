@@ -23,11 +23,21 @@ bool Introduction::init()
 
 #pragma region テキストウィンドウの設定
 	auto textWindow = Sprite::create("textWindow.png");
-	textWindow->setContentSize((Size)Vec2(visibleSize.width + origin.x, visibleSize.height / 5 + origin.y));
+	textWindow->setContentSize((Size)Vec2(visibleSize.width + origin.x, visibleSize.height/5 + origin.y));
 	textWindow->setPosition(visibleSize.width / 2 + origin.x,
 		textWindow->getContentSize().height/2);
 	this->addChild(textWindow);
 #pragma endregion
+
+#pragma region 名前表示用ラベルの設定
+	auto characterNameLabel = Label::createWithTTF("ゆかり",JPN_FONTS,32);
+	characterNameLabel->setPosition(Vec2(characterNameLabel->getContentSize().width / 2,
+		textWindow->getContentSize().height - characterNameLabel->getContentSize().height/2));
+	characterNameLabel->setColor(ccc3(0, 0, 0));
+	textWindow->addChild(characterNameLabel,1);
+#pragma endregion
+
+
 
 	return true;
 }

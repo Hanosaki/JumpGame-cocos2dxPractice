@@ -1,6 +1,6 @@
 ﻿#ifndef __INTRODUCTION_SCENE_H__
 #define __INTRODUCTION_SCENE_H__
-
+#define JPN_FONTS "fonts/HGRPP1.TTC"
 #include "cocos2d.h"
 
 class Introduction : public cocos2d::Layer
