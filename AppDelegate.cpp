@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "Title.h"
+#include "IntroductionScene.h"
 
 USING_NS_CC;
 
@@ -77,8 +78,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-	auto scene = Title::creatScene();
-
+	//auto scene = Title::creatScene();
+	auto scene = Introduction::creatScene();
     // run
     director->runWithScene(scene);
 

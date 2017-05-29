@@ -19,8 +19,9 @@ bool GameOver::init()
 		return false;
 
 #pragma region 変数宣言
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto origin = Director::getInstance()->getVisibleOrigin();
+	auto directer = Director::getInstance();
+	auto visibleSize = directer->getVisibleSize();
+	auto origin = directer->getVisibleOrigin();
 	int score = UserDefault::sharedUserDefault()->getIntegerForKey("score", 0);
 	int hiScore = UserDefault::sharedUserDefault()->getIntegerForKey("hiScore", 0);
 #pragma endregion
@@ -61,7 +62,7 @@ bool GameOver::init()
 
 #pragma region 背景宣言
 	auto backGround = Sprite::create("bg.png");
-	backGround->setContentSize(Director::getInstance()->getVisibleSize());
+	backGround->setContentSize(directer->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(backGround, 1);
 #pragma endregion
@@ -86,7 +87,7 @@ bool GameOver::init()
 #pragma region クリックリスナー
 	auto listner = EventListenerTouchOneByOne::create();
 	listner->onTouchBegan = CC_CALLBACK_2(GameOver::onTouchBegan, this);
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
+	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
 
