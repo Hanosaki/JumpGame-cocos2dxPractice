@@ -1,6 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "Title.h"
 #include "GameScene.h"
+#include "Credit.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
@@ -47,14 +48,14 @@ bool Title::init()
 	pushText->runAction(repeat);
 #pragma endregion
 
-#pragma region 背景宣言
+#pragma region 背景設定
 	auto backGround = Sprite::create("bg.png");
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(backGround,1);
 #pragma endregion
 
-#pragma region 立ち絵背景の初期設定
+	#pragma region 立ち絵背景の初期設定
 	auto whiteBack = Sprite::create("whiteBack.png");
 	whiteBack->setContentSize((Size)Vec2(visibleSize.width / 5 + origin.x, visibleSize.height + origin.y));
 	whiteBack->setPosition(visibleSize.width + origin.x -
@@ -85,6 +86,6 @@ bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 	auto characterImage = (Sprite*)this->getChildByTag(2);
 	characterImage->setTexture("start.png");
 	SimpleAudioEngine::getInstance()->playEffect("start.wav");
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
+	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::creatScene(), Color3B::WHITE));
 	return true;
 }

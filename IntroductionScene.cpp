@@ -33,7 +33,7 @@ bool Introduction::init()
 	auto characterNameLabel = Label::createWithTTF("ゆかり",JPN_FONTS,32);
 	characterNameLabel->setPosition(Vec2(characterNameLabel->getContentSize().width / 2,
 		textWindow->getContentSize().height - characterNameLabel->getContentSize().height/2));
-	characterNameLabel->setColor(ccc3(0, 0, 0));
+	characterNameLabel->setColor(Color3B::BLACK);
 	textWindow->addChild(characterNameLabel,1);
 #pragma endregion
 
