@@ -154,7 +154,7 @@ void Game::update(float dt)
 {
 #pragma region 変数の宣言
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto visibleOrigin = Director::getInstance()->getVisibleOrigin();
+	auto origin = Director::getInstance()->getVisibleOrigin();
 	auto moveVec = Vec2(-5.5f, 0);
 	auto backGround = this->getChildByTag(51);
 	auto backGround2 = this->getChildByTag(52);
@@ -167,10 +167,10 @@ void Game::update(float dt)
 	pos2 += moveVec;
 
 	if (pos.x + backGround->getContentSize().width / 2 < 0){
-		pos = Vec2(visibleSize.width + visibleSize.width / 2 + visibleOrigin.x, visibleSize.height / 2);
+		pos = Vec2(visibleSize.width + visibleSize.width / 2 +origin.x, visibleSize.height / 2);
 	}
 	if (pos2.x + backGround2->getContentSize().width / 2 < 0){
-		pos2 = Vec2(visibleSize.width + visibleSize.width / 2 + visibleOrigin.x, visibleSize.height / 2);
+		pos2 = Vec2(visibleSize.width + visibleSize.width / 2 +origin.x, visibleSize.height / 2);
 	}
 	backGround->setPosition(pos);
 	backGround2->setPosition(pos2);
