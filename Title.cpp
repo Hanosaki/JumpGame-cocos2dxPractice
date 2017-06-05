@@ -55,19 +55,12 @@ bool Title::init()
 	this->addChild(backGround,1);
 #pragma endregion
 
-	#pragma region 立ち絵背景の初期設定
-	auto whiteBack = Sprite::create("whiteBack.png");
-	whiteBack->setContentSize((Size)Vec2(visibleSize.width / 5 + origin.x, visibleSize.height + origin.y));
-	whiteBack->setPosition(visibleSize.width + origin.x -
-		whiteBack->getContentSize().width / 2, visibleSize.height / 2 + origin.y);
-	this->addChild(whiteBack, 2);
-#pragma endregion
-
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create("1.png");
+	auto characterImage = Sprite::create("03.png");
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 		, visibleSize.height / 2 + origin.y);
+	characterImage->setOpacity(200);
 	characterImage->setTag(2);
 	this->addChild(characterImage, 3);
 #pragma endregion

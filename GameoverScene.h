@@ -1,6 +1,7 @@
 ﻿#ifndef __GAMEOVER_SCENE_H__
 #define __GAMEOVER_SCENE_H__
 #define JPN_FONTS "fonts/HGRPP1.TTC"
+#define IMAGE_GAMEOVER "GameOver.png"
 
 #include "cocos2d.h"
 

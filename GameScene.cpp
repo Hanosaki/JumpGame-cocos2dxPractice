@@ -66,14 +66,6 @@ bool Game::init()
 	this->addChild(backGround2);
 #pragma endregion
 
-#pragma region 立ち絵背景の初期設定
-	auto whiteBack = Sprite::create("whiteBack.png");
-	whiteBack->setContentSize((Size)Vec2(visibleSize.width/5+origin.x,visibleSize.height+origin.y));
-	whiteBack->setPosition(visibleSize.width + origin.x -
-							whiteBack->getContentSize().width / 2, visibleSize.height / 2 + origin.y);
-	this->addChild(whiteBack, 2);	
-#pragma endregion
-
 #pragma region 主人公(SD)スプライトの初期設定
 	auto mainCharactor = Sprite::create(SD_NORMAL);
 	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height*2.5));
@@ -84,10 +76,11 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create("1.png");
+	auto characterImage = Sprite::create("03.png");
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 						,visibleSize.height/2+origin.y) ;
+	characterImage->setOpacity(200);
 	characterImage->setTag(2);
 	this->addChild(characterImage,3);
 #pragma endregion
@@ -199,6 +192,7 @@ void Game::update(float dt)
 		++hitCounter;
 		SimpleAudioEngine::getInstance()->playEffect("damage.mp3");
 		mainCharactor->setTexture(SD_DAMAGE);
+		characterImage->setTexture(IMAGE_DAMEGE);
 		if (hitCounter >= 4)
 		{
 			auto gameoverLabel = Label::createWithTTF("ゲームオーバー...", JPN_FONTS, 24);
@@ -212,26 +206,16 @@ void Game::update(float dt)
 			UserDefault::getInstance()->flush();
 			endFlag = true;
 		}
-		else
-		{
-			switch (hitCounter)
-			{
-			case 1:
-				characterImage->setTexture("2.png"); hitOnlyOne = true; break;
-			case 2:
-				characterImage->setTexture("3.png"); hitOnlyOne = true; break;
-			case 3:
-				characterImage->setTexture("4.png"); hitOnlyOne = true;
-			default:
-				break;
-			}
-		}
+		hitOnlyOne = true;
 	}
 #pragma endregion
 
 #pragma region 立ち絵の更新
-	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->getNumberOfRunningActions() == 0 && !endFlag )
-		mainCharactor->setTexture("Normal.png");
+	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->getNumberOfRunningActions() == 0 && !endFlag)
+	{
+		mainCharactor->setTexture(SD_NORMAL);
+		characterImage->setTexture(IMAGE_NORMAL);
+	}
 #pragma endregion
 }
 

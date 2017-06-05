@@ -6,9 +6,11 @@
 #define __GAME_SCENE_H__
 
 #pragma region マクロ設定
-#define SD_DAMAGE "Damage.png"
-#define SD_NORMAL "Normal.png"
+#define SD_DAMAGE "DamageSD.png"
+#define SD_NORMAL "NormalSD.png"
 #define SD_JUMP "Jump.png"
+#define IMAGE_NORMAL "NormalImage.png"
+#define IMAGE_DAMEGE "DamageImage.png"
 #pragma endregion
 
 #include "cocos2d.h"
