@@ -22,12 +22,12 @@ bool GameOver::init()
 	auto directer = Director::getInstance();
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
-	int score = UserDefault::sharedUserDefault()->getIntegerForKey("score", 0);
-	int hiScore = UserDefault::sharedUserDefault()->getIntegerForKey("hiScore", 0);
+	int score = UserDefault::getInstance()->getIntegerForKey("score", 0);
+	int hiScore = UserDefault::getInstance()->getIntegerForKey("hiScore", 0);
 #pragma endregion
 
 #pragma region ゲームオーバー表記
-	auto gameOverLabel = Label::createWithTTF("げ～むお～ば～", JPN_FONTS, 64);
+	auto gameOverLabel = Label::createWithTTF("こんかいのきろく", JPN_FONTS, 64);
 	gameOverLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(gameOverLabel, 4);
 
@@ -40,7 +40,7 @@ bool GameOver::init()
 	{
 		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(score) + "  NEW RECORED!",
 			"fonts/Marker Felt.ttf", 64);
-		UserDefault::sharedUserDefault()->setIntegerForKey("hiScore", score);
+		UserDefault::getInstance()->setIntegerForKey("hiScore", score);
 	}
 	else
 		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(hiScore),

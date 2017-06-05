@@ -4,6 +4,13 @@
 /// </summary>
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
+
+#pragma region マクロ設定
+#define SD_DAMAGE "Damage.png"
+#define SD_NORMAL "Normal.png"
+#define SD_JUMP "Jump.png"
+#pragma endregion
+
 #include "cocos2d.h"
 
 class Game : public cocos2d::Layer

@@ -86,6 +86,6 @@ bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 	auto characterImage = (Sprite*)this->getChildByTag(2);
 	characterImage->setTexture("start.png");
 	SimpleAudioEngine::getInstance()->playEffect("start.wav");
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::creatScene(), Color3B::WHITE));
+	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
 	return true;
 }

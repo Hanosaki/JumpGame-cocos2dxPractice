@@ -31,7 +31,7 @@ bool Game::init()
 	hitCounter = 0;
 	endFlag = false;
 	hitOnlyOne = false;
-	defoultPos = Vec2(visibleSize.width / 7 + origin.x, visibleSize.height / 5 + origin.y);
+	defoultPos = Vec2(visibleSize.width / 7 + origin.x,  origin.y);
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
 
 #pragma endregion
@@ -75,13 +75,12 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(SD)スプライトの初期設定
-	auto mainCharactor = Sprite::create("Normal.png");
-	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height*3));
+	auto mainCharactor = Sprite::create(SD_NORMAL);
+	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height*2.5));
 	mainCharactor->setPosition(defoultPos);
+	mainCharactor->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	mainCharactor->setTag(1);
 	this->addChild(mainCharactor);
-	auto flip = FlipX::create(true);//左右反転処理
-	mainCharactor->runAction(flip);
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
@@ -96,7 +95,8 @@ bool Game::init()
 #pragma region 敵の初期設定
 	auto enemy = Sprite::create("enemy.png");
 	enemy->setPosition(enemyDefaultPos);
-	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*3));
+	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*5));
+	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 	enemy->setTag(11);
 	this->addChild(enemy);
 #pragma endregion
@@ -125,17 +125,17 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 #pragma region ジャンプ処理
 	if (!endFlag)
 	{
+		auto mainCharactor = (Sprite*)this->getChildByTag(1);
 		auto visibleSize = Director::getInstance()->getVisibleSize();
 		auto origin = Director::getInstance()->getVisibleOrigin();
-		auto maxPoint = Point(defoultPos.x, origin.y + 4 * visibleSize.height / 5);
+		auto maxPoint = Point(defoultPos.x, 
+											origin.y + visibleSize.height - mainCharactor->getContentSize().height*mainCharactor->getScale());
 		/*アクションの作成*/
 		auto moveUp = MoveTo::create(0.73f, maxPoint);
 		auto moveDown = MoveTo::create(0.73f, defoultPos);
-		//スプライトの作成
-		auto mainCharactor = (Sprite*)this->getChildByTag(1);
 		/*アニメーション状態の確認*/
-		if (mainCharactor->numberOfRunningActions() == 0){
-			mainCharactor->setTexture("JUMP.png");
+		if (mainCharactor->getNumberOfRunningActions() == 0){
+			mainCharactor->setTexture(SD_JUMP);
 			/*シークエンス作成*/
 			auto sequence = Sequence::create(moveUp, moveDown, NULL);
 			//アニメーション開始
@@ -198,20 +198,18 @@ void Game::update(float dt)
 	if (rectmainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
 		++hitCounter;
 		SimpleAudioEngine::getInstance()->playEffect("damage.mp3");
-		mainCharactor->setTexture("HIT.png");
+		mainCharactor->setTexture(SD_DAMAGE);
 		if (hitCounter >= 4)
 		{
-			auto gameoverLabel = Label::create();
+			auto gameoverLabel = Label::createWithTTF("ゲームオーバー...", JPN_FONTS, 24);
 			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 			gameoverLabel->setScale(3.0f);
-			gameoverLabel->setString("GameOver...");
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			this->addChild(gameoverLabel);
 			this->unscheduleUpdate();
-			mainCharactor->setTexture("HIT.png");
 			mainCharactor->stopAllActions();
-			UserDefault::sharedUserDefault()->setIntegerForKey("score", score);//スコアの保存
-			UserDefault::sharedUserDefault()->flush();
+			UserDefault::getInstance()->setIntegerForKey("score", score);
+			UserDefault::getInstance()->flush();
 			endFlag = true;
 		}
 		else
@@ -232,7 +230,7 @@ void Game::update(float dt)
 #pragma endregion
 
 #pragma region 立ち絵の更新
-	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->numberOfRunningActions() == 0 && !endFlag)
+	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->getNumberOfRunningActions() == 0 && !endFlag )
 		mainCharactor->setTexture("Normal.png");
 #pragma endregion
 }
