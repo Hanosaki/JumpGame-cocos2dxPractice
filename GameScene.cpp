@@ -33,6 +33,7 @@ bool Game::init()
 	hitOnlyOne = false;
 	defoultPos = Vec2(visibleSize.width / 7 + origin.x,  origin.y);
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
+	outOfWindowBGPos = Vec2(-visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 
 #pragma endregion
 
@@ -55,13 +56,13 @@ bool Game::init()
 #pragma region 背景初期設定
 	auto backGround = Sprite::create("bg.png");
 	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1*visibleSize.width, visibleSize.height));
-	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	backGround->setPosition(visibleSize.width/2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setTag(51);
 	this->addChild(backGround);
 
 	auto backGround2 = Sprite::create("bg.png");
 	backGround2->setContentSize(backGround->getContentSize());
-	backGround2->setPosition(visibleSize.width + visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	backGround2->setPosition(outOfWindowBGPos);
 	backGround2->setTag(52);
 	this->addChild(backGround2);
 #pragma endregion
@@ -148,7 +149,7 @@ void Game::update(float dt)
 #pragma region 変数の宣言
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
-	auto moveVec = Vec2(-5.5f, 0);
+	auto moveVec = Vec2(5.5f, 0);
 	auto backGround = this->getChildByTag(51);
 	auto backGround2 = this->getChildByTag(52);
 #pragma endregion
@@ -159,11 +160,11 @@ void Game::update(float dt)
 	pos += moveVec;
 	pos2 += moveVec;
 
-	if (pos.x + backGround->getContentSize().width / 2 < 0){
-		pos = Vec2(visibleSize.width + visibleSize.width / 2 +origin.x, visibleSize.height / 2);
+	if (pos.x - backGround->getContentSize().width / 2 > visibleSize.width){
+		pos = Vec2(outOfWindowBGPos);
 	}
-	if (pos2.x + backGround2->getContentSize().width / 2 < 0){
-		pos2 = Vec2(visibleSize.width + visibleSize.width / 2 +origin.x, visibleSize.height / 2);
+	if (pos2.x - backGround2->getContentSize().width / 2 > visibleSize.width){
+		pos2 = Vec2(outOfWindowBGPos);
 	}
 	backGround->setPosition(pos);
 	backGround2->setPosition(pos2);
@@ -173,7 +174,7 @@ void Game::update(float dt)
 	auto enemy = this->getChildByTag(11);
 	auto enemyPos = enemy->getPosition();
 	float rand = random(0.5f, 2.0f);
-	enemyPos += 2 * moveVec*rand;
+	enemyPos -= 2 * moveVec*rand;
 	if (enemyPos.x + enemy->getContentSize().width < 0){
 		enemyPos = Vec2(enemyDefaultPos);
 		++score;
@@ -193,7 +194,7 @@ void Game::update(float dt)
 		SimpleAudioEngine::getInstance()->playEffect("damage.mp3");
 		mainCharactor->setTexture(SD_DAMAGE);
 		characterImage->setTexture(IMAGE_DAMEGE);
-		if (hitCounter >= 4)
+		if (hitCounter <= -4)
 		{
 			auto gameoverLabel = Label::createWithTTF("ゲームオーバー...", JPN_FONTS, 24);
 			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);

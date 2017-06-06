@@ -55,6 +55,7 @@ public:
 	bool hitOnlyOne; //一度の接触で一度しか接触しないためのフラグ
 	cocos2d::Vec2 defoultPos; //主人公スプライトの初期位置
 	cocos2d::Vec2 enemyDefaultPos; //敵スプライトの初期位置
+	cocos2d::Vec2 outOfWindowBGPos; //画面外に生成される背景スプライトの初期位置
 	cocos2d::Label* label;//ヘッダーで宣言した変数は，継承クラスで再度定義する必要はない．(この時点でグローバル変数化しているため)
 };
 
