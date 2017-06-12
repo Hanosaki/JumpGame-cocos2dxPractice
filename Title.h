@@ -1,6 +1,14 @@
 ﻿#ifndef __TITLE_H__
 #define __TITLE_H__
+
+#pragma region マクロ設定
 #define JPN_FONTS "fonts/HGRPP1.TTC"
+#define CHARACTER_NORMAL "NormalImage.png"
+#define CHARACTER_SMAILE "Start.png"
+#define START_IMAGE "StartButton.png"
+#define CREDIT_IMAGE "CreditButton.png"
+#define END_IMAGE "CloseButton.png"
+#pragma endregion
 
 #include "cocos2d.h"
 
@@ -20,7 +28,12 @@ public:
 	/// <param name="touch">指(マウス)情報(自動で取得される)</param>
 	/// <param name="event">操作情報(自動で取得される)</param>
 	/// <returns>true...タッチされた状態を返す</returns>
-	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+	//bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+
+	void characterImageChange();
+	void callGameScene(cocos2d::Ref* sender);
+	void callCreditScene(cocos2d::Ref* sender);
+	void closeGame(cocos2d::Ref* sender);
 	
 
 };

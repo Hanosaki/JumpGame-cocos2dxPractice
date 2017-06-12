@@ -1,6 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "GameoverScene.h"
 #include "SimpleAudioEngine.h"
+#include "Title.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -50,7 +51,7 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region pushEnd表記
-	auto pushText = Label::createWithTTF("push End", "fonts/Marker Felt.ttf", 24);
+	auto pushText = Label::createWithTTF("Push retrun title...", "fonts/Marker Felt.ttf", 24);
 	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 8);
 	this->addChild(pushText, 4);
 	auto fadeOut = FadeTo::create(0.9f, 64);
@@ -89,11 +90,6 @@ bool GameOver::init()
 
 bool GameOver::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-	ended();
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Title::creatScene(), Color3B::WHITE));
 	return true;
-}
-
-void GameOver::ended()
-{
-	Director::getInstance()->end();
 }

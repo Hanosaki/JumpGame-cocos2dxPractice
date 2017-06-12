@@ -36,18 +36,6 @@ bool Title::init()
 	this->addChild(titleLabel,4);
 #pragma endregion
 
-#pragma region pushStart表記
-	auto pushText = Label::createWithTTF( "ぷっしゅすた～と",JPN_FONTS,24);
-	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 6);
-	this->addChild(pushText, 4);
-	/*文字点滅処理*/
-	auto fadeOut = FadeTo::create(0.9f,64);
-	auto fadeIn = FadeTo::create(0.9f,255);
-	auto seq = Sequence::create(fadeOut, fadeIn, NULL);
-	auto repeat = RepeatForever::create(seq);
-	pushText->runAction(repeat);
-#pragma endregion
-
 #pragma region 背景設定
 	auto backGround = Sprite::create("bg.png");
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
@@ -56,7 +44,7 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create("03.png");
+	auto characterImage = Sprite::create(CHARACTER_NORMAL);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 		, visibleSize.height / 2 + origin.y);
@@ -65,20 +53,59 @@ bool Title::init()
 	this->addChild(characterImage, 3);
 #pragma endregion
 
-#pragma region クリックリスナー
-	auto listner = EventListenerTouchOneByOne::create();
-	listner->onTouchBegan = CC_CALLBACK_2(Title::onTouchBegan, this);
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
+#pragma region スタートボタン配置
+	auto startButton = Sprite::create(START_IMAGE);
+	auto selectedStartButton = Sprite::create(START_IMAGE);
+	selectedStartButton->setOpacity(128);
+	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callGameScene, this));
+	auto startMenu = Menu::create(startItem, NULL);
+	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 6, origin.y + visibleSize.height / 5));
+	this->addChild(startMenu,3);
+#pragma endregion
+
+#pragma region クレジットボタン配置
+	auto creditButton = Sprite::create(CREDIT_IMAGE);
+	auto selectedCreditButton = Sprite::create(CREDIT_IMAGE);
+	selectedCreditButton->setOpacity(128);
+	auto creditItem = MenuItemSprite::create(creditButton, selectedCreditButton, CC_CALLBACK_1(Title::callCreditScene, this));
+	auto creditMenu = Menu::create(creditItem, NULL);
+	creditMenu->setPosition(Vec2(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 5));
+	this->addChild(creditMenu, 3);
+#pragma endregion
+
+#pragma region 終了ボタン配置
+	auto endButton = Sprite::create(END_IMAGE);
+	auto selectedEndButton = Sprite::create(END_IMAGE);
+	selectedEndButton->setOpacity(128);
+	auto endItem = MenuItemSprite::create(endButton, selectedEndButton, CC_CALLBACK_1(Title::closeGame, this));
+	auto endMenu = Menu::create(endItem, NULL);
+	endMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 5));
+	this->addChild(endMenu, 3);
 #pragma endregion
 
 	return true;
 }
 
-bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
+void Title::characterImageChange()
 {
 	auto characterImage = (Sprite*)this->getChildByTag(2);
-	characterImage->setTexture("start.png");
+	characterImage->setTexture(CHARACTER_SMAILE);
+}
+
+void Title::callGameScene(Ref* Sender)
+{
+	characterImageChange();
 	SimpleAudioEngine::getInstance()->playEffect("start.wav");
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
-	return true;
+}
+
+void Title::callCreditScene(Ref* Sender)
+{
+	characterImageChange();
+	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::creatScene(), Color3B::WHITE));
+}
+
+void Title::closeGame(Ref* sender)
+{
+	Director::getInstance()->end();
 }

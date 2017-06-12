@@ -194,7 +194,7 @@ void Game::update(float dt)
 		SimpleAudioEngine::getInstance()->playEffect("damage.mp3");
 		mainCharactor->setTexture(SD_DAMAGE);
 		characterImage->setTexture(IMAGE_DAMEGE);
-		if (hitCounter <= -4)
+		if (hitCounter >= 4)
 		{
 			auto gameoverLabel = Label::createWithTTF("ゲームオーバー...", JPN_FONTS, 24);
 			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);

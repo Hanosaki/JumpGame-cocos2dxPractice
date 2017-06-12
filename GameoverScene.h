@@ -23,11 +23,6 @@ public:
 	/// <returns>true...タッチされた状態を返す</returns>
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 
-	/// <summary>
-	/// ゲーム終了時に呼び出す関数
-	/// </summary>
-	void ended();
-
 };
 
 #endif
