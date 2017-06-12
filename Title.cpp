@@ -1,7 +1,8 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "Title.h"
-#include "GameScene.h"
 #include "Credit.h"
+#include "GameScene.h"
+#include "Macro.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
@@ -44,7 +45,7 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(CHARACTER_NORMAL);
+	auto characterImage = Sprite::create(IMAGE_NORMAL);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 		, visibleSize.height / 2 + origin.y);
@@ -95,7 +96,7 @@ bool Title::init()
 void Title::characterImageChange()
 {
 	auto characterImage = (Sprite*)this->getChildByTag(2);
-	characterImage->setTexture(CHARACTER_SMAILE);
+	characterImage->setTexture(IMAGE_SMAILE);
 }
 
 void Title::callGameScene(Ref* Sender)

@@ -1,8 +1,5 @@
 ﻿#ifndef __CREDIT_H__
 #define __CREDIT_H__
-#define JPN_FONTS "fonts/HGRPP1.TTC"
-#define NUM_OF_PAINETRS 3
-#define NUM_OF_VOICE_ACTERS 2
 
 #include "cocos2d.h"
 

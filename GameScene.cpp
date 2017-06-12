@@ -1,6 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "GameScene.h"
 #include "GameoverScene.h"
+#include "Macro.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
@@ -191,7 +192,7 @@ void Game::update(float dt)
 	auto rectEnemy = enemy->getBoundingBox();
 	if (rectmainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
 		++hitCounter;
-		SimpleAudioEngine::getInstance()->playEffect("damage.mp3");
+		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
 		mainCharactor->setTexture(SD_DAMAGE);
 		characterImage->setTexture(IMAGE_DAMEGE);
 		if (hitCounter >= 4)

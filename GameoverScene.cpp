@@ -1,5 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "GameoverScene.h"
+#include "Macro.h"
 #include "SimpleAudioEngine.h"
 #include "Title.h"
 

@@ -1,16 +1,6 @@
 ﻿#ifndef __TITLE_H__
 #define __TITLE_H__
 
-#pragma region マクロ設定
-#define JPN_FONTS "fonts/HGRPP1.TTC"
-#define CHARACTER_NORMAL "NormalImage.png"
-#define CHARACTER_SMAILE "Start.png"
-#define START_IMAGE "StartButton.png"
-#define CREDIT_IMAGE "CreditButton.png"
-#define END_IMAGE "CloseButton.png"
-#define START_VOICE "start.wav"
-#pragma endregion
-
 #include "cocos2d.h"
 
 class Title : public cocos2d::Layer

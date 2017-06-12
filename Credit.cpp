@@ -1,5 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "Credit.h"
+#include "Macro.h"
 #include "Title.h"
 #include "SimpleAudioEngine.h"
 
