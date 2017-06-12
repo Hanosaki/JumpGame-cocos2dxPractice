@@ -8,6 +8,7 @@
 #define START_IMAGE "StartButton.png"
 #define CREDIT_IMAGE "CreditButton.png"
 #define END_IMAGE "CloseButton.png"
+#define START_VOICE "start.wav"
 #pragma endregion
 
 #include "cocos2d.h"

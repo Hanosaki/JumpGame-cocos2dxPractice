@@ -55,8 +55,10 @@ bool Title::init()
 
 #pragma region スタートボタン配置
 	auto startButton = Sprite::create(START_IMAGE);
+	startButton->setScale(characterImage->getScale());
 	auto selectedStartButton = Sprite::create(START_IMAGE);
 	selectedStartButton->setOpacity(128);
+	selectedStartButton->setScale(characterImage->getScale());
 	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callGameScene, this));
 	auto startMenu = Menu::create(startItem, NULL);
 	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 6, origin.y + visibleSize.height / 5));
@@ -65,8 +67,10 @@ bool Title::init()
 
 #pragma region クレジットボタン配置
 	auto creditButton = Sprite::create(CREDIT_IMAGE);
+	creditButton->setScale(characterImage->getScale());
 	auto selectedCreditButton = Sprite::create(CREDIT_IMAGE);
 	selectedCreditButton->setOpacity(128);
+	selectedCreditButton->setScale(characterImage->getScale());
 	auto creditItem = MenuItemSprite::create(creditButton, selectedCreditButton, CC_CALLBACK_1(Title::callCreditScene, this));
 	auto creditMenu = Menu::create(creditItem, NULL);
 	creditMenu->setPosition(Vec2(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 5));
@@ -75,8 +79,10 @@ bool Title::init()
 
 #pragma region 終了ボタン配置
 	auto endButton = Sprite::create(END_IMAGE);
+	endButton->setScale(characterImage->getScale());
 	auto selectedEndButton = Sprite::create(END_IMAGE);
 	selectedEndButton->setOpacity(128);
+	selectedEndButton->setScale(characterImage->getScale());
 	auto endItem = MenuItemSprite::create(endButton, selectedEndButton, CC_CALLBACK_1(Title::closeGame, this));
 	auto endMenu = Menu::create(endItem, NULL);
 	endMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 5));
@@ -95,7 +101,7 @@ void Title::characterImageChange()
 void Title::callGameScene(Ref* Sender)
 {
 	characterImageChange();
-	SimpleAudioEngine::getInstance()->playEffect("start.wav");
+	SimpleAudioEngine::getInstance()->playEffect(START_VOICE);
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
 }
 
