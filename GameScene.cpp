@@ -44,7 +44,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region SEの設定
-	SimpleAudioEngine::getInstance()->preloadEffect("damage.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect(DAMEGE_VOICE);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 #pragma endregion
 
