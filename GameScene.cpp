@@ -1,7 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "GameScene.h"
 #include "GameoverScene.h"
-#include "Macro.h"
+#include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
@@ -78,7 +78,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(IMAGE_NORMAL);
+	auto characterImage = Sprite::create(CHARACTER_IMAGE_NORMAL);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 						,visibleSize.height/2+origin.y) ;
@@ -194,7 +194,7 @@ void Game::update(float dt)
 		++hitCounter;
 		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
 		mainCharactor->setTexture(SD_DAMAGE);
-		characterImage->setTexture(IMAGE_DAMEGE);
+		characterImage->setTexture(CHARACTER_IMAGE_DAMEGE);
 		if (hitCounter >= 4)
 		{
 			auto gameoverLabel = Label::createWithTTF("ゲームオーバー...", JPN_FONTS, 24);
@@ -216,7 +216,7 @@ void Game::update(float dt)
 	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->getNumberOfRunningActions() == 0 && !endFlag)
 	{
 		mainCharactor->setTexture(SD_NORMAL);
-		characterImage->setTexture(IMAGE_NORMAL);
+		characterImage->setTexture(CHARACTER_IMAGE_NORMAL);
 	}
 #pragma endregion
 }

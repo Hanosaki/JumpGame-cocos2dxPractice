@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "GameoverScene.h"
-#include "Macro.h"
+#include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
 #include "Title.h"
 
@@ -70,13 +70,13 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto mainCharactor = Sprite::create(IMAGE_GAMEOVER);
-	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height));
-	mainCharactor->setPosition(visibleSize.width + origin.x - (mainCharactor->getContentSize().width / 4 * mainCharactor->getScale())
+	auto charactorImage = Sprite::create(CHARACTER_IMAGE_GAMEOVER);
+	charactorImage->setScale((visibleSize.height + origin.y) / (charactorImage->getContentSize().height));
+	charactorImage->setPosition(visibleSize.width + origin.x - (charactorImage->getContentSize().width / 4 * charactorImage->getScale())
 		, visibleSize.height / 2 + origin.y);
-	mainCharactor->setOpacity(200);
-	mainCharactor->setTag(2);
-	this->addChild(mainCharactor, 3);
+	charactorImage->setOpacity(200);
+	charactorImage->setTag(2);
+	this->addChild(charactorImage, 3);
 #pragma endregion
 
 #pragma region クリックリスナー

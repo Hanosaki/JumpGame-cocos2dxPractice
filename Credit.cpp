@@ -1,11 +1,17 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "Credit.h"
-#include "Macro.h"
+#include "CharaResouse.h"
 #include "Title.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
+
+#pragma region 定数宣言
+const int NUM_OF_PAINTERS = 3;
+const int NUM_OF_VOICE_ACTERS = 2;
+#pragma endregion
+
 
 Scene* Credit::creatScene()
 {
@@ -58,14 +64,14 @@ bool Credit::init()
 
 	auto painters = Label::createWithTTF("イラスト素材", JPN_FONTS, 36);
 	painters->setPosition(origin.x + visibleSize.width / 6, origin.y + (3 * visibleSize.height) / 5);
-	Label* painter[NUM_OF_PAINETRS];
+	Label* painter[NUM_OF_PAINTERS];
 	painter[0] = Label::createWithTTF("●ペテン師", JPN_FONTS, 24);
 	painter[0]->setPosition(30,-30);
 	painter[1] = Label::createWithTTF("●MtU", JPN_FONTS, 24);
 	painter[1]->setPosition(30,-60);
 	painter[2] = Label::createWithTTF("●かみち", JPN_FONTS, 24);
 	painter[2]->setPosition(30,-90);
-	for (int i = 0; i < NUM_OF_PAINETRS; ++i)
+	for (int i = 0; i < NUM_OF_PAINTERS; ++i)
 	{
 		painter[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		painters->addChild(painter[i]);
