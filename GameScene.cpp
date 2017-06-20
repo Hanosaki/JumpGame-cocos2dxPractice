@@ -38,30 +38,30 @@ bool Game::init()
 
 #pragma endregion
 
-#pragma region BGMの設定
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM.mp3");
+#pragma region BGMのプリロード
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(BGM);
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 #pragma endregion
 
-#pragma region SEの設定
+#pragma region SEのプリロード
 	SimpleAudioEngine::getInstance()->preloadEffect(DAMEGE_VOICE);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 #pragma endregion
 
 #pragma region スコア生成
-	label = Label::createWithTTF("score:" + StringUtils::toString(score), "fonts/Marker Felt.ttf", 24);
+	label = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), ENG_FONTS, 24);
 	label->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - label->getContentSize().height));
 	this->addChild(label,1);
 #pragma endregion
 
 #pragma region 背景初期設定
-	auto backGround = Sprite::create("bg.png");
+	auto backGround = Sprite::create(BACK_GROUND);
 	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1*visibleSize.width, visibleSize.height));
 	backGround->setPosition(visibleSize.width/2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setTag(51);
 	this->addChild(backGround);
 
-	auto backGround2 = Sprite::create("bg.png");
+	auto backGround2 = Sprite::create(BACK_GROUND);
 	backGround2->setContentSize(backGround->getContentSize());
 	backGround2->setPosition(outOfWindowBGPos);
 	backGround2->setTag(52);
@@ -88,7 +88,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 敵の初期設定
-	auto enemy = Sprite::create("enemy.png");
+	auto enemy = Sprite::create(ENEMY_IMAGE);
 	enemy->setPosition(enemyDefaultPos);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*5));
 	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
@@ -104,7 +104,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region BGM再生
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM.mp3",true);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(BGM,true);
 #pragma endregion
 
 #pragma region 繰り返し処理の初期設定
@@ -180,7 +180,7 @@ void Game::update(float dt)
 		enemyPos = Vec2(enemyDefaultPos);
 		++score;
 		hitOnlyOne = false;
-		label->setString("score:" + StringUtils::toString(score));
+		label->setString(SCORE_TEXT + StringUtils::toString(score));
 	}
 	enemy->setPosition(enemyPos);
 #pragma endregion
@@ -197,14 +197,14 @@ void Game::update(float dt)
 		characterImage->setTexture(CHARACTER_IMAGE_DAMEGE);
 		if (hitCounter >= 4)
 		{
-			auto gameoverLabel = Label::createWithTTF("ゲームオーバー...", JPN_FONTS, 24);
+			auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, JPN_FONTS, 24);
 			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 			gameoverLabel->setScale(3.0f);
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			this->addChild(gameoverLabel);
 			this->unscheduleUpdate();
 			mainCharactor->stopAllActions();
-			UserDefault::getInstance()->setIntegerForKey("score", score);
+			UserDefault::getInstance()->setIntegerForKey(SCORE_TEXT, score);
 			UserDefault::getInstance()->flush();
 			endFlag = true;
 		}

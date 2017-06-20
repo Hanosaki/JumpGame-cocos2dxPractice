@@ -24,35 +24,34 @@ bool GameOver::init()
 	auto directer = Director::getInstance();
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
-	int score = UserDefault::getInstance()->getIntegerForKey("score", 0);
-	int hiScore = UserDefault::getInstance()->getIntegerForKey("hiScore", 0);
+	int score = UserDefault::getInstance()->getIntegerForKey(SCORE_KEY, 0);
+	int hiScore = UserDefault::getInstance()->getIntegerForKey(HI_SCORE_KEY, 0);
 #pragma endregion
 
 #pragma region ゲームオーバー表記
-	auto gameOverLabel = Label::createWithTTF("こんかいのきろく", JPN_FONTS, 64);
+	auto gameOverLabel = Label::createWithTTF(NOW_RESULT_TEXT, JPN_FONTS, 64);
 	gameOverLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(gameOverLabel, 4);
 
-	auto scoreLabel = Label::createWithTTF("Score:" + StringUtils::toString(score),
-										"fonts/Marker Felt.ttf", 64);
+	auto scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score),ENG_FONTS, 64);
 	scoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (3*visibleSize.height / 5));
 	this->addChild(scoreLabel, 4);
 	Label* hiScoreLabel;
 	if (hiScore < score)
 	{
-		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(score) + "  NEW RECORED!",
-			"fonts/Marker Felt.ttf", 64);
-		UserDefault::getInstance()->setIntegerForKey("hiScore", score);
+		hiScoreLabel = Label::createWithTTF(HI_SCORE_TEXT + StringUtils::toString(score) + NEW_RECORED_TEXT,
+			ENG_FONTS, 64);
+		UserDefault::getInstance()->setIntegerForKey(HI_SCORE_KEY, score);
 	}
 	else
-		hiScoreLabel = Label::createWithTTF("HIScore:" + StringUtils::toString(hiScore),
-		"fonts/Marker Felt.ttf", 64);
+		hiScoreLabel = Label::createWithTTF(HI_SCORE_TEXT + StringUtils::toString(hiScore),
+		ENG_FONTS, 64);
 	hiScoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (2*visibleSize.height / 5));
 	this->addChild(hiScoreLabel,4);
 #pragma endregion
 
 #pragma region pushEnd表記
-	auto pushText = Label::createWithTTF("Push retrun title...", "fonts/Marker Felt.ttf", 24);
+	auto pushText = Label::createWithTTF(RETRUN_TITLE_TEXT, ENG_FONTS, 24);
 	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 8);
 	this->addChild(pushText, 4);
 	auto fadeOut = FadeTo::create(0.9f, 64);
@@ -63,7 +62,7 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region 背景宣言
-	auto backGround = Sprite::create("bg.png");
+	auto backGround = Sprite::create(BACK_GROUND);
 	backGround->setContentSize(directer->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(backGround, 1);

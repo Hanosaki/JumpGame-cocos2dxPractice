@@ -28,17 +28,17 @@ bool Title::init()
 
 #pragma region SE用意
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
-	SimpleAudioEngine::getInstance()->preloadEffect("start.mp3");
+	SimpleAudioEngine::getInstance()->preloadEffect(START_VOICE);
 #pragma endregion
 
 #pragma region タイトル表記
-	auto titleLabel = Label::createWithTTF("ゆかりさんゲーム", JPN_FONTS, 64);
+	auto titleLabel = Label::createWithTTF(TITLE_TEXT, JPN_FONTS, 64);
 	titleLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(titleLabel,4);
 #pragma endregion
 
 #pragma region 背景設定
-	auto backGround = Sprite::create("bg.png");
+	auto backGround = Sprite::create(BACK_GROUND);
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(backGround,1);
