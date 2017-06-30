@@ -36,6 +36,7 @@ bool GameOver::init()
 	auto scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score),ENG_FONTS, 64);
 	scoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (3*visibleSize.height / 5));
 	this->addChild(scoreLabel, 4);
+	
 	Label* hiScoreLabel;
 	if (hiScore < score)
 	{
@@ -54,6 +55,7 @@ bool GameOver::init()
 	auto pushText = Label::createWithTTF(RETRUN_TITLE_TEXT, ENG_FONTS, 24);
 	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 8);
 	this->addChild(pushText, 4);
+
 	auto fadeOut = FadeTo::create(0.9f, 64);
 	auto fadeIn = FadeTo::create(0.9f, 255);
 	auto seq = Sequence::create(fadeOut, fadeIn, NULL);

@@ -15,6 +15,8 @@ const char* CHARACTER_IMAGE_DAMEGE = "DamageImage.png";
 const char* CHARACTER_IMAGE_GAMEOVER = "GameOver.png";
 const char* CHARACTER_IMAGE_NORMAL = "NormalImage.png";
 const char* CHARACTER_IMAGE_SMAILE = "Start.png";
+const char* OP_BACK_GROUND = "OP_BG.png";
+const char* RIVAL_IMAGE = "RivalNormalImage.png";
 const char* SD_DAMAGE = "DamageSD.png";
 const char* SD_NORMAL = "NormalSD.png";
 const char* SD_JUMP = "Jump.png";
@@ -22,9 +24,9 @@ const char* START_IMAGE = "StartButton.png";
 #pragma endregion
 
 #pragma region 音素材名
-const char* START_VOICE = "start.wav";
-const char* DAMEGE_VOICE = "Damage.mp3";
-const char* BGM = "BGM.mp3";
+const char* START_VOICE = "SE/start.wav";
+const char* DAMEGE_VOICE = "SE/Damage.mp3";
+const char* BGM = "BGM/BGM.mp3";
 #pragma endregion
 
 #pragma region テキスト

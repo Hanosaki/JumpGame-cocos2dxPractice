@@ -17,6 +17,8 @@ extern const char* CHARACTER_IMAGE_NORMAL;
 extern const char* CHARACTER_IMAGE_SMAILE;
 extern const char* END_IMAGE;
 extern const char* ENEMY_IMAGE;
+extern const char* OP_BACK_GROUND;
+extern const char* RIVAL_IMAGE;
 extern const char* SD_DAMAGE;
 extern const char* SD_NORMAL;
 extern const char* SD_JUMP;
