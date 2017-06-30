@@ -24,6 +24,7 @@ bool Title::init()
 #pragma region 変数宣言
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
+	const auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
 #pragma endregion
 
 #pragma region SE用意
@@ -33,7 +34,7 @@ bool Title::init()
 
 #pragma region タイトル表記
 	auto titleLabel = Label::createWithTTF(TITLE_TEXT, JPN_FONTS, 64);
-	titleLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
+	titleLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(titleLabel,4);
 #pragma endregion
 
@@ -56,38 +57,50 @@ bool Title::init()
 
 #pragma region スタートボタン配置
 	auto startButton = Sprite::create(START_IMAGE);
-	startButton->setScale(characterImage->getScale());
+	startButton->setContentSize(BUTTON_SIZE);
+	
 	auto selectedStartButton = Sprite::create(START_IMAGE);
 	selectedStartButton->setOpacity(128);
-	selectedStartButton->setScale(characterImage->getScale());
+	selectedStartButton->setContentSize(BUTTON_SIZE);
+
 	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callGameScene, this));
 	auto startMenu = Menu::create(startItem, NULL);
-	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 6, origin.y + visibleSize.height / 5));
-	this->addChild(startMenu,3);
+	startMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 3 - BUTTON_SIZE.height));
+	
+	this->addChild(startMenu,2);
 #pragma endregion
 
 #pragma region クレジットボタン配置
 	auto creditButton = Sprite::create(CREDIT_IMAGE);
-	creditButton->setScale(characterImage->getScale());
+	creditButton->setContentSize(BUTTON_SIZE);
+
 	auto selectedCreditButton = Sprite::create(CREDIT_IMAGE);
 	selectedCreditButton->setOpacity(128);
-	selectedCreditButton->setScale(characterImage->getScale());
+	selectedCreditButton->setContentSize(BUTTON_SIZE);
+	
 	auto creditItem = MenuItemSprite::create(creditButton, selectedCreditButton, CC_CALLBACK_1(Title::callCreditScene, this));
 	auto creditMenu = Menu::create(creditItem, NULL);
-	creditMenu->setPosition(Vec2(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 5));
-	this->addChild(creditMenu, 3);
+	creditMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	creditMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 4 - BUTTON_SIZE.height));
+	
+	this->addChild(creditMenu, 2);
 #pragma endregion
 
 #pragma region 終了ボタン配置
 	auto endButton = Sprite::create(END_IMAGE);
-	endButton->setScale(characterImage->getScale());
+	endButton->setContentSize(BUTTON_SIZE);
+	
 	auto selectedEndButton = Sprite::create(END_IMAGE);
 	selectedEndButton->setOpacity(128);
-	selectedEndButton->setScale(characterImage->getScale());
+	selectedEndButton->setContentSize(BUTTON_SIZE);
+	
 	auto endItem = MenuItemSprite::create(endButton, selectedEndButton, CC_CALLBACK_1(Title::closeGame, this));
 	auto endMenu = Menu::create(endItem, NULL);
-	endMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 5));
-	this->addChild(endMenu, 3);
+	endMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	endMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 5 - BUTTON_SIZE.height*1.5));
+	
+	this->addChild(endMenu, 2);
 #pragma endregion
 
 	return true;

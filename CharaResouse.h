@@ -1,14 +1,14 @@
-#ifndef __CHARA_RESOUSE_H__
+ï»¿#ifndef __CHARA_RESOUSE_H__
 #define __CHARA_RESOUSE_H__
 
 #include "cocos2d.h"
 
-#pragma region ƒtƒHƒ“ƒg–¼
+#pragma region ãƒ•ã‚©ãƒ³ãƒˆå
 extern const char* JPN_FONTS;
 extern const char* ENG_FONTS;
 #pragma endregion
 
-#pragma region ‰æ‘œ–¼
+#pragma region ç”»åƒå
 extern const char* BACK_GROUND;
 extern const char* CREDIT_IMAGE;
 extern const char* CHARACTER_IMAGE_DAMEGE;
@@ -23,13 +23,13 @@ extern const char* SD_JUMP;
 extern const char* START_IMAGE;
 #pragma endregion
 
-#pragma region ‰¹‘fŞ–¼
+#pragma region éŸ³ç´ æå
 extern const char* START_VOICE;
 extern const char* DAMEGE_VOICE;
 extern const char* BGM;
 #pragma endregion
 
-#pragma region ƒeƒLƒXƒg
+#pragma region ãƒ†ã‚­ã‚¹ãƒˆ
 extern const char* GAME_OVER_TEXT;
 extern const char* NEW_RECORED_TEXT;
 extern const char* NOW_RESULT_TEXT;
@@ -38,7 +38,7 @@ extern const char* SCORE_TEXT;
 extern const char* TITLE_TEXT;
 #pragma endregion
 
-#pragma region ƒL[
+#pragma region ã‚­ãƒ¼
 extern const char* HI_SCORE_KEY;
 extern const char* RETRUN_TITLE_TEXT;
 extern const char* SCORE_KEY;

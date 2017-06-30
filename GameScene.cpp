@@ -74,7 +74,19 @@ bool Game::init()
 	mainCharactor->setPosition(defoultPos);
 	mainCharactor->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	mainCharactor->setTag(1);
-	this->addChild(mainCharactor);
+	mainCharactor->runAction(FlipX::create(true));
+	this->addChild(mainCharactor,1);
+#pragma endregion
+	
+#pragma region 主人公当たり判定
+	auto hitDeterminationBox = Rect(0,0,mainCharactor->getContentSize().width/3, mainCharactor->getContentSize().height/2);
+	auto hitDetermination = Sprite::create();
+	hitDetermination->setTextureRect(hitDeterminationBox);
+	hitDetermination->setPositionX(mainCharactor->getPositionX());
+	hitDetermination->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+	hitDetermination->setTag(11);
+	hitDetermination->setVisible(false);
+	this->addChild(hitDetermination);
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
@@ -92,8 +104,8 @@ bool Game::init()
 	enemy->setPosition(enemyDefaultPos);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*5));
 	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-	enemy->setTag(11);
-	this->addChild(enemy);
+	enemy->setTag(21);
+	this->addChild(enemy,1);
 #pragma endregion
 
 #pragma region クリックリスナーの初期設定
@@ -172,7 +184,7 @@ void Game::update(float dt)
 #pragma endregion
 
 #pragma region エネミーの行動
-	auto enemy = this->getChildByTag(11);
+	auto enemy = this->getChildByTag(21);
 	auto enemyPos = enemy->getPosition();
 	float rand = random(0.5f, 2.0f);
 	enemyPos -= 2 * moveVec*rand;
@@ -188,9 +200,16 @@ void Game::update(float dt)
 #pragma region 接触判定
 	auto mainCharactor = (Sprite*)this->getChildByTag(1);
 	auto characterImage = (Sprite*)this->getChildByTag(2);
-	auto rectmainCharactor = mainCharactor->getBoundingBox();
+	auto hitDetermination = (Sprite*)this->getChildByTag(11);
+
+	hitDetermination->setPositionY(mainCharactor->getPositionY()
+		+ mainCharactor->getContentSize().height / 6
+		* mainCharactor->getScale());
+		
+	auto rectMainCharactor = hitDetermination->getBoundingBox();
 	auto rectEnemy = enemy->getBoundingBox();
-	if (rectmainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
+
+	if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
 		++hitCounter;
 		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
 		mainCharactor->setTexture(SD_DAMAGE);
@@ -204,7 +223,7 @@ void Game::update(float dt)
 			this->addChild(gameoverLabel);
 			this->unscheduleUpdate();
 			mainCharactor->stopAllActions();
-			UserDefault::getInstance()->setIntegerForKey(SCORE_TEXT, score);
+			UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
 			UserDefault::getInstance()->flush();
 			endFlag = true;
 		}
