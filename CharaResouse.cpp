@@ -21,6 +21,7 @@ const char* SD_DAMAGE = "DamageSD.png";
 const char* SD_NORMAL = "NormalSD.png";
 const char* SD_JUMP = "Jump.png";
 const char* START_IMAGE = "StartButton.png";
+const char* TEXT_WINDOW = "textWindow.png";
 #pragma endregion
 
 #pragma region 音素材名

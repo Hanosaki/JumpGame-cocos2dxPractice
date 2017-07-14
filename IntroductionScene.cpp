@@ -51,7 +51,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region テキストウィンドウの設定
-	auto textWindow = Sprite::create("textWindow.png");
+	auto textWindow = Sprite::create(TEXT_WINDOW);
 	textWindow->setContentSize(Size(visibleSize.width + origin.x, visibleSize.height/5 + origin.y));
 	textWindow->setPosition(visibleSize.width / 2 + origin.x,
 		textWindow->getContentSize().height/2);

@@ -23,6 +23,7 @@ extern const char* SD_DAMAGE;
 extern const char* SD_NORMAL;
 extern const char* SD_JUMP;
 extern const char* START_IMAGE;
+extern const char* TEXT_WINDOW;
 #pragma endregion
 
 #pragma region 音素材名
