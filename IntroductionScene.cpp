@@ -2,9 +2,14 @@
 #include "IntroductionScene.h"
 #include "SimpleAudioEngine.h"
 #include "CharaResouse.h"
+#include "FileReadClass.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
+
+const int ZERO = 0;
+const int NAME_FONT_SIZE = 32;
+const int WORD_FONT_SIZE = 48;
 
 Scene* Introduction::creatScene()
 {
@@ -60,8 +65,16 @@ bool Introduction::init()
 
 	/*以下，表示テキスト処理*/
 
+#pragma region テキスト読み込み
+	FileRead fileRead;
+	wordsNum = ZERO;
+	characterWords = fileRead.readCSV(CONVERSATION_LIST);
+	characterWord = characterWords.at(wordsNum).asValueMap();
+#pragma endregion
+
 #pragma region 名前表示用ラベルの設定
-	auto characterNameLabel = Label::createWithTTF("ゆかり",JPN_FONTS,32);
+	characterNameLabel = Label::createWithTTF(characterWord.at(CHARACTER_NAME).asString()
+		,JPN_FONTS,NAME_FONT_SIZE);
 	characterNameLabel->setPosition(Vec2(characterNameLabel->getContentSize().width / 2,
 		textWindow->getContentSize().height - characterNameLabel->getContentSize().height/2));
 	characterNameLabel->setColor(Color3B::BLACK);
@@ -69,16 +82,41 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region セリフ用ラベルの設定
-	auto characterSpeechLabel = Label::createWithTTF("ダミーワード",JPN_FONTS,16);
-	
-	characterSpeechLabel->setPosition(characterNameLabel->getPositionX(),
+	characterWordLabel = Label::createWithTTF(characterWord.at(CHARACTER_WORD).asString()
+		,JPN_FONTS,48);
+	characterWordLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+	characterWordLabel->setPosition(characterNameLabel->getPositionX(),
 		characterNameLabel->getPositionY() 
-		- (characterSpeechLabel->getContentSize().height / 2 
+		- (characterWordLabel->getContentSize().height / 2 
 		+ characterNameLabel->getContentSize().height/2));
-	
-	characterSpeechLabel->setColor(Color3B::BLACK);
-	textWindow->addChild(characterSpeechLabel,1);
+	characterWordLabel->setColor(Color3B::BLACK);
+	textWindow->addChild(characterWordLabel,1);
 #pragma endregion
 
+#pragma region リスナー登録
+	auto listner = EventListenerTouchOneByOne::create();
+	listner->onTouchBegan = CC_CALLBACK_2(Introduction::onTouchBegan, this);
+	listner->onTouchEnded = CC_CALLBACK_2(Introduction::onTouchEnded, this);
+	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
+#pragma endregion
+	
 	return true;
+}
+
+bool Introduction::onTouchBegan(Touch* touch, Event* event)
+{
+	return true;
+}
+
+void Introduction::onTouchEnded(Touch* touch, Event*event)
+{
+	if (wordsNum < characterWords.size() - 1)
+		++wordsNum;
+	characterWord = characterWords.at(wordsNum).asValueMap();
+	auto name = characterWord.at(CHARACTER_NAME).asString();
+	characterNameLabel->setString(name);
+
+	auto word = characterWord.at(CHARACTER_WORD).asString();
+	characterWordLabel->setString(word);
+
 }

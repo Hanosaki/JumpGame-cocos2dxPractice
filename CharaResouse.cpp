@@ -41,6 +41,12 @@ const char* RETRUN_TITLE_TEXT = "Push retrun title...";
 #pragma endregion
 
 #pragma region キー
+const char* CHARACTER_NAME = "name";
+const char* CHARACTER_WORD = "conversation";
 const char* HI_SCORE_KEY = "hiScore";
 const char* SCORE_KEY = "score";
+#pragma endregion
+
+#pragma region csvファイル
+const char* CONVERSATION_LIST = "csv/ConversationList.csv";
 #pragma endregion

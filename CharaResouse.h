@@ -39,14 +39,18 @@ extern const char* NOW_RESULT_TEXT;
 extern const char* HI_SCORE_TEXT;
 extern const char* SCORE_TEXT;
 extern const char* TITLE_TEXT;
+extern const char* RETRUN_TITLE_TEXT;
 #pragma endregion
 
 #pragma region キー
+extern const char* CHARACTER_NAME;
+extern const char* CHARACTER_WORD;
 extern const char* HI_SCORE_KEY;
-extern const char* RETRUN_TITLE_TEXT;
 extern const char* SCORE_KEY;
 #pragma endregion
 
-void Constant_Declaration();
+#pragma region csvファイル
+extern const char* CONVERSATION_LIST;
+#pragma endregion
 
 #endif
