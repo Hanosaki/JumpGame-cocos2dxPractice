@@ -29,30 +29,30 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region ゲームオーバー表記
-	auto gameOverLabel = Label::createWithTTF(NOW_RESULT_TEXT, JPN_FONTS, 64);
+	auto gameOverLabel = Label::createWithTTF(NOW_RESULT_TEXT, FONTS + JPN_FONTS, 64);
 	gameOverLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(gameOverLabel, 4);
 
-	auto scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score),ENG_FONTS, 64);
-	scoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (3*visibleSize.height / 5));
+	auto scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), FONTS + ENG_FONTS, 64);
+	scoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (3 * visibleSize.height / 5));
 	this->addChild(scoreLabel, 4);
-	
+
 	Label* hiScoreLabel;
 	if (hiScore < score)
 	{
 		hiScoreLabel = Label::createWithTTF(HI_SCORE_TEXT + StringUtils::toString(score) + NEW_RECORED_TEXT,
-			ENG_FONTS, 64);
+			FONTS + ENG_FONTS, 64);
 		UserDefault::getInstance()->setIntegerForKey(HI_SCORE_KEY, score);
 	}
 	else
 		hiScoreLabel = Label::createWithTTF(HI_SCORE_TEXT + StringUtils::toString(hiScore),
-		ENG_FONTS, 64);
-	hiScoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (2*visibleSize.height / 5));
-	this->addChild(hiScoreLabel,4);
+		FONTS + ENG_FONTS, 64);
+	hiScoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (2 * visibleSize.height / 5));
+	this->addChild(hiScoreLabel, 4);
 #pragma endregion
 
 #pragma region pushEnd表記
-	auto pushText = Label::createWithTTF(RETRUN_TITLE_TEXT, ENG_FONTS, 24);
+	auto pushText = Label::createWithTTF(RETRUN_TITLE_TEXT, FONTS + ENG_FONTS, 24);
 	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 8);
 	this->addChild(pushText, 4);
 
@@ -64,14 +64,14 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region 背景宣言
-	auto backGround = Sprite::create(BACK_GROUND);
+	auto backGround = Sprite::create(IMAGE + BACK_GROUND);
 	backGround->setContentSize(directer->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(backGround, 1);
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto charactorImage = Sprite::create(CHARACTER_IMAGE_GAMEOVER);
+	auto charactorImage = Sprite::create(MAIN_CHARACTER + CHARACTER_IMAGE_GAMEOVER);
 	charactorImage->setScale((visibleSize.height + origin.y) / (charactorImage->getContentSize().height));
 	charactorImage->setPosition(visibleSize.width + origin.x - (charactorImage->getContentSize().width / 4 * charactorImage->getScale())
 		, visibleSize.height / 2 + origin.y);

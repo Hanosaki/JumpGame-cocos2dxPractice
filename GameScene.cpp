@@ -49,19 +49,19 @@ bool Game::init()
 #pragma endregion
 
 #pragma region スコア生成
-	label = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), ENG_FONTS, 24);
+	label = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), FONTS+ENG_FONTS, 24);
 	label->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - label->getContentSize().height));
 	this->addChild(label,1);
 #pragma endregion
 
 #pragma region 背景初期設定
-	auto backGround = Sprite::create(BACK_GROUND);
+	auto backGround = Sprite::create(IMAGE+BACK_GROUND);
 	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1*visibleSize.width, visibleSize.height));
 	backGround->setPosition(visibleSize.width/2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setTag(51);
 	this->addChild(backGround);
 
-	auto backGround2 = Sprite::create(BACK_GROUND);
+	auto backGround2 = Sprite::create(IMAGE+BACK_GROUND);
 	backGround2->setContentSize(backGround->getContentSize());
 	backGround2->setPosition(outOfWindowBGPos);
 	backGround2->setTag(52);
@@ -90,7 +90,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(CHARACTER_IMAGE_NORMAL);
+	auto characterImage = Sprite::create(MAIN_CHARACTER + CHARACTER_IMAGE_NORMAL);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 						,visibleSize.height/2+origin.y) ;
@@ -100,7 +100,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 敵の初期設定
-	auto enemy = Sprite::create(ENEMY_IMAGE);
+	auto enemy = Sprite::create(RIVAL + ENEMY_IMAGE);
 	enemy->setPosition(enemyDefaultPos);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*5));
 	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
@@ -205,7 +205,7 @@ void Game::update(float dt)
 	hitDetermination->setPositionY(mainCharactor->getPositionY()
 		+ mainCharactor->getContentSize().height / 6
 		* mainCharactor->getScale());
-		
+
 	auto rectMainCharactor = hitDetermination->getBoundingBox();
 	auto rectEnemy = enemy->getBoundingBox();
 
@@ -216,7 +216,7 @@ void Game::update(float dt)
 		characterImage->setTexture(CHARACTER_IMAGE_DAMEGE);
 		if (hitCounter >= 4)
 		{
-			auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, JPN_FONTS, 24);
+			auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, FONTS + JPN_FONTS, 24);
 			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 			gameoverLabel->setScale(3.0f);
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();

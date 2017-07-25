@@ -1,9 +1,9 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "Title.h"
 #include "Credit.h"
-#include "GameScene.h"
 #include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
+#include "IntroductionScene.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -33,20 +33,20 @@ bool Title::init()
 #pragma endregion
 
 #pragma region タイトル表記
-	auto titleLabel = Label::createWithTTF(TITLE_TEXT, JPN_FONTS, 64);
+	auto titleLabel = Label::createWithTTF(TITLE_TEXT, FONTS + JPN_FONTS, 64);
 	titleLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (4 * visibleSize.height) / 5);
-	this->addChild(titleLabel,4);
+	this->addChild(titleLabel, 4);
 #pragma endregion
 
 #pragma region 背景設定
-	auto backGround = Sprite::create(BACK_GROUND);
+	auto backGround = Sprite::create(IMAGE + BACK_GROUND);
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
-	this->addChild(backGround,1);
+	this->addChild(backGround, 1);
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(CHARACTER_IMAGE_NORMAL);
+	auto characterImage = Sprite::create(MAIN_CHARACTER + CHARACTER_IMAGE_NORMAL);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 		, visibleSize.height / 2 + origin.y);
@@ -56,10 +56,10 @@ bool Title::init()
 #pragma endregion
 
 #pragma region スタートボタン配置
-	auto startButton = Sprite::create(START_IMAGE);
+	auto startButton = Sprite::create(IMAGE + START_IMAGE);
 	startButton->setContentSize(BUTTON_SIZE);
-	
-	auto selectedStartButton = Sprite::create(START_IMAGE);
+
+	auto selectedStartButton = Sprite::create(IMAGE + START_IMAGE);
 	selectedStartButton->setOpacity(128);
 	selectedStartButton->setContentSize(BUTTON_SIZE);
 
@@ -67,39 +67,39 @@ bool Title::init()
 	auto startMenu = Menu::create(startItem, NULL);
 	startMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 3 - BUTTON_SIZE.height));
-	
-	this->addChild(startMenu,2);
+
+	this->addChild(startMenu, 2);
 #pragma endregion
 
 #pragma region クレジットボタン配置
-	auto creditButton = Sprite::create(CREDIT_IMAGE);
+	auto creditButton = Sprite::create(IMAGE + CREDIT_IMAGE);
 	creditButton->setContentSize(BUTTON_SIZE);
 
-	auto selectedCreditButton = Sprite::create(CREDIT_IMAGE);
+	auto selectedCreditButton = Sprite::create(IMAGE + CREDIT_IMAGE);
 	selectedCreditButton->setOpacity(128);
 	selectedCreditButton->setContentSize(BUTTON_SIZE);
-	
+
 	auto creditItem = MenuItemSprite::create(creditButton, selectedCreditButton, CC_CALLBACK_1(Title::callCreditScene, this));
 	auto creditMenu = Menu::create(creditItem, NULL);
 	creditMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	creditMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 4 - BUTTON_SIZE.height));
-	
+
 	this->addChild(creditMenu, 2);
 #pragma endregion
 
 #pragma region 終了ボタン配置
-	auto endButton = Sprite::create(END_IMAGE);
+	auto endButton = Sprite::create(IMAGE + END_IMAGE);
 	endButton->setContentSize(BUTTON_SIZE);
-	
-	auto selectedEndButton = Sprite::create(END_IMAGE);
+
+	auto selectedEndButton = Sprite::create(IMAGE + END_IMAGE);
 	selectedEndButton->setOpacity(128);
 	selectedEndButton->setContentSize(BUTTON_SIZE);
-	
+
 	auto endItem = MenuItemSprite::create(endButton, selectedEndButton, CC_CALLBACK_1(Title::closeGame, this));
 	auto endMenu = Menu::create(endItem, NULL);
 	endMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	endMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 5 - BUTTON_SIZE.height*1.5));
-	
+
 	this->addChild(endMenu, 2);
 #pragma endregion
 
@@ -116,7 +116,7 @@ void Title::callGameScene(Ref* Sender)
 {
 	characterImageChange();
 	SimpleAudioEngine::getInstance()->playEffect(START_VOICE);
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
+	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Introduction::creatScene(), Color3B::BLACK));
 }
 
 void Title::callCreditScene(Ref* Sender)
