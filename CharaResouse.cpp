@@ -5,6 +5,7 @@
 const std::string ANIMATION = "animation/";
 const std::string FONTS = "fonts/";
 const std::string IMAGE = "image/";
+const std::string JUMP = "jump/";
 const std::string MAIN_CHARACTER = "mainCharacter/";
 const std::string RIVAL = "rival/";
 const std::string RUN = "run2/";
@@ -28,7 +29,7 @@ const std::string OP_BACK_GROUND = "OP_BG.png";
 const std::string RIVAL_IMAGE = "RivalNormalImage.png";
 const std::string SD_DAMAGE = "DamageSD.png";
 const std::string ANIMATION_CHARACTER_DEFAULT = "0.png";
-const std::string SD_JUMP = "Jump.png";
+const std::string CHARACTER_JUMP = "0.png";
 const std::string START_IMAGE = "StartButton.png";
 const std::string TEXT_WINDOW = "TextWindow.png";
 #pragma endregion

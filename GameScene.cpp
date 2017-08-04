@@ -80,11 +80,12 @@ bool Game::init()
 #pragma endregion
 	
 #pragma region 主人公当たり判定
-	auto hitDeterminationBox = Rect(0,0,mainCharacter->getContentSize().width/3, mainCharacter->getContentSize().height/2);
+	auto hitDeterminationBox = Rect(0, 0, mainCharacter->getContentSize().width / 4 * mainCharacter->getScaleX()
+		, mainCharacter->getContentSize().height / 2 * mainCharacter->getScaleY());
 	auto hitDetermination = Sprite::create();
 	hitDetermination->setTextureRect(hitDeterminationBox);
 	hitDetermination->setPositionX(mainCharacter->getPositionX());
-	hitDetermination->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+	hitDetermination->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
 	hitDetermination->setTag(11);
 	hitDetermination->setVisible(false);
 	this->addChild(hitDetermination);
@@ -148,7 +149,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 		/*アニメーション状態の確認*/
 		if (mainCharacter->getPosition().equals(defoultPos)){
 			mainCharacter->stopActionByTag(101);
-			mainCharacter->setTexture(SD_JUMP);
+			mainCharacter->setTexture(MAIN_CHARACTER+JUMP+CHARACTER_JUMP);
 			/*シークエンス作成*/
 			auto sequence = Sequence::create(moveUp, moveDown, CallFunc::create([this]{ runAnimation(); }), NULL);
 			//アニメーション開始
@@ -208,33 +209,33 @@ void Game::update(float dt)
 	auto characterImage = (Sprite*)this->getChildByTag(2);
 	auto hitDetermination = (Sprite*)this->getChildByTag(11);
 
-	//hitDetermination->setPositionY(mainCharacter->getPositionY()
-	//	+ mainCharacter->getContentSize().height / 6
-	//	* mainCharacter->getScale());
+	hitDetermination->setPositionY(mainCharacter->getPositionY()
+		+ mainCharacter->getContentSize().height / 6
+		* mainCharacter->getScale());
 
-	//auto rectMainCharactor = hitDetermination->getBoundingBox();
-	//auto rectEnemy = enemy->getBoundingBox();
+	auto rectMainCharactor = hitDetermination->getBoundingBox();
+	auto rectEnemy = enemy->getBoundingBox();
 
-	//if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
-	//	++hitCounter;
-	//	SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
-	//	mainCharacter->setTexture(SD_DAMAGE);
-	//	characterImage->setTexture(CHARACTER_IMAGE_DAMEGE);
-	//	if (hitCounter >= 4)
-	//	{
-	//		auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, FONTS + JPN_FONTS, 24);
-	//		gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
-	//		gameoverLabel->setScale(3.0f);
-	//		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	//		this->addChild(gameoverLabel);
-	//		this->unscheduleUpdate();
-	//		mainCharacter->stopAllActions();
-	//		UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
-	//		UserDefault::getInstance()->flush();
-	//		endFlag = true;
-	//	}
-	//	hitOnlyOne = true;
-	//}
+	if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
+		++hitCounter;
+		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
+		//mainCharacter->setTexture(SD_DAMAGE);
+		characterImage->setTexture(CHARACTER_IMAGE_DAMEGE);
+		if (hitCounter >= 4)
+		{
+			auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, FONTS + JPN_FONTS, 24);
+			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+			gameoverLabel->setScale(3.0f);
+			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+			this->addChild(gameoverLabel);
+			this->unscheduleUpdate();
+			mainCharacter->stopAllActions();
+			UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
+			UserDefault::getInstance()->flush();
+			endFlag = true;
+		}
+		hitOnlyOne = true;
+	}
 #pragma endregion
 
 #pragma region 立ち絵の更新
@@ -252,7 +253,7 @@ void Game::runAnimation()
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
 	auto animation = Animation::create();
 	for (int i = 0; i < ANIMATION_MAX_NUM; ++i)
-		animation->addSpriteFrameWithFileName(ANIMATION + RUN + StringUtils::toString(i) + ".png");
+		animation->addSpriteFrameWithFile(ANIMATION + RUN + StringUtils::toString(i) + ".png");
 	animation->setDelayPerUnit(0.04f);
 	animation->setRestoreOriginalFrame(true);
 	auto runAnime = Animate::create(animation);
