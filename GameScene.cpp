@@ -7,6 +7,8 @@
 using namespace CocosDenshion;
 USING_NS_CC;
 
+const int ANIMATION_MAX_NUM = 17;
+
 void nextScene();
 
 Scene* Game::creatScene()
@@ -32,7 +34,7 @@ bool Game::init()
 	hitCounter = 0;
 	endFlag = false;
 	hitOnlyOne = false;
-	defoultPos = Vec2(visibleSize.width / 7 + origin.x,  origin.y);
+	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
 	outOfWindowBGPos = Vec2(-visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 
@@ -68,25 +70,28 @@ bool Game::init()
 	this->addChild(backGround2);
 #pragma endregion
 
-#pragma region 主人公(SD)スプライトの初期設定
-	auto mainCharactor = Sprite::create(SD_NORMAL);
-	mainCharactor->setScale((visibleSize.height + origin.y) / (mainCharactor->getContentSize().height*2.5));
-	mainCharactor->setPosition(defoultPos);
-	mainCharactor->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-	mainCharactor->setTag(1);
-	mainCharactor->runAction(FlipX::create(true));
-	this->addChild(mainCharactor,1);
+#pragma region 主人公(animation)スプライトの初期設定
+	auto mainCharacter = Sprite::create(ANIMATION+RUN+ANIMATION_CHARACTER_DEFAULT);
+	mainCharacter->setScale((visibleSize.height + origin.y) / (mainCharacter->getContentSize().height*2));
+	mainCharacter->setPosition(defoultPos);
+	mainCharacter->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+	mainCharacter->setTag(1);
+	this->addChild(mainCharacter,1);
 #pragma endregion
 	
 #pragma region 主人公当たり判定
-	auto hitDeterminationBox = Rect(0,0,mainCharactor->getContentSize().width/3, mainCharactor->getContentSize().height/2);
+	auto hitDeterminationBox = Rect(0,0,mainCharacter->getContentSize().width/3, mainCharacter->getContentSize().height/2);
 	auto hitDetermination = Sprite::create();
 	hitDetermination->setTextureRect(hitDeterminationBox);
-	hitDetermination->setPositionX(mainCharactor->getPositionX());
+	hitDetermination->setPositionX(mainCharacter->getPositionX());
 	hitDetermination->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	hitDetermination->setTag(11);
 	hitDetermination->setVisible(false);
 	this->addChild(hitDetermination);
+#pragma endregion
+
+#pragma region 主人公アニメーション開始
+	runAnimation();
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
@@ -132,21 +137,22 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 #pragma region ジャンプ処理
 	if (!endFlag)
 	{
-		auto mainCharactor = (Sprite*)this->getChildByTag(1);
+		auto mainCharacter = (Sprite*)this->getChildByTag(1);
 		auto visibleSize = Director::getInstance()->getVisibleSize();
 		auto origin = Director::getInstance()->getVisibleOrigin();
 		auto maxPoint = Point(defoultPos.x, 
-											origin.y + visibleSize.height - mainCharactor->getContentSize().height*mainCharactor->getScale());
+											origin.y + visibleSize.height - mainCharacter->getContentSize().height*mainCharacter->getScale());
 		/*アクションの作成*/
 		auto moveUp = MoveTo::create(0.73f, maxPoint);
 		auto moveDown = MoveTo::create(0.73f, defoultPos);
 		/*アニメーション状態の確認*/
-		if (mainCharactor->getNumberOfRunningActions() == 0){
-			mainCharactor->setTexture(SD_JUMP);
+		if (mainCharacter->getPosition().equals(defoultPos)){
+			mainCharacter->stopActionByTag(101);
+			mainCharacter->setTexture(SD_JUMP);
 			/*シークエンス作成*/
-			auto sequence = Sequence::create(moveUp, moveDown, NULL);
+			auto sequence = Sequence::create(moveUp, moveDown, CallFunc::create([this]{ runAnimation(); }), NULL);
 			//アニメーション開始
-			mainCharactor->runAction(sequence);
+			mainCharacter->runAction(sequence);
 		}
 	}
 	else
@@ -198,49 +204,66 @@ void Game::update(float dt)
 #pragma endregion
 
 #pragma region 接触判定
-	auto mainCharactor = (Sprite*)this->getChildByTag(1);
+	auto mainCharacter = (Sprite*)this->getChildByTag(1);
 	auto characterImage = (Sprite*)this->getChildByTag(2);
 	auto hitDetermination = (Sprite*)this->getChildByTag(11);
 
-	hitDetermination->setPositionY(mainCharactor->getPositionY()
-		+ mainCharactor->getContentSize().height / 6
-		* mainCharactor->getScale());
+	//hitDetermination->setPositionY(mainCharacter->getPositionY()
+	//	+ mainCharacter->getContentSize().height / 6
+	//	* mainCharacter->getScale());
 
-	auto rectMainCharactor = hitDetermination->getBoundingBox();
-	auto rectEnemy = enemy->getBoundingBox();
+	//auto rectMainCharactor = hitDetermination->getBoundingBox();
+	//auto rectEnemy = enemy->getBoundingBox();
 
-	if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
-		++hitCounter;
-		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
-		mainCharactor->setTexture(SD_DAMAGE);
-		characterImage->setTexture(CHARACTER_IMAGE_DAMEGE);
-		if (hitCounter >= 4)
-		{
-			auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, FONTS + JPN_FONTS, 24);
-			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
-			gameoverLabel->setScale(3.0f);
-			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			this->addChild(gameoverLabel);
-			this->unscheduleUpdate();
-			mainCharactor->stopAllActions();
-			UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
-			UserDefault::getInstance()->flush();
-			endFlag = true;
-		}
-		hitOnlyOne = true;
-	}
+	//if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
+	//	++hitCounter;
+	//	SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
+	//	mainCharacter->setTexture(SD_DAMAGE);
+	//	characterImage->setTexture(CHARACTER_IMAGE_DAMEGE);
+	//	if (hitCounter >= 4)
+	//	{
+	//		auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, FONTS + JPN_FONTS, 24);
+	//		gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+	//		gameoverLabel->setScale(3.0f);
+	//		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+	//		this->addChild(gameoverLabel);
+	//		this->unscheduleUpdate();
+	//		mainCharacter->stopAllActions();
+	//		UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
+	//		UserDefault::getInstance()->flush();
+	//		endFlag = true;
+	//	}
+	//	hitOnlyOne = true;
+	//}
 #pragma endregion
 
 #pragma region 立ち絵の更新
-	if (mainCharactor->getPosition() == defoultPos && !hitOnlyOne && mainCharactor->getNumberOfRunningActions() == 0 && !endFlag)
+	if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne && mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
 	{
-		mainCharactor->setTexture(SD_NORMAL);
+		mainCharacter->setTexture(ANIMATION+RUN+ANIMATION_CHARACTER_DEFAULT);
 		characterImage->setTexture(CHARACTER_IMAGE_NORMAL);
 	}
 #pragma endregion
 }
 
+#pragma region 主人公アニメーション設定
+void Game::runAnimation()
+{
+	auto mainCharacter = (Sprite*)this->getChildByTag(1);
+	auto animation = Animation::create();
+	for (int i = 0; i < ANIMATION_MAX_NUM; ++i)
+		animation->addSpriteFrameWithFileName(ANIMATION + RUN + StringUtils::toString(i) + ".png");
+	animation->setDelayPerUnit(0.04f);
+	animation->setRestoreOriginalFrame(true);
+	auto runAnime = Animate::create(animation);
+	auto runAnimation = RepeatForever::create(runAnime);
+	runAnimation->setTag(101);
+	mainCharacter->runAction(runAnimation);
+}
+#pragma endregion
+
 void nextScene()
 {
 	Director::getInstance()->replaceScene(GameOver::creatScene());
 }
+

@@ -9,6 +9,7 @@ extern const std::string FONTS;
 extern const std::string IMAGE;
 extern const std::string MAIN_CHARACTER;
 extern const std::string RIVAL;
+extern const std::string RUN;
 #pragma endregion
 
 
@@ -29,7 +30,7 @@ extern const std::string ENEMY_IMAGE;
 extern const std::string OP_BACK_GROUND;
 extern const std::string RIVAL_IMAGE;
 extern const std::string SD_DAMAGE;
-extern const std::string SD_NORMAL;
+extern const std::string ANIMATION_CHARACTER_DEFAULT;
 extern const std::string SD_JUMP;
 extern const std::string START_IMAGE;
 extern const std::string TEXT_WINDOW;
