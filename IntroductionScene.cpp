@@ -136,7 +136,7 @@ void Introduction::onTouchEnded(Touch* touch, Event*event)
 		spriteOpacityChange(name);
 	}
 	else{
-		Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
+		Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::creatScene(), Color3B::WHITE));
 	}
 
 	auto word = characterWord.at(CHARACTER_WORD).asString();

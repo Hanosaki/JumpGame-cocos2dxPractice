@@ -78,16 +78,19 @@ bool Game::init()
 	mainCharacter->setTag(1);
 	this->addChild(mainCharacter,1);
 #pragma endregion
+
+	setCharacterDefault();
 	
 #pragma region 主人公当たり判定
-	auto hitDeterminationBox = Rect(0, 0, mainCharacter->getContentSize().width / 4 * mainCharacter->getScaleX()
+	auto hitDeterminationBox = Rect(0, 0, mainCharacter->getContentSize().width / 5 * mainCharacter->getScaleX()
 		, mainCharacter->getContentSize().height / 2 * mainCharacter->getScaleY());
 	auto hitDetermination = Sprite::create();
 	hitDetermination->setTextureRect(hitDeterminationBox);
-	hitDetermination->setPositionX(mainCharacter->getPositionX());
 	hitDetermination->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+	hitDetermination->setPositionX(mainCharacter->getPositionX());
 	hitDetermination->setTag(11);
-	hitDetermination->setVisible(false);
+	hitDetermination->setColor(Color3B::BLACK);
+	hitDetermination->setVisible(true);
 	this->addChild(hitDetermination);
 #pragma endregion
 
@@ -122,8 +125,8 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 繰り返し処理の初期設定
-	this->runAction(Sequence::create(DelayTime::create(1), 
-		CallFunc::create([this](){this->scheduleUpdate();setCharacterDefault();}), NULL));
+	this->runAction(Sequence::create(DelayTime::create(1.5f), 
+		CallFunc::create([this](){this->scheduleUpdate();}), NULL));
 #pragma endregion
 
 	return true;
@@ -259,9 +262,14 @@ void Game::setCharacterDefault()
 	auto runAnimation = RepeatForever::create(runAnime);
 	runAnimation->setTag(101);
 	mainCharacter->runAction(runAnimation);
-	
-	auto characterImage = (Sprite*)getChildByTag(2);
-	characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
+	try{
+		if (auto characterImage = (Sprite*)getChildByTag(2))
+			characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
+	}
+	catch (char* messeage)
+	{
+		puts(messeage);
+	}
 }
 #pragma endregion
 
