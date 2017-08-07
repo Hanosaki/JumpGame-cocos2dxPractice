@@ -5,7 +5,6 @@
 const std::string ANIMATION = "animation/";
 const std::string FONTS = "fonts/";
 const std::string IMAGE = "image/";
-const std::string JUMP = "jump/";
 const std::string MAIN_CHARACTER = "mainCharacter/";
 const std::string RIVAL = "rival/";
 const std::string RUN = "run2/";
@@ -27,9 +26,9 @@ const std::string CHARACTER_IMAGE_NORMAL = "NormalImage.png";
 const std::string CHARACTER_IMAGE_SMAILE = "Start.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
 const std::string RIVAL_IMAGE = "RivalNormalImage.png";
-const std::string SD_DAMAGE = "DamageSD.png";
+const std::string CHARACTER_DAMAGE = "Damage.png";
 const std::string ANIMATION_CHARACTER_DEFAULT = "0.png";
-const std::string CHARACTER_JUMP = "0.png";
+const std::string CHARACTER_JUMP = "Jump.png";
 const std::string START_IMAGE = "StartButton.png";
 const std::string TEXT_WINDOW = "TextWindow.png";
 #pragma endregion
@@ -37,12 +36,13 @@ const std::string TEXT_WINDOW = "TextWindow.png";
 #pragma region 音素材名
 const char* START_VOICE = "SE/start.wav";
 const char* DAMEGE_VOICE = "SE/Damage.mp3";
-const char* BGM = "BGM/BGM.mp3";
+const char* MAIN_BGM = "bgm/main.mp3";
+const char* OP_BGM = "bgm/op.mp3";
 #pragma endregion
 
 #pragma region テキスト
 const std::string COMPOSERS = "BGM";
-const std::string COMPOSER_1 = "●煉獄庭園";
+const std::string COMPOSER_1 = "●MusMus";
 const std::string CREDIT = "くれじっと";
 const std::string GAME_OVER_TEXT = "ゲームオーバー...";
 const std::string HI_SCORE_TEXT = "HIScore:";

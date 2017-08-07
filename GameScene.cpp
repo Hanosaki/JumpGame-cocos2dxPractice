@@ -41,7 +41,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region BGMのプリロード
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(BGM);
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(MAIN_BGM);
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 #pragma endregion
 
@@ -96,7 +96,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(MAIN_CHARACTER + CHARACTER_IMAGE_NORMAL);
+	auto characterImage = Sprite::create(MAIN_CHARACTER+ IMAGE + CHARACTER_IMAGE_NORMAL);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 						,visibleSize.height/2+origin.y) ;
@@ -122,7 +122,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region BGM再生
-	SimpleAudioEngine::getInstance()->playBackgroundMusic(BGM,true);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(MAIN_BGM,true);
 #pragma endregion
 
 #pragma region 繰り返し処理の初期設定
@@ -149,7 +149,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 		/*アニメーション状態の確認*/
 		if (mainCharacter->getPosition().equals(defoultPos)){
 			mainCharacter->stopActionByTag(101);
-			mainCharacter->setTexture(MAIN_CHARACTER+JUMP+CHARACTER_JUMP);
+			mainCharacter->setTexture(MAIN_CHARACTER + CHARACTER_JUMP);
 			/*シークエンス作成*/
 			auto sequence = Sequence::create(moveUp, moveDown, CallFunc::create([this]{ runAnimation(); }), NULL);
 			//アニメーション開始
@@ -177,8 +177,10 @@ void Game::update(float dt)
 #pragma region 背景アニメーション
 	auto pos = backGround->getPosition();
 	auto pos2 = backGround2->getPosition();
-	pos += moveVec;
-	pos2 += moveVec;
+	if (!hitOnlyOne){
+		pos += moveVec;
+		pos2 += moveVec;
+	}
 
 	if (pos.x - backGround->getContentSize().width / 2 > visibleSize.width){
 		pos = Vec2(outOfWindowBGPos);
@@ -219,8 +221,9 @@ void Game::update(float dt)
 	if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
 		++hitCounter;
 		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
-		//mainCharacter->setTexture(SD_DAMAGE);
-		characterImage->setTexture(CHARACTER_IMAGE_DAMEGE);
+		mainCharacter->stopActionByTag(101);
+		mainCharacter->setTexture(MAIN_CHARACTER + CHARACTER_DAMAGE);
+		characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_DAMEGE);
 		if (hitCounter >= 4)
 		{
 			auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, FONTS + JPN_FONTS, 24);
@@ -239,10 +242,11 @@ void Game::update(float dt)
 #pragma endregion
 
 #pragma region 立ち絵の更新
-	if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne && mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
+	if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne 
+		&& mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
 	{
-		mainCharacter->setTexture(ANIMATION+RUN+ANIMATION_CHARACTER_DEFAULT);
-		characterImage->setTexture(CHARACTER_IMAGE_NORMAL);
+		runAnimation();
+		characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
 	}
 #pragma endregion
 }

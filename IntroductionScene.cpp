@@ -38,7 +38,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region 主人公立ち絵
-	auto characterImage = Sprite::create(MAIN_CHARACTER + CHARACTER_IMAGE_NORMAL);
+	auto characterImage = Sprite::create(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width / 6 + origin.x, Vec2::ZERO.y);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);

@@ -71,7 +71,7 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto charactorImage = Sprite::create(MAIN_CHARACTER + CHARACTER_IMAGE_GAMEOVER);
+	auto charactorImage = Sprite::create(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_GAMEOVER);
 	charactorImage->setScale((visibleSize.height + origin.y) / (charactorImage->getContentSize().height));
 	charactorImage->setPosition(visibleSize.width + origin.x - (charactorImage->getContentSize().width / 4 * charactorImage->getScale())
 		, visibleSize.height / 2 + origin.y);
