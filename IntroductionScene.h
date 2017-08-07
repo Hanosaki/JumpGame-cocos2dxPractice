@@ -13,8 +13,8 @@ public:
 	CREATE_FUNC(Introduction);
 
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
-
 	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
+	void spriteOpacityChange(std::string);
 
 	cocos2d::ValueVector characterWords;
 	cocos2d::ValueMap characterWord;

@@ -30,6 +30,10 @@ bool Introduction::init()
 
 	/*画像配置処理*/
 
+#pragma region BGM設定
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(OP_BGM);
+#pragma endregion
+
 #pragma region 背景設定
 	auto backGround = Sprite::create(IMAGE +OP_BACK_GROUND);
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
@@ -43,6 +47,7 @@ bool Introduction::init()
 	characterImage->setPosition(visibleSize.width / 6 + origin.x, Vec2::ZERO.y);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	characterImage->setFlippedX(true);
+	characterImage->setTag(1);
 	this->addChild(characterImage, 2);
 #pragma endregion
 
@@ -53,6 +58,7 @@ bool Introduction::init()
 		- rivalImage->getContentSize().width / 2 * rivalImage->getScale(),
 		0);
 	rivalImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+	rivalImage->setTag(2);
 	this->addChild(rivalImage, 2);
 #pragma endregion
 
@@ -94,6 +100,8 @@ bool Introduction::init()
 	textWindow->addChild(characterWordLabel, 1);
 #pragma endregion
 
+	/*以上，テキスト表示処理*/
+
 #pragma region 画面遷移の為のディレイ
 	this->runAction(Sequence::create(DelayTime::create(1.5), NULL));
 #pragma endregion
@@ -105,6 +113,10 @@ bool Introduction::init()
 	listner->onTouchEnded = CC_CALLBACK_2(Introduction::onTouchEnded, this);
 	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
+
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(OP_BGM, false);
+
+	spriteOpacityChange(characterWord.at(CHARACTER_NAME).asString());
 
 	return true;
 }
@@ -121,6 +133,7 @@ void Introduction::onTouchEnded(Touch* touch, Event*event)
 		characterWord = characterWords.at(wordsNum).asValueMap();
 		auto name = characterWord.at(CHARACTER_NAME).asString();
 		characterNameLabel->setString(name);
+		spriteOpacityChange(name);
 	}
 	else{
 		Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Game::creatScene(), Color3B::WHITE));
@@ -128,5 +141,22 @@ void Introduction::onTouchEnded(Touch* touch, Event*event)
 
 	auto word = characterWord.at(CHARACTER_WORD).asString();
 	characterWordLabel->setString(word);
+
+}
+
+void Introduction::spriteOpacityChange(std::string name)
+{
+	auto characterImage = (Sprite*)this->getChildByTag(1);
+	auto rivalImage = (Sprite*)this->getChildByTag(2);
+	if (name == RIVAL_NAME)
+	{
+		characterImage->setOpacity(128);
+		rivalImage->setOpacity(255);
+	}
+	else if (name == MAIN_CHARACTER_NAME)
+	{
+		rivalImage->setOpacity(128);
+		characterImage->setOpacity(255);
+	}
 
 }

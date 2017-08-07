@@ -55,9 +55,11 @@ const std::string PAINTER_3 = "●かみち";
 const std::string SCORE_TEXT = "Score:";
 const std::string TITLE_TEXT = "ゆかりさんゲーム";
 const std::string RETRUN_TITLE_TEXT = "Push retrun title...";
+const std::string RIVAL_NAME = "きりたん";
 const std::string VOICE_ACTERS = "キャラクターボイス";
 const std::string VOICE_ACTER_1 = "●VoiceRoid+結月ゆかり";
 const std::string VOICE_ACTER_2 = "●VoiceRoid+ex東北きりたん";
+const std::string MAIN_CHARACTER_NAME = "ゆかり";
 #pragma endregion
 
 #pragma region キー

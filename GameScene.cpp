@@ -91,10 +91,6 @@ bool Game::init()
 	this->addChild(hitDetermination);
 #pragma endregion
 
-#pragma region 主人公アニメーション開始
-	runAnimation();
-#pragma endregion
-
 #pragma region 主人公(立ち絵)の初期設定
 	auto characterImage = Sprite::create(MAIN_CHARACTER+ IMAGE + CHARACTER_IMAGE_NORMAL);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
@@ -127,7 +123,7 @@ bool Game::init()
 
 #pragma region 繰り返し処理の初期設定
 	this->runAction(Sequence::create(DelayTime::create(1), 
-		CallFunc::create([this](){this->scheduleUpdate(); }), NULL));
+		CallFunc::create([this](){this->scheduleUpdate();setCharacterDefault();}), NULL));
 #pragma endregion
 
 	return true;
@@ -151,7 +147,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 			mainCharacter->stopActionByTag(101);
 			mainCharacter->setTexture(MAIN_CHARACTER + CHARACTER_JUMP);
 			/*シークエンス作成*/
-			auto sequence = Sequence::create(moveUp, moveDown, CallFunc::create([this]{ runAnimation(); }), NULL);
+			auto sequence = Sequence::create(moveUp, moveDown, CallFunc::create([this]{ setCharacterDefault(); }), NULL);
 			//アニメーション開始
 			mainCharacter->runAction(sequence);
 		}
@@ -241,18 +237,17 @@ void Game::update(float dt)
 	}
 #pragma endregion
 
-#pragma region 立ち絵の更新
+#pragma region 主人公初期化
 	if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne 
 		&& mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
 	{
-		runAnimation();
-		characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
+		setCharacterDefault();
 	}
 #pragma endregion
 }
 
-#pragma region 主人公アニメーション設定
-void Game::runAnimation()
+#pragma region 主人公初期化設定
+void Game::setCharacterDefault()
 {
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
 	auto animation = Animation::create();
@@ -264,6 +259,9 @@ void Game::runAnimation()
 	auto runAnimation = RepeatForever::create(runAnime);
 	runAnimation->setTag(101);
 	mainCharacter->runAction(runAnimation);
+	
+	auto characterImage = (Sprite*)getChildByTag(2);
+	characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
 }
 #pragma endregion
 

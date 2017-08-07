@@ -15,7 +15,7 @@ public:
 	CREATE_FUNC(Game);
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 	void update(float dt);
-	void runAnimation();
+	void setCharacterDefault();
 
 	int score; //敵をよけた回数を格納する
 	int hitCounter; //hitCounter...敵と接触した回数を格納する

@@ -61,9 +61,11 @@ extern const std::string PAINTER_3;
 extern const std::string SCORE_TEXT;
 extern const std::string TITLE_TEXT;
 extern const std::string RETRUN_TITLE_TEXT;
+extern const std::string RIVAL_NAME;
 extern const std::string VOICE_ACTERS;
 extern const std::string VOICE_ACTER_1;
 extern const std::string VOICE_ACTER_2;
+extern const std::string MAIN_CHARACTER_NAME;
 #pragma endregion
 
 #pragma region キー
