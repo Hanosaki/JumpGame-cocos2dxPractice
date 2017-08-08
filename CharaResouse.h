@@ -41,6 +41,7 @@ extern const std::string TEXT_WINDOW;
 /// <summary>
 /// 音素材ファイルの指定，引数がchar*の為char*を使用
 /// </summary>
+extern const char* BUTTON_SE;
 extern const char* START_VOICE;
 extern const char* DAMEGE_VOICE;
 extern const char* MAIN_BGM;

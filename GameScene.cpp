@@ -82,15 +82,16 @@ bool Game::init()
 	setCharacterDefault();
 	
 #pragma region 主人公当たり判定
-	auto hitDeterminationBox = Rect(0, 0, mainCharacter->getContentSize().width / 5 * mainCharacter->getScaleX()
-		, mainCharacter->getContentSize().height / 2 * mainCharacter->getScaleY());
+	auto hitDeterminationBox = Rect(0, 0,
+		mainCharacter->getContentSize().width / 5.5f * mainCharacter->getScaleX(),
+		mainCharacter->getContentSize().height / 2.5f * mainCharacter->getScaleY());
 	auto hitDetermination = Sprite::create();
 	hitDetermination->setTextureRect(hitDeterminationBox);
 	hitDetermination->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
 	hitDetermination->setPositionX(mainCharacter->getPositionX());
 	hitDetermination->setTag(11);
 	hitDetermination->setColor(Color3B::BLACK);
-	hitDetermination->setVisible(true);
+	hitDetermination->setVisible(false);
 	this->addChild(hitDetermination);
 #pragma endregion
 
@@ -224,7 +225,7 @@ void Game::update(float dt)
 	auto hitDetermination = (Sprite*)this->getChildByTag(11);
 
 	hitDetermination->setPositionY(mainCharacter->getPositionY()
-		+ mainCharacter->getContentSize().height / 6
+		+ mainCharacter->getContentSize().height / 3
 		* mainCharacter->getScale());
 
 	auto rectMainCharactor = hitDetermination->getBoundingBox();
