@@ -7,9 +7,10 @@
 using namespace CocosDenshion;
 USING_NS_CC;
 
-const int ANIMATION_MAX_NUM = 17;
-
 void nextScene();
+
+const int ANIMATION_MAX_NUM = 17;
+const int MAX_LIFE = 3;
 
 Scene* Game::creatScene()
 {
@@ -21,7 +22,6 @@ Scene* Game::creatScene()
 
 bool Game::init()
 {
-
 	if (!Layer::init())
 	{
 		return false;
@@ -51,9 +51,9 @@ bool Game::init()
 #pragma endregion
 
 #pragma region スコア生成
-	label = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), FONTS+ENG_FONTS, 24);
-	label->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - label->getContentSize().height));
-	this->addChild(label,1);
+	scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), FONTS+ENG_FONTS, 24);
+	scoreLabel->setPosition(Vec2(visibleSize.width / 2 +origin.x , visibleSize.height + origin.y - scoreLabel->getContentSize().height));
+	this->addChild(scoreLabel,1);
 #pragma endregion
 
 #pragma region 背景初期設定
@@ -104,12 +104,26 @@ bool Game::init()
 	this->addChild(characterImage,3);
 #pragma endregion
 
+#pragma region 体力ゲージの初期設定
+	Sprite* life[MAX_LIFE];
+	for (int i = 0; i < MAX_LIFE; ++i)
+	{
+		life[i] = Sprite::create(IMAGE + LIFE_ICON);
+		life[i]->setScale(life[i]->getContentSize().height / (visibleSize.height + origin.y));
+		life[i]->setPosition(visibleSize.width/2 + origin.x - (life[i]->getContentSize().width*life[i]->getScale()*(i-1)),
+			visibleSize.height + origin.y - (life[i]->getContentSize().height*life[i]->getScale()));
+		life[i]->setTag(20+i);
+		this->addChild(life[i],3);
+	}
+
+#pragma endregion
+
 #pragma region 敵の初期設定
 	auto enemy = Sprite::create(RIVAL + ENEMY_IMAGE);
-	enemy->setPosition(enemyDefaultPos);
+	enemy->setPosition(enemyDefaultPos.x*2,enemyDefaultPos.y);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*5));
 	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-	enemy->setTag(21);
+	enemy->setTag(31);
 	this->addChild(enemy,1);
 #pragma endregion
 
@@ -192,7 +206,7 @@ void Game::update(float dt)
 #pragma endregion
 
 #pragma region エネミーの行動
-	auto enemy = this->getChildByTag(21);
+	auto enemy = this->getChildByTag(31);
 	auto enemyPos = enemy->getPosition();
 	float rand = random(0.5f, 2.0f);
 	enemyPos -= 2 * moveVec*rand;
@@ -200,14 +214,13 @@ void Game::update(float dt)
 		enemyPos = Vec2(enemyDefaultPos);
 		++score;
 		hitOnlyOne = false;
-		label->setString(SCORE_TEXT + StringUtils::toString(score));
+		scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
 	}
 	enemy->setPosition(enemyPos);
 #pragma endregion
 
 #pragma region 接触判定
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
-	auto characterImage = (Sprite*)this->getChildByTag(2);
 	auto hitDetermination = (Sprite*)this->getChildByTag(11);
 
 	hitDetermination->setPositionY(mainCharacter->getPositionY()
@@ -218,12 +231,14 @@ void Game::update(float dt)
 	auto rectEnemy = enemy->getBoundingBox();
 
 	if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
-		++hitCounter;
 		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
+		auto characterImage = (Sprite*)this->getChildByTag(2);
 		mainCharacter->stopActionByTag(101);
 		mainCharacter->setTexture(MAIN_CHARACTER + CHARACTER_DAMAGE);
 		characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_DAMEGE);
-		if (hitCounter >= 4)
+		this->getChildByTag(20 + hitCounter)->setVisible(false);
+		++hitCounter;
+		if (hitCounter >= MAX_LIFE)
 		{
 			auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, FONTS + JPN_FONTS, 24);
 			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);

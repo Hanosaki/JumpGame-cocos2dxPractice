@@ -24,6 +24,7 @@ const std::string CHARACTER_IMAGE_DAMEGE = "DamageImage.png";
 const std::string CHARACTER_IMAGE_GAMEOVER = "GameOver.png";
 const std::string CHARACTER_IMAGE_NORMAL = "NormalImage.png";
 const std::string CHARACTER_IMAGE_SMAILE = "Start.png";
+const std::string LIFE_ICON = "Life.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
 const std::string RIVAL_IMAGE = "RivalNormalImage.png";
 const std::string CHARACTER_DAMAGE = "Damage.png";

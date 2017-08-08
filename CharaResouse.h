@@ -27,6 +27,7 @@ extern const std::string CHARACTER_IMAGE_NORMAL;
 extern const std::string CHARACTER_IMAGE_SMAILE;
 extern const std::string END_IMAGE;
 extern const std::string ENEMY_IMAGE;
+extern const std::string LIFE_ICON;
 extern const std::string OP_BACK_GROUND;
 extern const std::string RIVAL_IMAGE;
 extern const std::string CHARACTER_DAMAGE;
