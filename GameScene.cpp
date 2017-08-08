@@ -110,9 +110,9 @@ bool Game::init()
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
 		life[i] = Sprite::create(IMAGE + LIFE_ICON);
-		life[i]->setScale(life[i]->getContentSize().height / (visibleSize.height + origin.y));
-		life[i]->setPosition(visibleSize.width/2 + origin.x - (life[i]->getContentSize().width*life[i]->getScale()*(i-1)),
-			visibleSize.height + origin.y - (life[i]->getContentSize().height*life[i]->getScale()));
+		life[i]->setScale((visibleSize.height + origin.y) / (6*life[i]->getContentSize().height));
+		life[i]->setPosition(visibleSize.width / 2 + origin.x - (life[i]->getContentSize().width*life[i]->getScale()*(i - 1)),
+			visibleSize.height + origin.y - (scoreLabel->getContentSize().height + life[i]->getContentSize().height*life[i]->getScale()));
 		life[i]->setTag(20+i);
 		this->addChild(life[i],3);
 	}
@@ -225,7 +225,7 @@ void Game::update(float dt)
 	auto hitDetermination = (Sprite*)this->getChildByTag(11);
 
 	hitDetermination->setPositionY(mainCharacter->getPositionY()
-		+ mainCharacter->getContentSize().height / 3
+		+ mainCharacter->getContentSize().height / 4
 		* mainCharacter->getScale());
 
 	auto rectMainCharactor = hitDetermination->getBoundingBox();

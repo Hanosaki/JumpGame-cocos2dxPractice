@@ -7,7 +7,7 @@ const std::string FONTS = "fonts/";
 const std::string IMAGE = "image/";
 const std::string MAIN_CHARACTER = "mainCharacter/";
 const std::string RIVAL = "rival/";
-const std::string RUN = "run2/";
+const std::string RUN = "run/";
 #pragma endregion
 
 #pragma region フォント名
@@ -36,10 +36,10 @@ const std::string TEXT_WINDOW = "TextWindow.png";
 
 #pragma region 音素材名
 const char* BUTTON_SE = "SE/Button.mp3";
-const char* START_VOICE = "SE/Start.wav";
+const char* START_VOICE = "SE/Start.mp3";
 const char* DAMEGE_VOICE = "SE/Damage.mp3";
-const char* MAIN_BGM = "bgm/main.mp3";
-const char* OP_BGM = "bgm/op.mp3";
+const char* MAIN_BGM = "BGM/main.mp3";
+const char* OP_BGM = "BGM/op.mp3";
 #pragma endregion
 
 #pragma region テキスト

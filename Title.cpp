@@ -30,7 +30,6 @@ bool Title::init()
 #pragma region SE用意
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
 	SimpleAudioEngine::getInstance()->preloadEffect(START_VOICE);
-	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
 #pragma endregion
 
 #pragma region タイトル表記
@@ -122,6 +121,7 @@ void Title::callGameScene(Ref* Sender)
 
 void Title::callCreditScene(Ref* Sender)
 {
+	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
 	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::creatScene(), Color3B::WHITE));
