@@ -30,6 +30,7 @@ const std::string RIVAL_IMAGE = "RivalNormalImage.png";
 const std::string CHARACTER_DAMAGE = "Damage.png";
 const std::string ANIMATION_CHARACTER_DEFAULT = "0.png";
 const std::string CHARACTER_JUMP = "Jump.png";
+const std::string SKIP_IMAGE = "SkipButton.png";
 const std::string START_IMAGE = "StartButton.png";
 const std::string TEXT_WINDOW = "TextWindow.png";
 #pragma endregion

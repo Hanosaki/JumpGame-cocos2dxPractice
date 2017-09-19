@@ -54,7 +54,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region スコア生成
-	scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), FONTS+ENG_FONTS, 24);
+	scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), FONTS+ENG_FONTS, 36);
 	scoreLabel->setPosition(Vec2(visibleSize.width / 2 +origin.x , visibleSize.height + origin.y - scoreLabel->getContentSize().height));
 	this->addChild(scoreLabel,1);
 #pragma endregion
@@ -155,7 +155,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 #pragma region ジャンプ開始
 	if (!endFlag)
 	{
-		if (!jumpFlag)
+		if (!jumpFlag && !hitOnlyOne)
 		{
 			auto mainCharacter = (Sprite*)this->getChildByTag(1);
 			if (mainCharacter->isRunning())
@@ -207,7 +207,7 @@ void Game::update(float dt)
 	if (jumpFlag)
 	{
 		auto mainCharacterPosY = mainCharacter->getPositionY();
-		mainCharacterPosY += jumpPower - (9.8*gravityPoewr);
+		mainCharacterPosY += jumpPower - (9.8f*gravityPoewr);
 		gravityPoewr += ADD_GRAVITY;
 		mainCharacter->setPositionY(mainCharacterPosY);
 		if (mainCharacterPosY <= defoultPos.y)

@@ -30,6 +30,7 @@ bool Title::init()
 #pragma region SE用意
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
 	SimpleAudioEngine::getInstance()->preloadEffect(START_VOICE);
+	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
 #pragma endregion
 
 #pragma region タイトル表記
@@ -63,7 +64,7 @@ bool Title::init()
 	selectedStartButton->setOpacity(128);
 	selectedStartButton->setContentSize(BUTTON_SIZE);
 
-	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callGameScene, this));
+	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callOPScene, this));
 	auto startMenu = Menu::create(startItem, NULL);
 	startMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2.9f - BUTTON_SIZE.height));
@@ -112,7 +113,7 @@ void Title::characterImageChange()
 	characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_SMAILE);
 }
 
-void Title::callGameScene(Ref* Sender)
+void Title::callOPScene(Ref* Sender)
 {
 	SimpleAudioEngine::getInstance()->playEffect(START_VOICE);
 	characterImageChange();
@@ -121,7 +122,6 @@ void Title::callGameScene(Ref* Sender)
 
 void Title::callCreditScene(Ref* Sender)
 {
-	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
 	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::creatScene(), Color3B::WHITE));

@@ -15,6 +15,7 @@ public:
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 	void spriteOpacityChange(std::string);
+	void callGameScene(cocos2d::Ref* Sender);
 
 	cocos2d::ValueVector characterWords;
 	cocos2d::ValueMap characterWord;

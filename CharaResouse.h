@@ -33,6 +33,7 @@ extern const std::string RIVAL_IMAGE;
 extern const std::string CHARACTER_DAMAGE;
 extern const std::string ANIMATION_CHARACTER_DEFAULT;
 extern const std::string CHARACTER_JUMP;
+extern const std::string SKIP_IMAGE;
 extern const std::string START_IMAGE;
 extern const std::string TEXT_WINDOW;
 #pragma endregion

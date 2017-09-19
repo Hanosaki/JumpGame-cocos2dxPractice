@@ -30,8 +30,13 @@ bool Introduction::init()
 
 	/*画像配置処理*/
 
-#pragma region BGM設定
+#pragma region BGMのプリロード
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(OP_BGM);
+#pragma endregion
+
+#pragma region SEのプリロード
+	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
+	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
 #pragma endregion
 
 #pragma region 背景設定
@@ -39,6 +44,20 @@ bool Introduction::init()
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setContentSize(Size(visibleSize.width + origin.x, visibleSize.height + origin.y));
 	this->addChild(backGround, 1);
+#pragma endregion
+
+#pragma region スキップボタン
+	auto skipButton = Sprite::create(IMAGE + SKIP_IMAGE);
+	skipButton->setOpacity(128);
+	auto selectedSkipButton = Sprite::create(IMAGE + SKIP_IMAGE);
+	selectedSkipButton->setOpacity(64);
+
+	auto skipItem = MenuItemSprite::create(skipButton, selectedSkipButton, CC_CALLBACK_1(Introduction::callGameScene, this));
+	skipItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+	skipItem->setPosition(visibleSize.width + origin.x,visibleSize.height + origin.y);
+	auto skipMenu = Menu::create(skipItem, NULL);
+	skipMenu->setPosition(Vec2::ZERO);
+	this->addChild(skipMenu, 3);
 #pragma endregion
 
 #pragma region 主人公立ち絵
@@ -119,6 +138,12 @@ bool Introduction::init()
 	spriteOpacityChange(characterWord.at(CHARACTER_NAME).asString());
 
 	return true;
+}
+
+void Introduction::callGameScene(Ref* Sender)
+{
+	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
+	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::creatScene(), Color3B::WHITE));
 }
 
 bool Introduction::onTouchBegan(Touch* touch, Event* event)
