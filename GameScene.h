@@ -19,13 +19,22 @@ public:
 
 	int score; //敵をよけた回数を格納する
 	int hitCounter; //hitCounter...敵と接触した回数を格納する
+	int jumpPower;//ジャンプ時の重力抵抗
+	float gravityPoewr;//ジャンプ時の重力
 	bool endFlag; //ゲーム終了フラグ
 	bool hitOnlyOne; //一度の接触で一度しか接触しないためのフラグ
+	bool jumpFlag;//ジャンプ状態のフラグ
+	cocos2d::Size visibleSize;//画面サイズ
+	cocos2d::Vec2 origin;
 	cocos2d::Vec2 defoultPos; //主人公スプライトの初期位置
 	cocos2d::Vec2 enemyDefaultPos; //敵スプライトの初期位置
 	cocos2d::Vec2 outOfWindowBGPos; //画面外に生成される背景スプライトの初期位置
-	cocos2d::Label* scoreLabel;//ヘッダーで宣言した変数は，継承クラスで再度定義する必要はない．(この時点でグローバル変数化しているため)
-	
+	cocos2d::Label* scoreLabel;//スコア表示用ラベル
+	static const int ANIMATION_MAX_NUM;
+	static const int MAX_LIFE;
+	static const int DEFOULT_GRAVITY_POWER;
+	static const int DEFOULT_JUMP_POWER;
+	static const float ADD_GRAVITY;
 };
 
 #endif

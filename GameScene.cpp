@@ -9,8 +9,11 @@ USING_NS_CC;
 
 void nextScene();
 
-const int ANIMATION_MAX_NUM = 17;
-const int MAX_LIFE = 3;
+const int Game::ANIMATION_MAX_NUM = 17;
+const int Game::MAX_LIFE = 3;
+const int Game::DEFOULT_GRAVITY_POWER = 0;
+const int Game::DEFOULT_JUMP_POWER = 23;
+const float Game::ADD_GRAVITY = 0.1f;
 
 Scene* Game::creatScene()
 {
@@ -28,16 +31,16 @@ bool Game::init()
 	}
 
 #pragma region グローバル変数の初期化
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto origin = Director::getInstance()->getVisibleOrigin();
+	visibleSize = Director::getInstance()->getVisibleSize();
+	origin = Director::getInstance()->getVisibleOrigin();
 	score = 0;
 	hitCounter = 0;
 	endFlag = false;
 	hitOnlyOne = false;
+	jumpFlag = false;
 	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
 	outOfWindowBGPos = Vec2(-visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
-
 #pragma endregion
 
 #pragma region BGMのプリロード
@@ -149,26 +152,22 @@ bool Game::init()
 
 bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-#pragma region ジャンプ処理
+#pragma region ジャンプ開始
 	if (!endFlag)
 	{
-		auto mainCharacter = (Sprite*)this->getChildByTag(1);
-		auto visibleSize = Director::getInstance()->getVisibleSize();
-		auto origin = Director::getInstance()->getVisibleOrigin();
-		auto maxPoint = Point(defoultPos.x, 
-											origin.y + visibleSize.height - mainCharacter->getContentSize().height*mainCharacter->getScale());
-		/*アクションの作成*/
-		auto moveUp = MoveTo::create(0.73f, maxPoint);
-		auto moveDown = MoveTo::create(0.73f, defoultPos);
-		/*アニメーション状態の確認*/
-		if (mainCharacter->getPosition().equals(defoultPos)){
-			mainCharacter->stopActionByTag(101);
-			mainCharacter->setTexture(MAIN_CHARACTER + CHARACTER_JUMP);
-			/*シークエンス作成*/
-			auto sequence = Sequence::create(moveUp, moveDown, CallFunc::create([this]{ setCharacterDefault(); }), NULL);
-			//アニメーション開始
-			mainCharacter->runAction(sequence);
+		if (!jumpFlag)
+		{
+			auto mainCharacter = (Sprite*)this->getChildByTag(1);
+			if (mainCharacter->isRunning())
+			{
+				mainCharacter->stopActionByTag(101);
+				mainCharacter->setTexture(MAIN_CHARACTER + CHARACTER_JUMP);
+				jumpFlag = !jumpFlag;
+				jumpPower = DEFOULT_JUMP_POWER;
+				gravityPoewr = DEFOULT_GRAVITY_POWER;
+			}
 		}
+			
 	}
 	else
 	{
@@ -181,9 +180,8 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 void Game::update(float dt)
 {
 #pragma region 変数の宣言
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto origin = Director::getInstance()->getVisibleOrigin();
-	auto moveVec = Vec2(5.5f, 0);
+	auto mainCharacter = (Sprite*)this->getChildByTag(1);
+	auto moveVec = Vec2(8.5f, 0);
 	auto backGround = this->getChildByTag(51);
 	auto backGround2 = this->getChildByTag(52);
 #pragma endregion
@@ -206,6 +204,19 @@ void Game::update(float dt)
 	backGround2->setPosition(pos2);
 #pragma endregion
 
+	if (jumpFlag)
+	{
+		auto mainCharacterPosY = mainCharacter->getPositionY();
+		mainCharacterPosY += jumpPower - (9.8*gravityPoewr);
+		gravityPoewr += ADD_GRAVITY;
+		mainCharacter->setPositionY(mainCharacterPosY);
+		if (mainCharacterPosY <= defoultPos.y)
+		{
+			jumpFlag = !jumpFlag;
+			mainCharacter->setPositionY(defoultPos.y);
+		}
+	}
+
 #pragma region エネミーの行動
 	auto enemy = this->getChildByTag(31);
 	auto enemyPos = enemy->getPosition();
@@ -221,9 +232,7 @@ void Game::update(float dt)
 #pragma endregion
 
 #pragma region 接触判定
-	auto mainCharacter = (Sprite*)this->getChildByTag(1);
 	auto hitDetermination = (Sprite*)this->getChildByTag(11);
-
 	hitDetermination->setPositionY(mainCharacter->getPositionY()
 		+ mainCharacter->getContentSize().height / 4
 		* mainCharacter->getScale());
@@ -232,6 +241,7 @@ void Game::update(float dt)
 	auto rectEnemy = enemy->getBoundingBox();
 
 	if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
+		jumpPower = 0;
 		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
 		auto characterImage = (Sprite*)this->getChildByTag(2);
 		mainCharacter->stopActionByTag(101);
@@ -256,7 +266,7 @@ void Game::update(float dt)
 	}
 #pragma endregion
 
-#pragma region 主人公初期化
+#pragma region 主人公初期化呼び出し
 	if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne 
 		&& mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
 	{
@@ -269,16 +279,20 @@ void Game::update(float dt)
 void Game::setCharacterDefault()
 {
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
-	auto animation = Animation::create();
-	for (int i = 0; i < ANIMATION_MAX_NUM; ++i)
-		animation->addSpriteFrameWithFile(ANIMATION + RUN + StringUtils::toString(i) + ".png");
-	animation->setDelayPerUnit(0.04f);
-	animation->setRestoreOriginalFrame(true);
-	auto runAnime = Animate::create(animation);
-	auto runAnimation = RepeatForever::create(runAnime);
-	runAnimation->setTag(101);
-	mainCharacter->runAction(runAnimation);
+
 	try{
+		/*主人公走りモーション設定*/
+		auto animation = Animation::create();
+		for (int i = 0; i < ANIMATION_MAX_NUM; ++i)
+			animation->addSpriteFrameWithFile(ANIMATION + RUN + StringUtils::toString(i) + ".png");
+		animation->setDelayPerUnit(0.04f);
+		animation->setRestoreOriginalFrame(true);
+		auto runAnime = Animate::create(animation);
+		auto runAnimation = RepeatForever::create(runAnime);
+		runAnimation->setTag(101);
+		mainCharacter->runAction(runAnimation);
+		/*主人公走りモーション設定*/
+
 		if (auto characterImage = (Sprite*)getChildByTag(2))
 			characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
 	}
