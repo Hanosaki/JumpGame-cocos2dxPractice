@@ -51,24 +51,21 @@ extern const char* OP_BGM;
 
 #pragma region テキスト
 extern const std::string COMPOSERS;
-extern const std::string COMPOSER_1;
+extern const std::string COMPOSER;
 extern const std::string CREDIT;
 extern const std::string GAME_OVER_TEXT;
 extern const std::string HI_SCORE_TEXT;
 extern const std::string NEW_RECORED_TEXT;
 extern const std::string NOW_RESULT_TEXT;
 extern const std::string PAINTERS;
-extern const std::string PAINTER_1;
-extern const std::string PAINTER_2;
-extern const std::string PAINTER_3;
-extern const std::string PAINTER_4;
+extern const std::string PAINTER;
+extern const std::string PILLS;
 extern const std::string SCORE_TEXT;
 extern const std::string TITLE_TEXT;
 extern const std::string RETRUN_TITLE_TEXT;
 extern const std::string RIVAL_NAME;
 extern const std::string VOICE_ACTERS;
-extern const std::string VOICE_ACTER_1;
-extern const std::string VOICE_ACTER_2;
+extern const std::string VOICE_ACTER;
 extern const std::string MAIN_CHARACTER_NAME;
 #pragma endregion
 
@@ -87,6 +84,7 @@ extern const char* SCORE_KEY;
 /// csvファイルの指定，引数がchar*の為char*を使用
 /// </summary>
 extern const char* CONVERSATION_LIST;
+extern const char* CREDIT_LIST;
 #pragma endregion
 
 #endif

@@ -1,6 +1,5 @@
 #pragma execution_character_set("utf-8")
 #include "FileReadClass.h"
-#include "CharaResouse.h"
 
 USING_NS_CC;
 

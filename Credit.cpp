@@ -3,15 +3,18 @@
 #include "CharaResouse.h"
 #include "Title.h"
 #include "SimpleAudioEngine.h"
+#include "FileReadClass.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
 
-#pragma region 定数宣言
-const int NUM_OF_PAINTERS = 4;
-const int NUM_OF_VOICE_ACTERS = 2;
-#pragma endregion
+Label* setCredit(ValueMap valueMap, std::string columnName);
 
+#pragma region 定数宣言
+const int Credit::NUM_OF_PAINTERS = 4;
+const int Credit::NUM_OF_VOICE_ACTERS = 2;
+const int Credit::NUM_OF_COMPOSERS = 1;
+#pragma endregion
 
 Scene* Credit::creatScene()
 {
@@ -65,16 +68,13 @@ bool Credit::init()
 	auto painters = Label::createWithTTF(PAINTERS, FONTS + JPN_FONTS, 36);
 	painters->setPosition(origin.x + visibleSize.width / 6, origin.y + (3 * visibleSize.height) / 5);
 	Label* painter[NUM_OF_PAINTERS];
-	painter[0] = Label::createWithTTF(PAINTER_1, FONTS + JPN_FONTS, 24);
-	painter[0]->setPosition(30, -30);
-	painter[1] = Label::createWithTTF(PAINTER_2, FONTS + JPN_FONTS, 24);
-	painter[1]->setPosition(30, -60);
-	painter[2] = Label::createWithTTF(PAINTER_3, FONTS + JPN_FONTS, 24);
-	painter[2]->setPosition(30, -90);
-	painter[3] = Label::createWithTTF(PAINTER_4, FONTS + JPN_FONTS, 24);
-	painter[3]->setPosition(30, -120);
+	FileRead fileRead;
+	auto creaditValues = fileRead.readCSV(CREDIT_LIST);
 	for (int i = 0; i < NUM_OF_PAINTERS; ++i)
 	{
+		auto creditMap = creaditValues.at(i).asValueMap();
+		painter[i] = setCredit(creditMap, PAINTER);
+		painter[i]->setPosition(30, -30*(i+1));
 		painter[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		painters->addChild(painter[i]);
 	}
@@ -85,10 +85,15 @@ bool Credit::init()
 #pragma region コンポーサー
 	auto composers = Label::createWithTTF(COMPOSERS, FONTS + JPN_FONTS, 36);
 	composers->setPosition(origin.x + visibleSize.width / 2.5, origin.y + (3 * visibleSize.height) / 5);
-	auto composer = Label::createWithTTF(COMPOSER_1, FONTS + JPN_FONTS, 24);
-	composer->setPosition(30, -30);
-	composer->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-	composers->addChild(composer);
+	Label* composer[NUM_OF_COMPOSERS];
+	for (int i = 0; i < NUM_OF_COMPOSERS; ++i)
+	{
+		auto creditMap = creaditValues.at(i).asValueMap();
+		composer[i] = setCredit(creditMap,COMPOSER);
+		composer[i]->setPosition(30, -30 * (i + 1));
+		composer[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+		composers->addChild(composer[i]);
+	}
 	this->addChild(composers, 3);
 #pragma endregion
 
@@ -97,12 +102,11 @@ bool Credit::init()
 	voiceActors->setPosition(origin.x + visibleSize.width - voiceActors->getContentSize().width,
 		origin.y + (3 * visibleSize.height) / 5);
 	Label* voiceActor[NUM_OF_VOICE_ACTERS];
-	voiceActor[0] = Label::createWithTTF(VOICE_ACTER_1, FONTS + JPN_FONTS, 24);
-	voiceActor[0]->setPosition(30, -30);
-	voiceActor[1] = Label::createWithTTF(VOICE_ACTER_2, FONTS + JPN_FONTS, 24);
-	voiceActor[1]->setPosition(30, -60);
 	for (int i = 0; i < NUM_OF_VOICE_ACTERS; ++i)
 	{
+		auto creditMap = creaditValues.at(i).asValueMap();
+		voiceActor[i] = setCredit(creditMap,VOICE_ACTER);
+		voiceActor[i]->setPosition(30, -30 * (i + 1));
 		voiceActor[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		voiceActors->addChild(voiceActor[i]);
 	}
@@ -119,6 +123,12 @@ bool Credit::init()
 
 	return true;
 
+}
+
+Label* setCredit(ValueMap valueMap,std::string columnName)
+{
+	auto label = Label::createWithTTF(PILLS + valueMap.at(columnName).asString(), FONTS + JPN_FONTS, 24);
+	return label;
 }
 
 bool Credit::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event*event)

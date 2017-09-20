@@ -19,6 +19,10 @@ public:
 	/// <returns>true...タッチされた状態を返す</returns>
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 
+	static const int NUM_OF_COMPOSERS;
+	static const int NUM_OF_PAINTERS;
+	static const int NUM_OF_VOICE_ACTERS;
+
 };
 
 #endif

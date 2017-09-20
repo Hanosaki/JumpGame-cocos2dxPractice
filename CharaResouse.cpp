@@ -45,24 +45,21 @@ const char* OP_BGM = "BGM/op.mp3";
 
 #pragma region テキスト
 const std::string COMPOSERS = "BGM";
-const std::string COMPOSER_1 = "●MusMus";
+const std::string COMPOSER = "composer";
 const std::string CREDIT = "くれじっと";
 const std::string GAME_OVER_TEXT = "ゲームオーバー...";
 const std::string HI_SCORE_TEXT = "HIScore:";
 const std::string PAINTERS = "イラスト素材";
 const std::string NEW_RECORED_TEXT = "  NEW RECORED!";
 const std::string NOW_RESULT_TEXT = "こんかいのきろく";
-const std::string PAINTER_1 = "●jin";
-const std::string PAINTER_2 = "●フラスコ";
-const std::string PAINTER_3 = "●かみち";
-const std::string PAINTER_4 = "●MED";
+const std::string PAINTER = "painter";
+const std::string PILLS = "●";
 const std::string SCORE_TEXT = "Score:";
 const std::string TITLE_TEXT = "ゆかりさんゲーム";
 const std::string RETRUN_TITLE_TEXT = "Push retrun title...";
 const std::string RIVAL_NAME = "きりたん";
 const std::string VOICE_ACTERS = "キャラクターボイス";
-const std::string VOICE_ACTER_1 = "●VoiceRoid+結月ゆかり";
-const std::string VOICE_ACTER_2 = "●VoiceRoid+ex東北きりたん";
+const std::string VOICE_ACTER = "voiceActer";
 const std::string MAIN_CHARACTER_NAME = "ゆかり";
 #pragma endregion
 
@@ -75,4 +72,5 @@ const char* SCORE_KEY = "score";
 
 #pragma region csvファイル
 const char* CONVERSATION_LIST = "csv/ConversationList.csv";
+const char* CREDIT_LIST = "csv/credit.csv";
 #pragma endregion
