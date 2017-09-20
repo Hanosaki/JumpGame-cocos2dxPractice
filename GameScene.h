@@ -14,7 +14,7 @@ public:
 	virtual bool init();
 	CREATE_FUNC(Game);
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
-	void update(float dt);
+	void main(float dt);
 	void setCharacterDefault();
 
 	int score; //敵をよけた回数を格納する
@@ -24,6 +24,7 @@ public:
 	bool endFlag; //ゲーム終了フラグ
 	bool hitOnlyOne; //一度の接触で一度しか接触しないためのフラグ
 	bool jumpFlag;//ジャンプ状態のフラグ
+	bool speedChangeFlag;//ゲーム速度変更時のフラグ
 	cocos2d::Size visibleSize;//画面サイズ
 	cocos2d::Vec2 origin;
 	cocos2d::Vec2 defoultPos; //主人公スプライトの初期位置
@@ -35,6 +36,8 @@ public:
 	static const int DEFOULT_GRAVITY_POWER;
 	static const int DEFOULT_JUMP_POWER;
 	static const float ADD_GRAVITY;
+	static const float MOVE_SPEED;
+	static const float GAME_SPEED;
 };
 
 #endif

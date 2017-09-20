@@ -14,6 +14,8 @@ const int Game::MAX_LIFE = 3;
 const int Game::DEFOULT_GRAVITY_POWER = 0;
 const int Game::DEFOULT_JUMP_POWER = 23;
 const float Game::ADD_GRAVITY = 0.1f;
+const float Game::MOVE_SPEED = 8.5f;
+const float Game::GAME_SPEED = 0.02f;
 
 Scene* Game::creatScene()
 {
@@ -33,11 +35,12 @@ bool Game::init()
 #pragma region グローバル変数の初期化
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
-	score = 0;
+	score = 50;
 	hitCounter = 0;
 	endFlag = false;
 	hitOnlyOne = false;
 	jumpFlag = false;
+	speedChangeFlag = false;
 	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
 	outOfWindowBGPos = Vec2(-visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
@@ -144,7 +147,7 @@ bool Game::init()
 
 #pragma region 繰り返し処理の初期設定
 	this->runAction(Sequence::create(DelayTime::create(1.5f), 
-		CallFunc::create([this](){this->scheduleUpdate();}), NULL));
+		CallFunc::create([this](){this->schedule(schedule_selector(Game::main),GAME_SPEED); }), NULL));
 #pragma endregion
 
 	return true;
@@ -177,11 +180,11 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 	return true;
 }
 
-void Game::update(float dt)
+void Game::main(float dt)
 {
 #pragma region 変数の宣言
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
-	auto moveVec = Vec2(8.5f, 0);
+	auto moveVec = Vec2(MOVE_SPEED, 0);
 	auto backGround = this->getChildByTag(51);
 	auto backGround2 = this->getChildByTag(52);
 #pragma endregion
@@ -256,7 +259,7 @@ void Game::update(float dt)
 			gameoverLabel->setScale(3.0f);
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			this->addChild(gameoverLabel);
-			this->unscheduleUpdate();
+			this->unschedule(schedule_selector(Game::main));
 			mainCharacter->stopAllActions();
 			UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
 			UserDefault::getInstance()->flush();
@@ -266,8 +269,19 @@ void Game::update(float dt)
 	}
 #pragma endregion
 
+#pragma region ゲーム変更変更
+	float acceleration = score / 5000.0f;
+	if (score != 0 && score % 10 == 0 && !speedChangeFlag && GAME_SPEED-acceleration>0)
+	{
+		speedChangeFlag = true;
+		this->schedule(schedule_selector(Game::main), GAME_SPEED - acceleration);
+	}
+	else if (score % 11 == 0)
+		speedChangeFlag = false;
+#pragma endregion
+
 #pragma region 主人公初期化呼び出し
-	if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne 
+	if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne
 		&& mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
 	{
 		setCharacterDefault();
