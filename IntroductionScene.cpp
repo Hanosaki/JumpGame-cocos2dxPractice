@@ -121,9 +121,8 @@ bool Introduction::init()
 
 	/*以上，テキスト表示処理*/
 
-#pragma region 画面遷移の為のディレイ
-	this->runAction(Sequence::create(DelayTime::create(1.5), NULL));
-#pragma endregion
+	// 画面遷移の為のディレイ
+	this->runAction(Sequence::create(DelayTime::create(1.5f), NULL));
 
 
 #pragma region リスナー登録

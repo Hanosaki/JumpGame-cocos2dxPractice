@@ -61,6 +61,7 @@ extern const std::string PAINTERS;
 extern const std::string PAINTER_1;
 extern const std::string PAINTER_2;
 extern const std::string PAINTER_3;
+extern const std::string PAINTER_4;
 extern const std::string SCORE_TEXT;
 extern const std::string TITLE_TEXT;
 extern const std::string RETRUN_TITLE_TEXT;

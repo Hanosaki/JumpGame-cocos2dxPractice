@@ -35,7 +35,7 @@ bool Game::init()
 #pragma region グローバル変数の初期化
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
-	score = 50;
+	score = 0;
 	hitCounter = 0;
 	endFlag = false;
 	hitOnlyOne = false;
@@ -64,7 +64,7 @@ bool Game::init()
 
 #pragma region 背景初期設定
 	auto backGround = Sprite::create(IMAGE+BACK_GROUND);
-	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1*visibleSize.width, visibleSize.height));
+	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1f*visibleSize.width, visibleSize.height));
 	backGround->setPosition(visibleSize.width/2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setTag(51);
 	this->addChild(backGround);
@@ -210,7 +210,7 @@ void Game::main(float dt)
 	if (jumpFlag)
 	{
 		auto mainCharacterPosY = mainCharacter->getPositionY();
-		mainCharacterPosY += jumpPower - (9.8f*gravityPoewr);
+		mainCharacterPosY += jumpPower - (9.8f * gravityPoewr);
 		gravityPoewr += ADD_GRAVITY;
 		mainCharacter->setPositionY(mainCharacterPosY);
 		if (mainCharacterPosY <= defoultPos.y)

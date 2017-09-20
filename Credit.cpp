@@ -8,7 +8,7 @@ using namespace CocosDenshion;
 USING_NS_CC;
 
 #pragma region 定数宣言
-const int NUM_OF_PAINTERS = 3;
+const int NUM_OF_PAINTERS = 4;
 const int NUM_OF_VOICE_ACTERS = 2;
 #pragma endregion
 
@@ -71,6 +71,8 @@ bool Credit::init()
 	painter[1]->setPosition(30, -60);
 	painter[2] = Label::createWithTTF(PAINTER_3, FONTS + JPN_FONTS, 24);
 	painter[2]->setPosition(30, -90);
+	painter[3] = Label::createWithTTF(PAINTER_4, FONTS + JPN_FONTS, 24);
+	painter[3]->setPosition(30, -120);
 	for (int i = 0; i < NUM_OF_PAINTERS; ++i)
 	{
 		painter[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);

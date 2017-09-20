@@ -55,6 +55,7 @@ const std::string NOW_RESULT_TEXT = "こんかいのきろく";
 const std::string PAINTER_1 = "●jin";
 const std::string PAINTER_2 = "●フラスコ";
 const std::string PAINTER_3 = "●かみち";
+const std::string PAINTER_4 = "●MED";
 const std::string SCORE_TEXT = "Score:";
 const std::string TITLE_TEXT = "ゆかりさんゲーム";
 const std::string RETRUN_TITLE_TEXT = "Push retrun title...";
