@@ -6,7 +6,7 @@ const std::string ANIMATION = "animation/";
 const std::string FONTS = "fonts/";
 const std::string IMAGE = "image/";
 const std::string MAIN_CHARACTER = "mainCharacter/";
-const std::string RIVAL = "rival/";
+const std::string F_RIVAL = "rival/";
 const std::string RUN = "run/";
 #pragma endregion
 
@@ -24,6 +24,10 @@ const std::string CHARACTER_IMAGE_DAMEGE = "DamageImage.png";
 const std::string CHARACTER_IMAGE_GAMEOVER = "GameOver.png";
 const std::string CHARACTER_IMAGE_NORMAL = "NormalImage.png";
 const std::string CHARACTER_IMAGE_SMAILE = "Start.png";
+const std::string SMILE = "喜.png";
+const std::string ANGRY = "怒.png";
+const std::string SAD = "哀.png";
+const std::string LAUGH = "楽.png";
 const std::string LIFE_ICON = "Life.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
 const std::string RIVAL_IMAGE = "RivalNormalImage.png";
@@ -47,6 +51,7 @@ const char* OP_BGM = "BGM/op.mp3";
 const std::string COMPOSERS = "BGM";
 const std::string COMPOSER = "composer";
 const std::string CREDIT = "くれじっと";
+const std::string FACE = "face";
 const std::string GAME_OVER_TEXT = "ゲームオーバー...";
 const std::string HI_SCORE_TEXT = "HIScore:";
 const std::string PAINTERS = "イラスト素材";

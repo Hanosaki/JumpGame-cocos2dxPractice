@@ -8,7 +8,7 @@ extern const std::string ANIMATION;
 extern const std::string FONTS;
 extern const std::string IMAGE;
 extern const std::string MAIN_CHARACTER;
-extern const std::string RIVAL;
+extern const std::string F_RIVAL;
 extern const std::string RUN;
 #pragma endregion
 
@@ -25,6 +25,10 @@ extern const std::string CHARACTER_IMAGE_DAMEGE;
 extern const std::string CHARACTER_IMAGE_GAMEOVER;
 extern const std::string CHARACTER_IMAGE_NORMAL;
 extern const std::string CHARACTER_IMAGE_SMAILE;
+extern const std::string SMILE;
+extern const std::string ANGRY;
+extern const std::string SAD;
+extern const std::string LAUGH;
 extern const std::string END_IMAGE;
 extern const std::string ENEMY_IMAGE;
 extern const std::string LIFE_ICON;
@@ -53,6 +57,7 @@ extern const char* OP_BGM;
 extern const std::string COMPOSERS;
 extern const std::string COMPOSER;
 extern const std::string CREDIT;
+extern const std::string FACE;
 extern const std::string GAME_OVER_TEXT;
 extern const std::string HI_SCORE_TEXT;
 extern const std::string NEW_RECORED_TEXT;

@@ -102,7 +102,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(MAIN_CHARACTER+ IMAGE + CHARACTER_IMAGE_NORMAL);
+	auto characterImage = Sprite::create(MAIN_CHARACTER+ IMAGE + ANGRY);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 						,visibleSize.height/2+origin.y) ;
@@ -126,7 +126,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 敵の初期設定
-	auto enemy = Sprite::create(RIVAL + ENEMY_IMAGE);
+	auto enemy = Sprite::create(F_RIVAL + ENEMY_IMAGE);
 	enemy->setPosition(enemyDefaultPos.x*2,enemyDefaultPos.y);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*5));
 	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
@@ -249,7 +249,7 @@ void Game::main(float dt)
 		auto characterImage = (Sprite*)this->getChildByTag(2);
 		mainCharacter->stopActionByTag(101);
 		mainCharacter->setTexture(MAIN_CHARACTER + CHARACTER_DAMAGE);
-		characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_DAMEGE);
+		characterImage->setTexture(MAIN_CHARACTER + IMAGE + SAD);
 		this->getChildByTag(20 + hitCounter)->setVisible(false);
 		++hitCounter;
 		if (hitCounter >= MAX_LIFE)
@@ -308,7 +308,7 @@ void Game::setCharacterDefault()
 		/*主人公走りモーション設定*/
 
 		if (auto characterImage = (Sprite*)getChildByTag(2))
-			characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
+			characterImage->setTexture(MAIN_CHARACTER + IMAGE + ANGRY);
 	}
 	catch (char* messeage)
 	{

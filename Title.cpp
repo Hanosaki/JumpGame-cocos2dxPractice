@@ -47,7 +47,7 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
+	auto characterImage = Sprite::create(MAIN_CHARACTER + IMAGE + SMILE);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 		, visibleSize.height / 2 + origin.y);
@@ -110,7 +110,7 @@ bool Title::init()
 void Title::characterImageChange()
 {
 	auto characterImage = (Sprite*)this->getChildByTag(2);
-	characterImage->setTexture(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_SMAILE);
+	characterImage->setTexture(MAIN_CHARACTER + IMAGE + LAUGH);
 }
 
 void Title::callOPScene(Ref* Sender)

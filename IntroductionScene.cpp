@@ -61,7 +61,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region 主人公立ち絵
-	auto characterImage = Sprite::create(MAIN_CHARACTER + IMAGE + CHARACTER_IMAGE_NORMAL);
+	auto characterImage = Sprite::create(MAIN_CHARACTER + IMAGE + SMILE);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width / 6 + origin.x, Vec2::ZERO.y);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -71,7 +71,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region ライバル立ち絵
-	auto rivalImage = Sprite::create(RIVAL + RIVAL_IMAGE);
+	auto rivalImage = Sprite::create(F_RIVAL + SMILE);
 	rivalImage->setScale(characterImage->getScale());
 	rivalImage->setPosition(visibleSize.width + origin.x
 		- rivalImage->getContentSize().width / 2 * rivalImage->getScale(),
@@ -94,12 +94,12 @@ bool Introduction::init()
 #pragma region テキスト読み込み
 	FileRead fileRead;
 	wordsNum = ZERO;
-	characterWords = fileRead.readCSV(CONVERSATION_LIST);
-	characterWord = characterWords.at(wordsNum).asValueMap();
+	characterWordVector = fileRead.readCSV(CONVERSATION_LIST);
+	characterWordMap = characterWordVector.at(wordsNum).asValueMap();
 #pragma endregion
 
 #pragma region 名前表示用ラベルの設定
-	characterNameLabel = Label::createWithTTF(characterWord.at(CHARACTER_NAME).asString()
+	characterNameLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_NAME).asString()
 		, FONTS + JPN_FONTS, NAME_FONT_SIZE);
 	characterNameLabel->setPosition(Vec2(characterNameLabel->getContentSize().width / 2,
 		textWindow->getContentSize().height - characterNameLabel->getContentSize().height / 2));
@@ -108,7 +108,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region セリフ用ラベルの設定
-	characterWordLabel = Label::createWithTTF(characterWord.at(CHARACTER_WORD).asString()
+	characterWordLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_WORD).asString()
 		, FONTS + JPN_FONTS, 48);
 	characterWordLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	characterWordLabel->setPosition(characterNameLabel->getPositionX(),
@@ -134,7 +134,7 @@ bool Introduction::init()
 
 	SimpleAudioEngine::getInstance()->playBackgroundMusic(OP_BGM, false);
 
-	spriteOpacityChange(characterWord.at(CHARACTER_NAME).asString());
+	spriteChange();
 
 	return true;
 }
@@ -152,35 +152,37 @@ bool Introduction::onTouchBegan(Touch* touch, Event* event)
 
 void Introduction::onTouchEnded(Touch* touch, Event*event)
 {
-	if (wordsNum < characterWords.size() - 1){
+	if (wordsNum < characterWordVector.size() - 1){
 		++wordsNum;
-		characterWord = characterWords.at(wordsNum).asValueMap();
-		auto name = characterWord.at(CHARACTER_NAME).asString();
+		characterWordMap = characterWordVector.at(wordsNum).asValueMap();
+		auto name = characterWordMap.at(CHARACTER_NAME).asString();
 		characterNameLabel->setString(name);
-		spriteOpacityChange(name);
+		spriteChange();
 	}
 	else{
 		Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::creatScene(), Color3B::WHITE));
 	}
 
-	auto word = characterWord.at(CHARACTER_WORD).asString();
+	auto word = characterWordMap.at(CHARACTER_WORD).asString();
 	characterWordLabel->setString(word);
 
 }
 
-void Introduction::spriteOpacityChange(std::string name)
+void Introduction::spriteChange()
 {
 	auto characterImage = (Sprite*)this->getChildByTag(1);
 	auto rivalImage = (Sprite*)this->getChildByTag(2);
-	if (name == RIVAL_NAME)
+	if (characterWordMap.at(CHARACTER_NAME).asString() == RIVAL_NAME)
 	{
 		characterImage->setOpacity(128);
 		rivalImage->setOpacity(255);
+		rivalImage->setTexture(F_RIVAL + characterWordMap.at("face").asString() + ".png");
 	}
-	else if (name == MAIN_CHARACTER_NAME)
+	else if (characterWordMap.at(CHARACTER_NAME).asString() == MAIN_CHARACTER_NAME)
 	{
 		rivalImage->setOpacity(128);
 		characterImage->setOpacity(255);
+		characterImage->setTexture(MAIN_CHARACTER + IMAGE +characterWordMap.at("face").asString() + ".png");
 	}
 
 }

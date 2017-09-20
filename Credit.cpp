@@ -11,7 +11,7 @@ USING_NS_CC;
 Label* setCredit(ValueMap valueMap, std::string columnName);
 
 #pragma region 定数宣言
-const int Credit::NUM_OF_PAINTERS = 4;
+const int Credit::NUM_OF_PAINTERS = 2;
 const int Credit::NUM_OF_VOICE_ACTERS = 2;
 const int Credit::NUM_OF_COMPOSERS = 1;
 #pragma endregion
