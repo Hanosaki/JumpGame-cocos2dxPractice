@@ -17,9 +17,11 @@ public:
 	void main(float dt);
 	void setCharacterDefault();
 
-	int score; //敵をよけた回数を格納する
-	int hitCounter; //hitCounter...敵と接触した回数を格納する
+	int score; //敵が画面端に到達した回数
+	int hitCounter; //敵と接触した回数
 	int jumpPower;//ジャンプ時の重力抵抗
+	float animeSpeed;//主人公アニメーションの速さ
+	float enemySpeed;//敵速度の倍率
 	float gravityPoewr;//ジャンプ時の重力
 	bool endFlag; //ゲーム終了フラグ
 	bool hitOnlyOne; //一度の接触で一度しか接触しないためのフラグ

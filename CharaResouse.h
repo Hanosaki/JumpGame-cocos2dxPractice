@@ -4,12 +4,12 @@
 #include "cocos2d.h"
 
 #pragma region フォルダ名
-extern const std::string ANIMATION;
-extern const std::string FONTS;
-extern const std::string IMAGE;
-extern const std::string MAIN_CHARACTER;
+extern const std::string F_ANIMATION;
+extern const std::string F_FONTS;
+extern const std::string F_IMAGE;
+extern const std::string F_MAIN_CHARACTER;
 extern const std::string F_RIVAL;
-extern const std::string RUN;
+extern const std::string F_RUN;
 #pragma endregion
 
 
@@ -21,24 +21,19 @@ extern const std::string ENG_FONTS;
 #pragma region 画像名
 extern const std::string BACK_GROUND;
 extern const std::string CREDIT_IMAGE;
-extern const std::string CHARACTER_IMAGE_DAMEGE;
-extern const std::string CHARACTER_IMAGE_GAMEOVER;
-extern const std::string CHARACTER_IMAGE_NORMAL;
-extern const std::string CHARACTER_IMAGE_SMAILE;
 extern const std::string SMILE;
 extern const std::string ANGRY;
 extern const std::string SAD;
 extern const std::string LAUGH;
-extern const std::string END_IMAGE;
+extern const std::string END_BUTTON;
 extern const std::string ENEMY_IMAGE;
 extern const std::string LIFE_ICON;
 extern const std::string OP_BACK_GROUND;
-extern const std::string RIVAL_IMAGE;
 extern const std::string CHARACTER_DAMAGE;
-extern const std::string ANIMATION_CHARACTER_DEFAULT;
+extern const std::string DEFAULT;
 extern const std::string CHARACTER_JUMP;
-extern const std::string SKIP_IMAGE;
-extern const std::string START_IMAGE;
+extern const std::string SKIP_BUTTON;
+extern const std::string START_BUTTON;
 extern const std::string TEXT_WINDOW;
 #pragma endregion
 
@@ -55,31 +50,33 @@ extern const char* OP_BGM;
 
 #pragma region テキスト
 extern const std::string COMPOSERS;
-extern const std::string COMPOSER;
 extern const std::string CREDIT;
-extern const std::string FACE;
 extern const std::string GAME_OVER_TEXT;
 extern const std::string HI_SCORE_TEXT;
 extern const std::string NEW_RECORED_TEXT;
 extern const std::string NOW_RESULT_TEXT;
 extern const std::string PAINTERS;
-extern const std::string PAINTER;
 extern const std::string PILLS;
 extern const std::string SCORE_TEXT;
 extern const std::string TITLE_TEXT;
-extern const std::string RETRUN_TITLE_TEXT;
+extern const std::string RETF_RUN_TITLE_TEXT;
 extern const std::string RIVAL_NAME;
 extern const std::string VOICE_ACTERS;
-extern const std::string VOICE_ACTER;
 extern const std::string MAIN_CHARACTER_NAME;
 #pragma endregion
 
 #pragma region キー
 /// <summary>
-/// データを保存するためのkey，引数がchar*の為char*を使用
+/// ファイル書き込み，読み込みの為のキー
+/// char...プレイデータ用のキー
+/// std::string...シナリオ・クレジット読み込み用キー
 /// </summary>
-extern const char* CHARACTER_NAME;
-extern const char* CHARACTER_WORD;
+extern const std::string FACE_KEY;
+extern const std::string COMPOSER_KEY;
+extern const std::string PAINTER_KEY;
+extern const std::string VOICE_ACTER_KEY;
+extern const std::string CHARACTER_NAME_KEY;
+extern const std::string CHARACTER_WORD_KEY;
 extern const char* HI_SCORE_KEY;
 extern const char* SCORE_KEY;
 #pragma endregion

@@ -2,12 +2,12 @@
 #include "CharaResouse.h"
 
 #pragma region フォルダ名
-const std::string ANIMATION = "animation/";
-const std::string FONTS = "fonts/";
-const std::string IMAGE = "image/";
-const std::string MAIN_CHARACTER = "mainCharacter/";
+const std::string F_ANIMATION = "animation/";
+const std::string F_FONTS = "fonts/";
+const std::string F_IMAGE = "image/";
+const std::string F_MAIN_CHARACTER = "mainCharacter/";
 const std::string F_RIVAL = "rival/";
-const std::string RUN = "run/";
+const std::string F_RUN = "run/";
 #pragma endregion
 
 #pragma region フォント名
@@ -18,24 +18,19 @@ const std::string ENG_FONTS = "Marker Felt.ttf";
 #pragma region 画像名
 const std::string BACK_GROUND = "bg.png";
 const std::string CREDIT_IMAGE = "CreditButton.png";
-const std::string END_IMAGE = "CloseButton.png";
+const std::string END_BUTTON = "CloseButton.png";
 const std::string ENEMY_IMAGE = "enemy.png";
-const std::string CHARACTER_IMAGE_DAMEGE = "DamageImage.png";
-const std::string CHARACTER_IMAGE_GAMEOVER = "GameOver.png";
-const std::string CHARACTER_IMAGE_NORMAL = "NormalImage.png";
-const std::string CHARACTER_IMAGE_SMAILE = "Start.png";
 const std::string SMILE = "喜.png";
 const std::string ANGRY = "怒.png";
 const std::string SAD = "哀.png";
 const std::string LAUGH = "楽.png";
 const std::string LIFE_ICON = "Life.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
-const std::string RIVAL_IMAGE = "RivalNormalImage.png";
 const std::string CHARACTER_DAMAGE = "Damage.png";
-const std::string ANIMATION_CHARACTER_DEFAULT = "0.png";
+const std::string DEFAULT = "0.png";
 const std::string CHARACTER_JUMP = "Jump.png";
-const std::string SKIP_IMAGE = "SkipButton.png";
-const std::string START_IMAGE = "StartButton.png";
+const std::string SKIP_BUTTON = "SkipButton.png";
+const std::string START_BUTTON = "StartButton.png";
 const std::string TEXT_WINDOW = "TextWindow.png";
 #pragma endregion
 
@@ -49,28 +44,28 @@ const char* OP_BGM = "BGM/op.mp3";
 
 #pragma region テキスト
 const std::string COMPOSERS = "BGM";
-const std::string COMPOSER = "composer";
 const std::string CREDIT = "くれじっと";
-const std::string FACE = "face";
 const std::string GAME_OVER_TEXT = "ゲームオーバー...";
 const std::string HI_SCORE_TEXT = "HIScore:";
 const std::string PAINTERS = "イラスト素材";
 const std::string NEW_RECORED_TEXT = "  NEW RECORED!";
 const std::string NOW_RESULT_TEXT = "こんかいのきろく";
-const std::string PAINTER = "painter";
 const std::string PILLS = "●";
 const std::string SCORE_TEXT = "Score:";
-const std::string TITLE_TEXT = "ゆかりさんゲーム";
-const std::string RETRUN_TITLE_TEXT = "Push retrun title...";
+const std::string TITLE_TEXT = "ゆかりさんDASH！";
+const std::string RETF_RUN_TITLE_TEXT = "Push retrun title...";
 const std::string RIVAL_NAME = "きりたん";
 const std::string VOICE_ACTERS = "キャラクターボイス";
-const std::string VOICE_ACTER = "voiceActer";
 const std::string MAIN_CHARACTER_NAME = "ゆかり";
 #pragma endregion
 
 #pragma region キー
-const char* CHARACTER_NAME = "name";
-const char* CHARACTER_WORD = "conversation";
+const std::string FACE_KEY = "face";
+const std::string COMPOSER_KEY = "composer";
+const std::string PAINTER_KEY = "painter";
+const std::string VOICE_ACTER_KEY = "voiceActer";
+const std::string CHARACTER_NAME_KEY = "name";
+const std::string CHARACTER_WORD_KEY = "conversation";
 const char* HI_SCORE_KEY = "hiScore";
 const char* SCORE_KEY = "score";
 #pragma endregion

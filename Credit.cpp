@@ -40,7 +40,7 @@ bool Credit::init()
 #pragma endregion
 
 #pragma region 背景設定
-	auto backGround = Sprite::create(IMAGE + BACK_GROUND);
+	auto backGround = Sprite::create(F_IMAGE + BACK_GROUND);
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(backGround, 1);
@@ -56,7 +56,7 @@ bool Credit::init()
 #pragma endregion
 
 #pragma region 画面名表記
-	auto creditLabel = Label::createWithTTF(CREDIT, FONTS + JPN_FONTS, 64);
+	auto creditLabel = Label::createWithTTF(CREDIT, F_FONTS + JPN_FONTS, 64);
 	creditLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(creditLabel, 3);
 #pragma endregion
@@ -65,7 +65,7 @@ bool Credit::init()
 
 #pragma region イラストレーター
 
-	auto painters = Label::createWithTTF(PAINTERS, FONTS + JPN_FONTS, 36);
+	auto painters = Label::createWithTTF(PAINTERS, F_FONTS + JPN_FONTS, 36);
 	painters->setPosition(origin.x + visibleSize.width / 6, origin.y + (3 * visibleSize.height) / 5);
 	Label* painter[NUM_OF_PAINTERS];
 	FileRead fileRead;
@@ -73,7 +73,7 @@ bool Credit::init()
 	for (int i = 0; i < NUM_OF_PAINTERS; ++i)
 	{
 		auto creditMap = creaditValues.at(i).asValueMap();
-		painter[i] = setCredit(creditMap, PAINTER);
+		painter[i] = setCredit(creditMap, PAINTER_KEY);
 		painter[i]->setPosition(30, -30*(i+1));
 		painter[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		painters->addChild(painter[i]);
@@ -83,13 +83,13 @@ bool Credit::init()
 #pragma endregion
 
 #pragma region コンポーサー
-	auto composers = Label::createWithTTF(COMPOSERS, FONTS + JPN_FONTS, 36);
+	auto composers = Label::createWithTTF(COMPOSERS, F_FONTS + JPN_FONTS, 36);
 	composers->setPosition(origin.x + visibleSize.width / 2.5, origin.y + (3 * visibleSize.height) / 5);
 	Label* composer[NUM_OF_COMPOSERS];
 	for (int i = 0; i < NUM_OF_COMPOSERS; ++i)
 	{
 		auto creditMap = creaditValues.at(i).asValueMap();
-		composer[i] = setCredit(creditMap,COMPOSER);
+		composer[i] = setCredit(creditMap,COMPOSER_KEY);
 		composer[i]->setPosition(30, -30 * (i + 1));
 		composer[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		composers->addChild(composer[i]);
@@ -98,14 +98,14 @@ bool Credit::init()
 #pragma endregion
 
 #pragma region ボイスアクター
-	auto voiceActors = Label::createWithTTF(VOICE_ACTERS, FONTS + JPN_FONTS, 36);
+	auto voiceActors = Label::createWithTTF(VOICE_ACTERS, F_FONTS + JPN_FONTS, 36);
 	voiceActors->setPosition(origin.x + visibleSize.width - voiceActors->getContentSize().width,
 		origin.y + (3 * visibleSize.height) / 5);
 	Label* voiceActor[NUM_OF_VOICE_ACTERS];
 	for (int i = 0; i < NUM_OF_VOICE_ACTERS; ++i)
 	{
 		auto creditMap = creaditValues.at(i).asValueMap();
-		voiceActor[i] = setCredit(creditMap,VOICE_ACTER);
+		voiceActor[i] = setCredit(creditMap,VOICE_ACTER_KEY);
 		voiceActor[i]->setPosition(30, -30 * (i + 1));
 		voiceActor[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 		voiceActors->addChild(voiceActor[i]);
@@ -127,7 +127,7 @@ bool Credit::init()
 
 Label* setCredit(ValueMap valueMap,std::string columnName)
 {
-	auto label = Label::createWithTTF(PILLS + valueMap.at(columnName).asString(), FONTS + JPN_FONTS, 24);
+	auto label = Label::createWithTTF(PILLS + valueMap.at(columnName).asString(), F_FONTS + JPN_FONTS, 24);
 	return label;
 }
 

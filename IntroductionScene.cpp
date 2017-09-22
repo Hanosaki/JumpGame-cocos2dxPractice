@@ -40,16 +40,16 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region 背景設定
-	auto backGround = Sprite::create(IMAGE +OP_BACK_GROUND);
+	auto backGround = Sprite::create(F_IMAGE +OP_BACK_GROUND);
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setContentSize(Size(visibleSize.width + origin.x, visibleSize.height + origin.y));
 	this->addChild(backGround, 1);
 #pragma endregion
 
 #pragma region スキップボタン
-	auto skipButton = Sprite::create(IMAGE + SKIP_IMAGE);
+	auto skipButton = Sprite::create(F_IMAGE + SKIP_BUTTON);
 	skipButton->setOpacity(128);
-	auto selectedSkipButton = Sprite::create(IMAGE + SKIP_IMAGE);
+	auto selectedSkipButton = Sprite::create(F_IMAGE + SKIP_BUTTON);
 	selectedSkipButton->setOpacity(64);
 
 	auto skipItem = MenuItemSprite::create(skipButton, selectedSkipButton, CC_CALLBACK_1(Introduction::callGameScene, this));
@@ -61,7 +61,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region 主人公立ち絵
-	auto characterImage = Sprite::create(MAIN_CHARACTER + IMAGE + SMILE);
+	auto characterImage = Sprite::create(F_MAIN_CHARACTER + F_IMAGE + SMILE);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width / 6 + origin.x, Vec2::ZERO.y);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -82,7 +82,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region テキストウィンドウの設定
-	auto textWindow = Sprite::create(IMAGE + TEXT_WINDOW);
+	auto textWindow = Sprite::create(F_IMAGE + TEXT_WINDOW);
 	textWindow->setContentSize(Size(visibleSize.width + origin.x, visibleSize.height / 5 + origin.y));
 	textWindow->setPosition(visibleSize.width / 2 + origin.x,
 		textWindow->getContentSize().height / 2);
@@ -99,8 +99,8 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region 名前表示用ラベルの設定
-	characterNameLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_NAME).asString()
-		, FONTS + JPN_FONTS, NAME_FONT_SIZE);
+	characterNameLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_NAME_KEY).asString()
+		, F_FONTS + JPN_FONTS, NAME_FONT_SIZE);
 	characterNameLabel->setPosition(Vec2(characterNameLabel->getContentSize().width / 2,
 		textWindow->getContentSize().height - characterNameLabel->getContentSize().height / 2));
 	characterNameLabel->setColor(Color3B::BLACK);
@@ -108,8 +108,8 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region セリフ用ラベルの設定
-	characterWordLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_WORD).asString()
-		, FONTS + JPN_FONTS, 48);
+	characterWordLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_WORD_KEY).asString()
+		, F_FONTS + JPN_FONTS, 48);
 	characterWordLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	characterWordLabel->setPosition(characterNameLabel->getPositionX(),
 		characterNameLabel->getPositionY()
@@ -155,7 +155,7 @@ void Introduction::onTouchEnded(Touch* touch, Event*event)
 	if (wordsNum < characterWordVector.size() - 1){
 		++wordsNum;
 		characterWordMap = characterWordVector.at(wordsNum).asValueMap();
-		auto name = characterWordMap.at(CHARACTER_NAME).asString();
+		auto name = characterWordMap.at(CHARACTER_NAME_KEY).asString();
 		characterNameLabel->setString(name);
 		spriteChange();
 	}
@@ -163,7 +163,7 @@ void Introduction::onTouchEnded(Touch* touch, Event*event)
 		Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::creatScene(), Color3B::WHITE));
 	}
 
-	auto word = characterWordMap.at(CHARACTER_WORD).asString();
+	auto word = characterWordMap.at(CHARACTER_WORD_KEY).asString();
 	characterWordLabel->setString(word);
 
 }
@@ -172,17 +172,17 @@ void Introduction::spriteChange()
 {
 	auto characterImage = (Sprite*)this->getChildByTag(1);
 	auto rivalImage = (Sprite*)this->getChildByTag(2);
-	if (characterWordMap.at(CHARACTER_NAME).asString() == RIVAL_NAME)
+	if (characterWordMap.at(CHARACTER_NAME_KEY).asString() == RIVAL_NAME)
 	{
 		characterImage->setOpacity(128);
 		rivalImage->setOpacity(255);
-		rivalImage->setTexture(F_RIVAL + characterWordMap.at("face").asString() + ".png");
+		rivalImage->setTexture(F_RIVAL + characterWordMap.at(FACE_KEY).asString() + ".png");
 	}
-	else if (characterWordMap.at(CHARACTER_NAME).asString() == MAIN_CHARACTER_NAME)
+	else if (characterWordMap.at(CHARACTER_NAME_KEY).asString() == MAIN_CHARACTER_NAME)
 	{
 		rivalImage->setOpacity(128);
 		characterImage->setOpacity(255);
-		characterImage->setTexture(MAIN_CHARACTER + IMAGE +characterWordMap.at("face").asString() + ".png");
+		characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE +characterWordMap.at(FACE_KEY).asString() + ".png");
 	}
 
 }

@@ -34,20 +34,20 @@ bool Title::init()
 #pragma endregion
 
 #pragma region タイトル表記
-	auto titleLabel = Label::createWithTTF(TITLE_TEXT, FONTS + JPN_FONTS, 64);
+	auto titleLabel = Label::createWithTTF(TITLE_TEXT, F_FONTS + JPN_FONTS, 64);
 	titleLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(titleLabel, 4);
 #pragma endregion
 
 #pragma region 背景設定
-	auto backGround = Sprite::create(IMAGE + BACK_GROUND);
+	auto backGround = Sprite::create(F_IMAGE + BACK_GROUND);
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
 	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(backGround, 1);
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(MAIN_CHARACTER + IMAGE + SMILE);
+	auto characterImage = Sprite::create(F_MAIN_CHARACTER + F_IMAGE + SMILE);
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 		, visibleSize.height / 2 + origin.y);
@@ -57,10 +57,10 @@ bool Title::init()
 #pragma endregion
 
 #pragma region スタートボタン配置
-	auto startButton = Sprite::create(IMAGE + START_IMAGE);
+	auto startButton = Sprite::create(F_IMAGE + START_BUTTON);
 	startButton->setContentSize(BUTTON_SIZE);
 
-	auto selectedStartButton = Sprite::create(IMAGE + START_IMAGE);
+	auto selectedStartButton = Sprite::create(F_IMAGE + START_BUTTON);
 	selectedStartButton->setOpacity(128);
 	selectedStartButton->setContentSize(BUTTON_SIZE);
 
@@ -73,10 +73,10 @@ bool Title::init()
 #pragma endregion
 
 #pragma region クレジットボタン配置
-	auto creditButton = Sprite::create(IMAGE + CREDIT_IMAGE);
+	auto creditButton = Sprite::create(F_IMAGE + CREDIT_IMAGE);
 	creditButton->setContentSize(BUTTON_SIZE);
 
-	auto selectedCreditButton = Sprite::create(IMAGE + CREDIT_IMAGE);
+	auto selectedCreditButton = Sprite::create(F_IMAGE + CREDIT_IMAGE);
 	selectedCreditButton->setOpacity(128);
 	selectedCreditButton->setContentSize(BUTTON_SIZE);
 
@@ -89,10 +89,10 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 終了ボタン配置
-	auto endButton = Sprite::create(IMAGE + END_IMAGE);
+	auto endButton = Sprite::create(F_IMAGE + END_BUTTON);
 	endButton->setContentSize(BUTTON_SIZE);
 
-	auto selectedEndButton = Sprite::create(IMAGE + END_IMAGE);
+	auto selectedEndButton = Sprite::create(F_IMAGE + END_BUTTON);
 	selectedEndButton->setOpacity(128);
 	selectedEndButton->setContentSize(BUTTON_SIZE);
 
@@ -110,7 +110,7 @@ bool Title::init()
 void Title::characterImageChange()
 {
 	auto characterImage = (Sprite*)this->getChildByTag(2);
-	characterImage->setTexture(MAIN_CHARACTER + IMAGE + LAUGH);
+	characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + LAUGH);
 }
 
 void Title::callOPScene(Ref* Sender)
