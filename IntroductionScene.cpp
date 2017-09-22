@@ -184,5 +184,10 @@ void Introduction::spriteChange()
 		characterImage->setOpacity(255);
 		characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE +characterWordMap.at(FACE_KEY).asString() + ".png");
 	}
+	else
+	{
+		rivalImage->setOpacity(128);
+		characterImage->setOpacity(128);
+	}
 
 }

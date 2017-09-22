@@ -307,7 +307,7 @@ void Game::setCharacterDefault()
 			animation->addSpriteFrameWithFile(F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png");
 		if (score % 10 == 0)
 		{
-			float acceleration = score / 5000.0f;
+			float acceleration = score / 7500.0f;
 			if (animeSpeed - acceleration > 0)
 				animeSpeed -= acceleration;
 		}
