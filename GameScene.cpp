@@ -115,14 +115,27 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 体力ゲージの初期設定
+	auto lifeLabel = Label::createWithTTF("LIFE:", F_FONTS + ENG_FONTS,36);
+	lifeLabel->setPosition(origin.x + lifeLabel->getContentSize().width / 2,
+		visibleSize.height + origin.y - lifeLabel->getContentSize().height / 2);
+	lifeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	this->addChild(lifeLabel, 3);
+
 	Sprite* life[MAX_LIFE];
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
 		life[i] = Sprite::create(F_IMAGE + LIFE_ICON);
-		life[i]->setScale((visibleSize.height + origin.y) / (6*life[i]->getContentSize().height));
-		life[i]->setPosition(visibleSize.width / 2 + origin.x - (life[i]->getContentSize().width*life[i]->getScale()*(i - 1)),
-			visibleSize.height + origin.y - (scoreLabel->getContentSize().height + life[i]->getContentSize().height*life[i]->getScale()));
+		life[i]->setScale((visibleSize.height + origin.y) / (6 * life[i]->getContentSize().height));
+		life[i]->setPosition(lifeLabel->getContentSize().width + origin.x + (life[i]->getContentSize().width * life[i]->getScale() * (MAX_LIFE - i)),
+			visibleSize.height + origin.y - life[i]->getContentSize().height * life[i]->getScale() /2 );
+		life[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		life[i]->setTag(20+i);
+		auto rollSpeed = 0.5f;
+		auto angle = 25;
+		auto rollLeft = RotateTo::create(rollSpeed,angle);
+		auto rollRight = RotateTo::create(rollSpeed,-angle);
+		auto sequence = Sequence::create(rollLeft, rollRight, NULL);
+		life[i]->runAction(RepeatForever::create(sequence));
 		this->addChild(life[i],3);
 	}
 
@@ -210,6 +223,8 @@ void Game::main(float dt)
 	backGround2->setPosition(pos2);
 #pragma endregion
 
+#pragma region ジャンプ処理
+
 	if (jumpFlag)
 	{
 		auto mainCharacterPosY = mainCharacter->getPositionY();
@@ -223,12 +238,16 @@ void Game::main(float dt)
 		}
 	}
 
+#pragma endregion
+
 #pragma region エネミーの行動
 	auto enemy = this->getChildByTag(31);
 	auto enemyPos = enemy->getPosition();
 	enemyPos -= 2 * moveVec*enemySpeed;
 	if (enemyPos.x + enemy->getContentSize().width < 0){
 		enemyPos = Vec2(enemyDefaultPos);
+		if (int rand = random(0,2) == 2)
+			enemyPos.y *= 3.5f;
 		enemySpeed = setEnemySpeed();
 		++score;
 		hitOnlyOne = false;
@@ -308,7 +327,7 @@ void Game::setCharacterDefault()
 		if (score % 10 == 0)
 		{
 			float acceleration = score / 7500.0f;
-			if (animeSpeed - acceleration > 0)
+			if (animeSpeed - acceleration > 0.02f)
 				animeSpeed -= acceleration;
 		}
 		animation->setDelayPerUnit(animeSpeed);

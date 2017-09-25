@@ -25,6 +25,7 @@ const std::string ANGRY = "怒.png";
 const std::string SAD = "哀.png";
 const std::string LAUGH = "楽.png";
 const std::string LIFE_ICON = "Life.png";
+const std::string LIFE_WINDOW = "LifeWindow.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
 const std::string CHARACTER_DAMAGE = "Damage.png";
 const std::string DEFAULT = "0.png";

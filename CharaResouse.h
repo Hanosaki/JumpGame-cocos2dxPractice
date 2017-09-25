@@ -28,6 +28,7 @@ extern const std::string LAUGH;
 extern const std::string END_BUTTON;
 extern const std::string ENEMY_IMAGE;
 extern const std::string LIFE_ICON;
+extern const std::string LIFE_WINDOW;
 extern const std::string OP_BACK_GROUND;
 extern const std::string CHARACTER_DAMAGE;
 extern const std::string DEFAULT;

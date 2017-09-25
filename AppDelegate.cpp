@@ -1,7 +1,9 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "Title.h"
+#include "SimpleAudioEngine.h"
 
+using namespace CocosDenshion;
 USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
@@ -50,7 +52,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -77,7 +79,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-	//auto scene = Title::creatScene();
 	auto scene = Title::creatScene();
     // run
     director->runWithScene(scene);
@@ -90,7 +91,7 @@ void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 
     // if you use SimpleAudioEngine, it must be paused
-    // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+    SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
@@ -98,5 +99,5 @@ void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
 
     // if you use SimpleAudioEngine, it must resume here
-    // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+    SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }
