@@ -61,7 +61,7 @@ bool Credit::init()
 	this->addChild(creditLabel, 3);
 #pragma endregion
 
-#pragma region 使用素材表記
+#pragma region 使用素材製作者表記
 
 #pragma region イラストレーター
 

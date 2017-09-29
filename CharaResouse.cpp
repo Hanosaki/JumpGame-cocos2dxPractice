@@ -8,6 +8,7 @@ const std::string F_IMAGE = "image/";
 const std::string F_MAIN_CHARACTER = "mainCharacter/";
 const std::string F_RIVAL = "rival/";
 const std::string F_RUN = "run/";
+const std::string F_VOICE = "voice/";
 #pragma endregion
 
 #pragma region フォント名
@@ -39,6 +40,7 @@ const std::string TEXT_WINDOW = "TextWindow.png";
 const char* BUTTON_SE = "SE/Button.mp3";
 const char* START_VOICE = "SE/Start.mp3";
 const char* DAMEGE_VOICE = "SE/Damage.mp3";
+const char* RIVAL_VOICE = "SE/attack.mp3";
 const char* MAIN_BGM = "BGM/main.mp3";
 const char* OP_BGM = "BGM/op.mp3";
 #pragma endregion
@@ -67,6 +69,7 @@ const std::string PAINTER_KEY = "painter";
 const std::string VOICE_ACTER_KEY = "voiceActer";
 const std::string CHARACTER_NAME_KEY = "name";
 const std::string CHARACTER_WORD_KEY = "conversation";
+const std::string VOICE_KEY = "voice";
 const char* HI_SCORE_KEY = "hiScore";
 const char* SCORE_KEY = "score";
 #pragma endregion

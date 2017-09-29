@@ -56,6 +56,7 @@ bool Game::init()
 
 #pragma region SEのプリロード
 	SimpleAudioEngine::getInstance()->preloadEffect(DAMEGE_VOICE);
+	SimpleAudioEngine::getInstance()->preloadEffect(RIVAL_VOICE);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 #pragma endregion
 
@@ -163,7 +164,9 @@ bool Game::init()
 
 #pragma region 繰り返し処理の初期設定
 	this->runAction(Sequence::create(DelayTime::create(1.5f), 
-		CallFunc::create([this](){this->schedule(schedule_selector(Game::main),GAME_SPEED); }), NULL));
+		CallFunc::create([this](){
+		SimpleAudioEngine::getInstance()->playEffect(RIVAL_VOICE);
+		this->schedule(schedule_selector(Game::main), GAME_SPEED); }),NULL));
 #pragma endregion
 
 	return true;

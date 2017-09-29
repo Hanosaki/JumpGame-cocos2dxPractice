@@ -10,8 +10,8 @@ extern const std::string F_IMAGE;
 extern const std::string F_MAIN_CHARACTER;
 extern const std::string F_RIVAL;
 extern const std::string F_RUN;
+extern const std::string F_VOICE;
 #pragma endregion
-
 
 #pragma region フォント名
 extern const std::string JPN_FONTS;
@@ -45,6 +45,7 @@ extern const std::string TEXT_WINDOW;
 extern const char* BUTTON_SE;
 extern const char* START_VOICE;
 extern const char* DAMEGE_VOICE;
+extern const char* RIVAL_VOICE;
 extern const char* MAIN_BGM;
 extern const char* OP_BGM;
 #pragma endregion
@@ -78,6 +79,7 @@ extern const std::string PAINTER_KEY;
 extern const std::string VOICE_ACTER_KEY;
 extern const std::string CHARACTER_NAME_KEY;
 extern const std::string CHARACTER_WORD_KEY;
+extern const std::string VOICE_KEY;
 extern const char* HI_SCORE_KEY;
 extern const char* SCORE_KEY;
 #pragma endregion

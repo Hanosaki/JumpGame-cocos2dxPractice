@@ -12,6 +12,9 @@ const int ZERO = 0;
 const int NAME_FONT_SIZE = 32;
 const int WORD_FONT_SIZE = 48;
 
+char* setVoiceName(ValueMap valueMap);
+void playVoice(ValueMap valueMap);
+
 Scene* Introduction::creatScene()
 {
 	auto scene = Scene::create();
@@ -28,14 +31,13 @@ bool Introduction::init()
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
 
-	/*画像配置処理*/
-
 #pragma region BGMのプリロード
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(OP_BGM);
+	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
 #pragma endregion
 
 #pragma region SEのプリロード
-	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
+	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
 	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
 #pragma endregion
 
@@ -65,6 +67,7 @@ bool Introduction::init()
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width / 6 + origin.x, Vec2::ZERO.y);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+	characterImage->setOpacity(128);
 	characterImage->setFlippedX(true);
 	characterImage->setTag(1);
 	this->addChild(characterImage, 2);
@@ -78,6 +81,7 @@ bool Introduction::init()
 		0);
 	rivalImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	rivalImage->setTag(2);
+	rivalImage->setOpacity(128);
 	this->addChild(rivalImage, 2);
 #pragma endregion
 
@@ -88,8 +92,6 @@ bool Introduction::init()
 		textWindow->getContentSize().height / 2);
 	this->addChild(textWindow, 3);
 #pragma endregion
-
-	/*以下，表示テキスト処理*/
 
 #pragma region テキスト読み込み
 	FileRead fileRead;
@@ -119,11 +121,19 @@ bool Introduction::init()
 	textWindow->addChild(characterWordLabel, 1);
 #pragma endregion
 
-	/*以上，テキスト表示処理*/
+#pragma region 音声データをプリロード
+
+	for (int i = 0; i < characterWordVector.size(); ++i)
+	{
+		characterWordMap = characterWordVector.at(i).asValueMap();
+		if (strcmp(setVoiceName(characterWordMap),"0"))
+			SimpleAudioEngine::getInstance()->preloadEffect(setVoiceName(characterWordMap));
+	}
+
+#pragma endregion
 
 	// 画面遷移の為のディレイ
 	this->runAction(Sequence::create(DelayTime::create(1.5f), NULL));
-
 
 #pragma region リスナー登録
 	auto listner = EventListenerTouchOneByOne::create();
@@ -133,11 +143,11 @@ bool Introduction::init()
 #pragma endregion
 
 	SimpleAudioEngine::getInstance()->playBackgroundMusic(OP_BGM, false);
-
-	spriteChange();
-
+	
 	return true;
 }
+
+#pragma region アクションパート呼び出し
 
 void Introduction::callGameScene(Ref* Sender)
 {
@@ -145,19 +155,25 @@ void Introduction::callGameScene(Ref* Sender)
 	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::creatScene(), Color3B::WHITE));
 }
 
+#pragma endregion
+
 bool Introduction::onTouchBegan(Touch* touch, Event* event)
 {
 	return true;
 }
 
+#pragma region 台詞進行
+
 void Introduction::onTouchEnded(Touch* touch, Event*event)
 {
 	if (wordsNum < characterWordVector.size() - 1){
 		++wordsNum;
+		SimpleAudioEngine::getInstance()->stopAllEffects();
 		characterWordMap = characterWordVector.at(wordsNum).asValueMap();
 		auto name = characterWordMap.at(CHARACTER_NAME_KEY).asString();
 		characterNameLabel->setString(name);
 		spriteChange();
+		playVoice(characterWordMap);
 	}
 	else{
 		Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::creatScene(), Color3B::WHITE));
@@ -167,6 +183,10 @@ void Introduction::onTouchEnded(Touch* touch, Event*event)
 	characterWordLabel->setString(word);
 
 }
+
+#pragma endregion
+
+#pragma region キャラグラ切り替え
 
 void Introduction::spriteChange()
 {
@@ -190,4 +210,29 @@ void Introduction::spriteChange()
 		characterImage->setOpacity(128);
 	}
 
+}
+
+#pragma endregion
+
+char* setVoiceName(ValueMap valueMap)
+{
+	std::string tmpVoiceName = "";
+	if (valueMap.at(CHARACTER_NAME_KEY).asString() == RIVAL_NAME)
+	{
+		if (valueMap.at(VOICE_KEY).asString() != "")
+			tmpVoiceName = F_RIVAL + F_VOICE + valueMap.at(VOICE_KEY).asString() + ".mp3";
+	}
+	else if (valueMap.at(CHARACTER_NAME_KEY).asString() == MAIN_CHARACTER_NAME)
+	{
+		if (valueMap.at(VOICE_KEY).asString() != "")
+			tmpVoiceName = F_MAIN_CHARACTER + F_VOICE + valueMap.at(VOICE_KEY).asString() + ".mp3";
+	}
+	char* voiceName = new char[tmpVoiceName.size() + 1];
+	std::strcpy(voiceName, tmpVoiceName.c_str());
+	return voiceName;
+}
+
+void playVoice(ValueMap valueMap)
+{
+	SimpleAudioEngine::getInstance()->playEffect(setVoiceName(valueMap));
 }
