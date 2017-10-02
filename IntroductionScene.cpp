@@ -103,21 +103,21 @@ bool Introduction::init()
 #pragma region 名前表示用ラベルの設定
 	characterNameLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_NAME_KEY).asString()
 		, F_FONTS + JPN_FONTS, NAME_FONT_SIZE);
-	characterNameLabel->setPosition(Vec2(characterNameLabel->getContentSize().width / 2,
-		textWindow->getContentSize().height - characterNameLabel->getContentSize().height / 2));
-	characterNameLabel->setColor(Color3B::BLACK);
+	characterNameLabel->setPosition(Vec2(NAME_FONT_SIZE+NAME_FONT_SIZE/3,
+		textWindow->getContentSize().height - NAME_FONT_SIZE / 2));
+	characterNameLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+	characterNameLabel->setColor(Color3B::WHITE);
 	textWindow->addChild(characterNameLabel, 1);
 #pragma endregion
 
 #pragma region セリフ用ラベルの設定
 	characterWordLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_WORD_KEY).asString()
-		, F_FONTS + JPN_FONTS, 48);
-	characterWordLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-	characterWordLabel->setPosition(characterNameLabel->getPositionX(),
+		, F_FONTS + JPN_FONTS, WORD_FONT_SIZE);
+	characterWordLabel->setPosition(WORD_FONT_SIZE,
 		characterNameLabel->getPositionY()
-		- (characterWordLabel->getContentSize().height / 2
-		+ characterNameLabel->getContentSize().height / 2));
-	characterWordLabel->setColor(Color3B::BLACK);
+		- (WORD_FONT_SIZE / 2 + characterNameLabel->getContentSize().height));
+	characterWordLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+	characterWordLabel->setColor(Color3B::WHITE);
 	textWindow->addChild(characterWordLabel, 1);
 #pragma endregion
 
@@ -214,6 +214,8 @@ void Introduction::spriteChange()
 
 #pragma endregion
 
+#pragma region 音声ファイル名読み込み
+
 char* setVoiceName(ValueMap valueMap)
 {
 	std::string tmpVoiceName = "";
@@ -231,6 +233,8 @@ char* setVoiceName(ValueMap valueMap)
 	std::strcpy(voiceName, tmpVoiceName.c_str());
 	return voiceName;
 }
+
+#pragma endregion
 
 void playVoice(ValueMap valueMap)
 {

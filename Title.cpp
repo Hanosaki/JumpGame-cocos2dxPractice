@@ -51,7 +51,6 @@ bool Title::init()
 	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
 	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
 		, visibleSize.height / 2 + origin.y);
-	characterImage->setOpacity(200);
 	characterImage->setTag(2);
 	this->addChild(characterImage, 3);
 #pragma endregion
