@@ -60,6 +60,13 @@ bool Game::init()
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 #pragma endregion
 
+#pragma region テクスチャ読み込み
+	auto cache = Director::getInstance()->getTextureCache();
+	cache->addImage(F_MAIN_CHARACTER + CHARACTER_JUMP);
+	cache->addImage(F_MAIN_CHARACTER + CHARACTER_DAMAGE);
+	cache->addImage(F_MAIN_CHARACTER + F_IMAGE + SAD);
+#pragma endregion
+
 #pragma region スコア生成
 	scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), F_FONTS+ENG_FONTS, 36);
 	scoreLabel->setPosition(Vec2(visibleSize.width / 2 +origin.x , visibleSize.height + origin.y - scoreLabel->getContentSize().height));
