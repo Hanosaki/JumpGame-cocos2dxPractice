@@ -40,7 +40,7 @@ extern const std::string TEXT_WINDOW;
 
 #pragma region 音素材名
 /// <summary>
-/// 音素材ファイルの指定，引数がchar*の為char*を使用
+/// 音素材ファイルのパス
 /// </summary>
 extern const char* BUTTON_SE;
 extern const char* START_VOICE;

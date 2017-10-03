@@ -11,9 +11,11 @@ USING_NS_CC;
 const int ZERO = 0;
 const int NAME_FONT_SIZE = 32;
 const int WORD_FONT_SIZE = 48;
+const int Game::ANIMATION_MAX_NUM = 17;
 
 char* setVoiceName(ValueMap valueMap);
 void playVoice(ValueMap valueMap);
+void setTextureCache(Menu* menu);
 
 Scene* Introduction::creatScene()
 {
@@ -59,6 +61,7 @@ bool Introduction::init()
 	skipItem->setPosition(visibleSize.width + origin.x,visibleSize.height + origin.y);
 	auto skipMenu = Menu::create(skipItem, NULL);
 	skipMenu->setPosition(Vec2::ZERO);
+	skipMenu->setVisible(false);
 	this->addChild(skipMenu, 3);
 #pragma endregion
 
@@ -131,6 +134,9 @@ bool Introduction::init()
 	}
 
 #pragma endregion
+
+	// アクションパート用テクスチャ読み込み
+	setTextureCache(skipMenu);
 
 	// 画面遷移の為のディレイ
 	this->runAction(Sequence::create(DelayTime::create(1.5f), NULL));
@@ -229,8 +235,8 @@ char* setVoiceName(ValueMap valueMap)
 		if (valueMap.at(VOICE_KEY).asString() != "")
 			tmpVoiceName = F_MAIN_CHARACTER + F_VOICE + valueMap.at(VOICE_KEY).asString() + ".mp3";
 	}
-	char* voiceName = new char[tmpVoiceName.size() + 1];
-	std::strcpy(voiceName, tmpVoiceName.c_str());
+	char* voiceName = new char[tmpVoiceName.length() + 1];
+	memcpy(voiceName, tmpVoiceName.c_str(), tmpVoiceName.length() + 1);
 	return voiceName;
 }
 
@@ -239,4 +245,16 @@ char* setVoiceName(ValueMap valueMap)
 void playVoice(ValueMap valueMap)
 {
 	SimpleAudioEngine::getInstance()->playEffect(setVoiceName(valueMap));
+}
+
+void setTextureCache(Menu* menu)
+{
+	auto cache = Director::getInstance()->getTextureCache();
+	cache->addImage(F_MAIN_CHARACTER + CHARACTER_JUMP);
+	cache->addImage(F_MAIN_CHARACTER + CHARACTER_DAMAGE);
+	cache->addImage(F_MAIN_CHARACTER + F_IMAGE + SAD);
+	for (int i = 0; i < Game::ANIMATION_MAX_NUM; ++i)
+		cache->addImage(F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png");
+	if (cache)//テクスチャの読み込みが完了したらスキップボタン表示
+		menu->setVisible(true);
 }

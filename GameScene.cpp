@@ -10,7 +10,6 @@ USING_NS_CC;
 void nextScene();
 float setEnemySpeed();
 
-const int Game::ANIMATION_MAX_NUM = 17;
 const int Game::MAX_LIFE = 3;
 const int Game::DEFOULT_GRAVITY_POWER = 0;
 const int Game::DEFOULT_JUMP_POWER = 23;
@@ -58,13 +57,6 @@ bool Game::init()
 	SimpleAudioEngine::getInstance()->preloadEffect(DAMEGE_VOICE);
 	SimpleAudioEngine::getInstance()->preloadEffect(RIVAL_VOICE);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
-#pragma endregion
-
-#pragma region テクスチャ読み込み
-	auto cache = Director::getInstance()->getTextureCache();
-	cache->addImage(F_MAIN_CHARACTER + CHARACTER_JUMP);
-	cache->addImage(F_MAIN_CHARACTER + CHARACTER_DAMAGE);
-	cache->addImage(F_MAIN_CHARACTER + F_IMAGE + SAD);
 #pragma endregion
 
 #pragma region スコア生成
