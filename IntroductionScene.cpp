@@ -11,11 +11,9 @@ USING_NS_CC;
 const int ZERO = 0;
 const int NAME_FONT_SIZE = 32;
 const int WORD_FONT_SIZE = 48;
-const int Game::ANIMATION_MAX_NUM = 17;
 
 char* setVoiceName(ValueMap valueMap);
 void playVoice(ValueMap valueMap);
-void setTextureCache(Menu* menu);
 
 Scene* Introduction::creatScene()
 {
@@ -33,15 +31,9 @@ bool Introduction::init()
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
 
-#pragma region BGMのプリロード
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(OP_BGM);
+	/*音量設定*/
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
-#pragma endregion
-
-#pragma region SEのプリロード
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
-	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
-#pragma endregion
 
 #pragma region 背景設定
 	auto backGround = Sprite::create(F_IMAGE +OP_BACK_GROUND);
@@ -61,7 +53,6 @@ bool Introduction::init()
 	skipItem->setPosition(visibleSize.width + origin.x,visibleSize.height + origin.y);
 	auto skipMenu = Menu::create(skipItem, NULL);
 	skipMenu->setPosition(Vec2::ZERO);
-	skipMenu->setVisible(false);
 	this->addChild(skipMenu, 3);
 #pragma endregion
 
@@ -134,9 +125,6 @@ bool Introduction::init()
 	}
 
 #pragma endregion
-
-	// アクションパート用テクスチャ読み込み
-	setTextureCache(skipMenu);
 
 	// 画面遷移の為のディレイ
 	this->runAction(Sequence::create(DelayTime::create(1.5f), NULL));
@@ -245,16 +233,4 @@ char* setVoiceName(ValueMap valueMap)
 void playVoice(ValueMap valueMap)
 {
 	SimpleAudioEngine::getInstance()->playEffect(setVoiceName(valueMap));
-}
-
-void setTextureCache(Menu* menu)
-{
-	auto cache = Director::getInstance()->getTextureCache();
-	cache->addImage(F_MAIN_CHARACTER + CHARACTER_JUMP);
-	cache->addImage(F_MAIN_CHARACTER + CHARACTER_DAMAGE);
-	cache->addImage(F_MAIN_CHARACTER + F_IMAGE + SAD);
-	for (int i = 0; i < Game::ANIMATION_MAX_NUM; ++i)
-		cache->addImage(F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png");
-	if (cache)//テクスチャの読み込みが完了したらスキップボタン表示
-		menu->setVisible(true);
 }

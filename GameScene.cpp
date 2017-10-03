@@ -48,16 +48,9 @@ bool Game::init()
 	outOfWindowBGPos = Vec2(-visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 #pragma endregion
 
-#pragma region BGMのプリロード
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(MAIN_BGM);
+	/*音量設定*/
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
-#pragma endregion
-
-#pragma region SEのプリロード
-	SimpleAudioEngine::getInstance()->preloadEffect(DAMEGE_VOICE);
-	SimpleAudioEngine::getInstance()->preloadEffect(RIVAL_VOICE);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
-#pragma endregion
 
 #pragma region スコア生成
 	scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), F_FONTS+ENG_FONTS, 36);
@@ -157,15 +150,15 @@ bool Game::init()
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
-#pragma region BGM再生
+	// BGM再生
 	SimpleAudioEngine::getInstance()->playBackgroundMusic(MAIN_BGM,true);
-#pragma endregion
+	//SE再生
+	SimpleAudioEngine::getInstance()->playEffect(RIVAL_VOICE);
+
 
 #pragma region 繰り返し処理の初期設定
 	this->runAction(Sequence::create(DelayTime::create(1.5f), 
-		CallFunc::create([this](){
-		SimpleAudioEngine::getInstance()->playEffect(RIVAL_VOICE);
-		this->schedule(schedule_selector(Game::main), GAME_SPEED); }),NULL));
+		CallFunc::create([this](){this->schedule(schedule_selector(Game::main), GAME_SPEED); }),NULL));
 #pragma endregion
 
 	return true;
@@ -324,7 +317,7 @@ void Game::setCharacterDefault()
 	try{
 		/*主人公走りモーション設定*/
 		auto animation = Animation::create();
-		for (int i = 0; i < ANIMATION_MAX_NUM; ++i)
+		for (int i = 0; i < Parameter::ANIMATION_MAX_NUM; ++i)
 			animation->addSpriteFrameWithFile(F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png");
 		if (score % 10 == 0)
 		{

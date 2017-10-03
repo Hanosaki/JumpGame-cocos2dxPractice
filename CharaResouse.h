@@ -53,8 +53,10 @@ extern const char* OP_BGM;
 #pragma region テキスト
 extern const std::string COMPOSERS;
 extern const std::string CREDIT;
+extern const std::string RESOUCE_ERROR;
 extern const std::string GAME_OVER_TEXT;
 extern const std::string HI_SCORE_TEXT;
+extern const std::string LOAD_MESSEAGE;
 extern const std::string NEW_RECORED_TEXT;
 extern const std::string NOW_RESULT_TEXT;
 extern const std::string PAINTERS;
@@ -90,6 +92,14 @@ extern const char* SCORE_KEY;
 /// </summary>
 extern const char* CONVERSATION_LIST;
 extern const char* CREDIT_LIST;
+#pragma endregion
+
+#pragma region ゲームパラメータ
+class Parameter
+{
+public:
+	static const int ANIMATION_MAX_NUM;
+};
 #pragma endregion
 
 #endif

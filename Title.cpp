@@ -29,8 +29,6 @@ bool Title::init()
 
 #pragma region SE用意
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
-	SimpleAudioEngine::getInstance()->preloadEffect(START_VOICE);
-	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
 #pragma endregion
 
 #pragma region タイトル表記
