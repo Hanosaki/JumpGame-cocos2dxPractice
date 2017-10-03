@@ -127,4 +127,5 @@ void Title::callCreditScene(Ref* Sender)
 void Title::closeGame(Ref* sender)
 {
 	Director::getInstance()->end();
+	Director::getInstance()->purgeCachedData();//キャッシュ開放
 }
