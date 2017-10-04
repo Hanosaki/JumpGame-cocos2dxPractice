@@ -46,6 +46,8 @@ extern const char* BUTTON_SE;
 extern const char* START_VOICE;
 extern const char* DAMEGE_VOICE;
 extern const char* RIVAL_VOICE;
+extern const char* LOAD_SE;
+extern const char* TITLE_BGM;
 extern const char* MAIN_BGM;
 extern const char* OP_BGM;
 #pragma endregion

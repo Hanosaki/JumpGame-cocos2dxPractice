@@ -27,9 +27,10 @@ bool Title::init()
 	const auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
 #pragma endregion
 
-#pragma region SE用意
+	//BGM設定
+	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
+	// SE設定
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
-#pragma endregion
 
 #pragma region タイトル表記
 	auto titleLabel = Label::createWithTTF(TITLE_TEXT, F_FONTS + JPN_FONTS, 64);
@@ -101,6 +102,8 @@ bool Title::init()
 	this->addChild(endMenu, 2);
 #pragma endregion
 
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(TITLE_BGM);
+
 	return true;
 }
 
@@ -119,6 +122,7 @@ void Title::callOPScene(Ref* Sender)
 
 void Title::callCreditScene(Ref* Sender)
 {
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::creatScene(), Color3B::WHITE));
@@ -126,6 +130,7 @@ void Title::callCreditScene(Ref* Sender)
 
 void Title::closeGame(Ref* sender)
 {
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 	Director::getInstance()->end();
 	Director::getInstance()->purgeCachedData();//キャッシュ開放
 }

@@ -25,14 +25,20 @@ bool ResouceLoad::init()
 	progress = 0;
 	animationNum = 0;
 
+	//ロード画面SEのプリロード
+	SimpleAudioEngine::getInstance()->preloadEffect(LOAD_SE);
+
 	progressLabel = Label::createWithTTF(LOAD_MESSEAGE + 
 		StringUtils::toString(progress) + "%",F_FONTS + JPN_FONTS,48);
 	progressLabel->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	this->addChild(progressLabel);
 
+	SimpleAudioEngine::getInstance()->playEffect(LOAD_SE);
+
 #pragma region 音素材のプリロード
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(OP_BGM);
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(MAIN_BGM);
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(TITLE_BGM);
 	SimpleAudioEngine::getInstance()->preloadEffect(DAMEGE_VOICE);
 	SimpleAudioEngine::getInstance()->preloadEffect(RIVAL_VOICE);
 	SimpleAudioEngine::getInstance()->preloadEffect(START_VOICE);
@@ -46,6 +52,7 @@ bool ResouceLoad::init()
 	cache->addImage(F_MAIN_CHARACTER + CHARACTER_DAMAGE);
 	cache->addImage(F_MAIN_CHARACTER + F_IMAGE + SAD);
 	cache->addImage(F_RIVAL + SMILE);
+	cache->addImage(F_IMAGE + OP_BACK_GROUND);
 
 	this->schedule(schedule_selector(ResouceLoad::setResouseCache), 0.1f,Parameter::ANIMATION_MAX_NUM-1,0.01f);
 

@@ -213,6 +213,7 @@ void Introduction::spriteChange()
 char* setVoiceName(ValueMap valueMap)
 {
 	std::string tmpVoiceName = "";
+
 	if (valueMap.at(CHARACTER_NAME_KEY).asString() == RIVAL_NAME)
 	{
 		if (valueMap.at(VOICE_KEY).asString() != "")

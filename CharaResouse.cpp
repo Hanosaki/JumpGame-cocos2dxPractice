@@ -41,6 +41,8 @@ const char* BUTTON_SE = "SE/Button.mp3";
 const char* START_VOICE = "SE/Start.mp3";
 const char* DAMEGE_VOICE = "SE/Damage.mp3";
 const char* RIVAL_VOICE = "SE/Attack.mp3";
+const char* LOAD_SE = "SE/Loading.mp3";
+const char* TITLE_BGM = "BGM/Title.mp3";
 const char* MAIN_BGM = "BGM/main.mp3";
 const char* OP_BGM = "BGM/op.mp3";
 #pragma endregion
