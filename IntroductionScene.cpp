@@ -15,7 +15,7 @@ const int WORD_FONT_SIZE = 48;
 char* setVoiceName(ValueMap valueMap);
 void playVoice(ValueMap valueMap);
 
-Scene* Introduction::creatScene()
+Scene* Introduction::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = Introduction::create();
@@ -145,8 +145,9 @@ bool Introduction::init()
 
 void Introduction::callGameScene(Ref* Sender)
 {
+	SimpleAudioEngine::getInstance()->stopAllEffects();
 	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
-	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::creatScene(), Color3B::WHITE));
+	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::createScene(), Color3B::WHITE));
 }
 
 #pragma endregion
@@ -170,7 +171,7 @@ void Introduction::onTouchEnded(Touch* touch, Event*event)
 		playVoice(characterWordMap);
 	}
 	else{
-		Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::creatScene(), Color3B::WHITE));
+		Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::createScene(), Color3B::WHITE));
 	}
 
 	auto word = characterWordMap.at(CHARACTER_WORD_KEY).asString();

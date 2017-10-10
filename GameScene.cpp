@@ -17,7 +17,7 @@ const float Game::ADD_GRAVITY = 0.1f;
 const float Game::MOVE_SPEED = 8.5f;
 const float Game::GAME_SPEED = 0.02f;
 
-Scene* Game::creatScene()
+Scene* Game::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = Game::create();
@@ -49,7 +49,7 @@ bool Game::init()
 #pragma endregion
 
 	/*音量設定*/
-	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
+	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 
 #pragma region スコア生成
@@ -179,13 +179,23 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 				jumpFlag = !jumpFlag;
 				jumpPower = DEFOULT_JUMP_POWER;
 				gravityPoewr = DEFOULT_GRAVITY_POWER;
+				SimpleAudioEngine::getInstance()->stopAllEffects();
+				srand((unsigned int)time(NULL));
+				int num = rand() % 2;
+				switch (num)
+				{
+				case 0:SimpleAudioEngine::getInstance()->playEffect(JUMP_SE); break;
+				case 1:SimpleAudioEngine::getInstance()->playEffect(JUMP_SE2); break;
+				default:
+					break;
+				}
 			}
 		}
 			
 	}
 	else
 	{
-		Director::getInstance()->replaceScene(GameOver::creatScene());
+		Director::getInstance()->replaceScene(GameOver::createScene());
 	}
 #pragma endregion
 	return true;
@@ -241,7 +251,9 @@ void Game::main(float dt)
 	enemyPos -= 2 * moveVec*enemySpeed;
 	if (enemyPos.x + enemy->getContentSize().width < 0){
 		enemyPos = Vec2(enemyDefaultPos);
-		if (int rand = random(0,2) == 2)
+		srand((unsigned int)time(NULL));
+		int num = rand() % 3;
+		if (num == 2)
 			enemyPos.y *= 3.5f;
 		enemySpeed = setEnemySpeed();
 		++score;
@@ -262,6 +274,7 @@ void Game::main(float dt)
 
 	if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
 		jumpPower = 0;
+		SimpleAudioEngine::getInstance()->stopAllEffects();
 		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
 		auto characterImage = (Sprite*)this->getChildByTag(2);
 		mainCharacter->stopActionByTag(101);
@@ -345,12 +358,13 @@ void Game::setCharacterDefault()
 
 float setEnemySpeed()
 {
-	float enemySpeed = random(1.0f, 2.0f);
+	srand((unsigned int)time(NULL));
+	float enemySpeed = random(1.0f, 2.1f);
 	return enemySpeed;
 }
 
 void nextScene()
 {
-	Director::getInstance()->replaceScene(GameOver::creatScene());
+	Director::getInstance()->replaceScene(GameOver::createScene());
 }
 

@@ -8,7 +8,7 @@
 using namespace CocosDenshion;
 USING_NS_CC;
 
-Scene* Title::creatScene()
+Scene* Title::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = Title::create();
@@ -28,9 +28,9 @@ bool Title::init()
 #pragma endregion
 
 	//BGM設定
-	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
+	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.4f);
 	// SE設定
-	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
+	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
 
 #pragma region タイトル表記
 	auto titleLabel = Label::createWithTTF(TITLE_TEXT, F_FONTS + JPN_FONTS, 64);
@@ -117,7 +117,7 @@ void Title::callOPScene(Ref* Sender)
 {
 	SimpleAudioEngine::getInstance()->playEffect(START_VOICE);
 	characterImageChange();
-	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Introduction::creatScene(), Color3B::BLACK));
+	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Introduction::createScene(), Color3B::BLACK));
 }
 
 void Title::callCreditScene(Ref* Sender)
@@ -125,7 +125,7 @@ void Title::callCreditScene(Ref* Sender)
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
 	characterImageChange();
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::creatScene(), Color3B::WHITE));
+	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::createScene(), Color3B::WHITE));
 }
 
 void Title::closeGame(Ref* sender)

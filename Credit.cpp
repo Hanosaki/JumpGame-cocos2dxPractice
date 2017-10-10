@@ -16,7 +16,7 @@ const int Credit::NUM_OF_VOICE_ACTERS = 2;
 const int Credit::NUM_OF_COMPOSERS = 1;
 #pragma endregion
 
-Scene* Credit::creatScene()
+Scene* Credit::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = Credit::create();
@@ -133,6 +133,6 @@ Label* setCredit(ValueMap valueMap,std::string columnName)
 
 bool Credit::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event*event)
 {
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Title::creatScene(), Color3B::WHITE));
+	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Title::createScene(), Color3B::WHITE));
 	return true;
 }

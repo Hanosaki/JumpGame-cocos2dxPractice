@@ -7,7 +7,7 @@
 using namespace CocosDenshion;
 USING_NS_CC;
 
-Scene* GameOver::creatScene()
+Scene* GameOver::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = GameOver::create();
@@ -20,6 +20,8 @@ bool GameOver::init()
 	if (!Layer::init())
 		return false;
 
+	SimpleAudioEngine::getInstance()->preloadEffect(GAMEOVER_SE);
+
 #pragma region 変数宣言
 	auto directer = Director::getInstance();
 	auto visibleSize = directer->getVisibleSize();
@@ -30,11 +32,11 @@ bool GameOver::init()
 
 #pragma region ゲームオーバー表記
 	auto gameOverLabel = Label::createWithTTF(NOW_RESULT_TEXT, F_FONTS + JPN_FONTS, 64);
-	gameOverLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (4 * visibleSize.height) / 5);
+	gameOverLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (4 * visibleSize.height) / 5);
 	this->addChild(gameOverLabel, 4);
 
 	auto scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), F_FONTS + ENG_FONTS, 64);
-	scoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (3 * visibleSize.height / 5));
+	scoreLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (3 * visibleSize.height / 5));
 	this->addChild(scoreLabel, 4);
 
 	Label* hiScoreLabel;
@@ -47,13 +49,13 @@ bool GameOver::init()
 	else
 		hiScoreLabel = Label::createWithTTF(HI_SCORE_TEXT + StringUtils::toString(hiScore),
 		F_FONTS + ENG_FONTS, 64);
-	hiScoreLabel->setPosition(origin.x + visibleSize.width / 3, origin.y + (2 * visibleSize.height / 5));
+	hiScoreLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (2 * visibleSize.height / 5));
 	this->addChild(hiScoreLabel, 4);
 #pragma endregion
 
 #pragma region pushEnd表記
 	auto pushText = Label::createWithTTF(RETF_RUN_TITLE_TEXT, F_FONTS + ENG_FONTS, 24);
-	pushText->setPosition(origin.x + visibleSize.width / 3, origin.y + visibleSize.height / 8);
+	pushText->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 8);
 	this->addChild(pushText, 4);
 
 	auto fadeOut = FadeTo::create(0.9f, 64);
@@ -75,7 +77,6 @@ bool GameOver::init()
 	charactorImage->setScale((visibleSize.height + origin.y) / (charactorImage->getContentSize().height));
 	charactorImage->setPosition(visibleSize.width + origin.x - (charactorImage->getContentSize().width / 4 * charactorImage->getScale())
 		, visibleSize.height / 2 + origin.y);
-	charactorImage->setOpacity(200);
 	charactorImage->setTag(2);
 	this->addChild(charactorImage, 3);
 #pragma endregion
@@ -86,12 +87,13 @@ bool GameOver::init()
 	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
+	SimpleAudioEngine::getInstance()->playEffect(GAMEOVER_SE);
 
 	return true;
 }
 
 bool GameOver::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Title::creatScene(), Color3B::WHITE));
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Title::createScene(), Color3B::WHITE));
 	return true;
 }

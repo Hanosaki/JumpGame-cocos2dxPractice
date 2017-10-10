@@ -7,7 +7,7 @@
 using namespace CocosDenshion;
 USING_NS_CC;
 
-Scene* ResouceLoad::creatScene()
+Scene* ResouceLoad::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = ResouceLoad::create();
@@ -44,6 +44,7 @@ bool ResouceLoad::init()
 	SimpleAudioEngine::getInstance()->preloadEffect(START_VOICE);
 	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
 	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
+	SimpleAudioEngine::getInstance()->preloadEffect(JUMP_SE);
 #pragma endregion
 
 	/*画像データのキャッシュ作成*/
@@ -69,7 +70,7 @@ void ResouceLoad::setResouseCache(float dt)
 	if (animationNum >= Parameter::ANIMATION_MAX_NUM-1)
 	{
 		if (cache)
-			Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Title::creatScene(), Color3B::WHITE));
+			Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Title::createScene(), Color3B::WHITE));
 		else
 			progressLabel->setString(RESOUCE_ERROR);
 	}

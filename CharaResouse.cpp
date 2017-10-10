@@ -40,10 +40,14 @@ const std::string TEXT_WINDOW = "TextWindow.png";
 const char* BUTTON_SE = "SE/Button.mp3";
 const char* START_VOICE = "SE/Start.mp3";
 const char* DAMEGE_VOICE = "SE/Damage.mp3";
-const char* RIVAL_VOICE = "SE/Attack.mp3";
+const char* GAMEOVER_SE = "SE/GameOver.mp3";
+const char* JUMP_SE = "SE/Jump.mp3";
+const char* JUMP_SE2 = "SE/Jump2.mp3";
 const char* LOAD_SE = "SE/Loading.mp3";
-const char* TITLE_BGM = "BGM/Title.mp3";
+const char* LOGO_SE = "SE/Logo.mp3";
+const char* RIVAL_VOICE = "SE/Attack.mp3";
 const char* MAIN_BGM = "BGM/main.mp3";
+const char* TITLE_BGM = "BGM/Title.mp3";
 const char* OP_BGM = "BGM/op.mp3";
 #pragma endregion
 
@@ -53,6 +57,7 @@ const std::string CREDIT = "くれじっと";
 const std::string RESOUCE_ERROR = "ファイルを正常に読み込むことが出来ませんでした．\n開発者にお問い合わせください．";
 const std::string GAME_OVER_TEXT = "ゲームオーバー...";
 const std::string LOAD_MESSEAGE = "ロード中…";
+const std::string LOGO = "ゆかりさんゲーム制作委員会";
 const std::string HI_SCORE_TEXT = "HIScore:";
 const std::string PAINTERS = "イラスト素材";
 const std::string NEW_RECORED_TEXT = "  NEW RECORED!";

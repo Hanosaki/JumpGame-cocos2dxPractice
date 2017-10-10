@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "ResouceLoadScene.h"
+#include "Splash.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
@@ -79,7 +80,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-	auto scene = ResouceLoad::creatScene();
+	auto scene = Splash::createScene();
     // run
     director->runWithScene(scene);
 
