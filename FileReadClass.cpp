@@ -13,11 +13,11 @@ ValueVector FileRead::readCSV(const char* fileName)
 	ValueVector keys = this->split(balls.at(ZERO).asString(), ",");
 	for (int i = 1; i < (int)balls.size(); ++i)
 	{
-		ValueMap words;
-		ValueVector wordList = this->split(balls.at(i).asString(), ",");
-		for (int j = ZERO; j < (int)wordList.size(); ++j)
-			words[keys.at(j).asString()] = wordList.at(j).asString();
-		charcterWords.push_back((Value)words);
+		ValueMap wordMap;
+		ValueVector wordVector = this->split(balls.at(i).asString(), ",");
+		for (int j = ZERO; j < (int)wordVector.size(); ++j)
+			wordMap[keys.at(j).asString()] = wordVector.at(j).asString();
+		charcterWords.push_back((Value)wordMap);
 	}
 	return charcterWords;
 }

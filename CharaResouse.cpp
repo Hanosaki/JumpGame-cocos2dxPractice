@@ -90,4 +90,9 @@ const char* CREDIT_LIST = "csv/credit.csv";
 
 #pragma region ゲームパラメータ
 const int Parameter::ANIMATION_MAX_NUM = 17;
+const int Parameter::VERY_SMALL = 24;
+const int Parameter::SMALL = 36;
+const int Parameter::MIDDLE = 48;
+const int Parameter::LARGE = 64;
+
 #pragma endregion

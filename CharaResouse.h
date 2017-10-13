@@ -106,6 +106,10 @@ class Parameter
 {
 public:
 	static const int ANIMATION_MAX_NUM;
+	static const int VERY_SMALL;
+	static const int SMALL;
+	static const int MIDDLE;
+	static const int LARGE;
 };
 #pragma endregion
 

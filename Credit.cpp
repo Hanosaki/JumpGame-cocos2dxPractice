@@ -42,7 +42,7 @@ bool Credit::init()
 #pragma region 背景設定
 	auto backGround = Sprite::create(F_IMAGE + BACK_GROUND);
 	backGround->setContentSize(Director::getInstance()->getVisibleSize());
-	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	this->addChild(backGround, 1);
 #pragma endregion
 
@@ -65,7 +65,7 @@ bool Credit::init()
 
 #pragma region イラストレーター
 
-	auto painters = Label::createWithTTF(PAINTERS, F_FONTS + JPN_FONTS, 36);
+	auto painters = Label::createWithTTF(PAINTERS, F_FONTS + JPN_FONTS, Parameter::SMALL);
 	painters->setPosition(origin.x + visibleSize.width / 6, origin.y + (3 * visibleSize.height) / 5);
 	Label* painter[NUM_OF_PAINTERS];
 	FileRead fileRead;
@@ -83,7 +83,7 @@ bool Credit::init()
 #pragma endregion
 
 #pragma region コンポーサー
-	auto composers = Label::createWithTTF(COMPOSERS, F_FONTS + JPN_FONTS, 36);
+	auto composers = Label::createWithTTF(COMPOSERS, F_FONTS + JPN_FONTS, Parameter::SMALL);
 	composers->setPosition(origin.x + visibleSize.width / 2.5, origin.y + (3 * visibleSize.height) / 5);
 	Label* composer[NUM_OF_COMPOSERS];
 	for (int i = 0; i < NUM_OF_COMPOSERS; ++i)
@@ -98,7 +98,7 @@ bool Credit::init()
 #pragma endregion
 
 #pragma region ボイスアクター
-	auto voiceActors = Label::createWithTTF(VOICE_ACTERS, F_FONTS + JPN_FONTS, 36);
+	auto voiceActors = Label::createWithTTF(VOICE_ACTERS, F_FONTS + JPN_FONTS, Parameter::SMALL);
 	voiceActors->setPosition(origin.x + visibleSize.width - voiceActors->getContentSize().width,
 		origin.y + (3 * visibleSize.height) / 5);
 	Label* voiceActor[NUM_OF_VOICE_ACTERS];
@@ -127,7 +127,7 @@ bool Credit::init()
 
 Label* setCredit(ValueMap valueMap,std::string columnName)
 {
-	auto label = Label::createWithTTF(PILLS + valueMap.at(columnName).asString(), F_FONTS + JPN_FONTS, 24);
+	auto label = Label::createWithTTF(PILLS + valueMap.at(columnName).asString(), F_FONTS + JPN_FONTS, Parameter::VERY_SMALL);
 	return label;
 }
 
