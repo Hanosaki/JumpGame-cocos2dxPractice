@@ -34,11 +34,6 @@ public:
 	cocos2d::Vec2 outOfWindowBGPos; //画面外に生成される背景スプライトの初期位置
 	cocos2d::Label* scoreLabel;//スコア表示用ラベル
 	static const int MAX_LIFE;
-	static const int DEFOULT_GRAVITY_POWER;
-	static const int DEFOULT_JUMP_POWER;
-	static const float ADD_GRAVITY;
-	static const float MOVE_SPEED;
-	static const float GAME_SPEED;
 };
 
 #endif

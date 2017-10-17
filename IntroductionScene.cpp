@@ -37,8 +37,8 @@ bool Introduction::init()
 
 #pragma region 背景設定
 	auto backGround = Sprite::create(F_IMAGE +OP_BACK_GROUND);
-	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
-	backGround->setContentSize(Size(visibleSize.width + origin.x, visibleSize.height + origin.y));
+	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
+	backGround->setContentSize(Size(origin.x + visibleSize.width, origin.y + visibleSize.height));
 	this->addChild(backGround, 1);
 #pragma endregion
 
@@ -50,7 +50,7 @@ bool Introduction::init()
 
 	auto skipItem = MenuItemSprite::create(skipButton, selectedSkipButton, CC_CALLBACK_1(Introduction::callGameScene, this));
 	skipItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-	skipItem->setPosition(visibleSize.width + origin.x,visibleSize.height + origin.y);
+	skipItem->setPosition(origin.x + visibleSize.width, origin.y + visibleSize.height);
 	auto skipMenu = Menu::create(skipItem, NULL);
 	skipMenu->setPosition(Vec2::ZERO);
 	this->addChild(skipMenu, 3);
@@ -58,8 +58,8 @@ bool Introduction::init()
 
 #pragma region 主人公立ち絵
 	auto characterImage = Sprite::create(F_MAIN_CHARACTER + F_IMAGE + SMILE);
-	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
-	characterImage->setPosition(visibleSize.width / 6 + origin.x, Vec2::ZERO.y);
+	characterImage->setScale((origin.y +  visibleSize.height) / (characterImage->getContentSize().height));
+	characterImage->setPosition(origin.x + visibleSize.width / 6, Vec2::ZERO.y);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	characterImage->setOpacity(128);
 	characterImage->setFlippedX(true);
@@ -70,7 +70,7 @@ bool Introduction::init()
 #pragma region ライバル立ち絵
 	auto rivalImage = Sprite::create(F_RIVAL + SMILE);
 	rivalImage->setScale(characterImage->getScale());
-	rivalImage->setPosition(visibleSize.width + origin.x
+	rivalImage->setPosition(origin.x + visibleSize.width
 		- rivalImage->getContentSize().width / 2 * rivalImage->getScale(),
 		0);
 	rivalImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -81,8 +81,8 @@ bool Introduction::init()
 
 #pragma region テキストウィンドウの設定
 	auto textWindow = Sprite::create(F_IMAGE + TEXT_WINDOW);
-	textWindow->setContentSize(Size(visibleSize.width + origin.x, visibleSize.height / 5 + origin.y));
-	textWindow->setPosition(visibleSize.width / 2 + origin.x,
+	textWindow->setContentSize(Size(origin.x + visibleSize.width, origin.y + visibleSize.height / 5));
+	textWindow->setPosition(origin.x + visibleSize.width / 2,
 		textWindow->getContentSize().height / 2);
 	this->addChild(textWindow, 3);
 #pragma endregion
@@ -107,8 +107,7 @@ bool Introduction::init()
 #pragma region セリフ用ラベルの設定
 	characterWordLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_WORD_KEY).asString()
 		, F_FONTS + JPN_FONTS, WORD_FONT_SIZE);
-	characterWordLabel->setPosition(WORD_FONT_SIZE,
-		characterNameLabel->getPositionY()
+	characterWordLabel->setPosition(WORD_FONT_SIZE, characterNameLabel->getPositionY()
 		- (WORD_FONT_SIZE / 2 + characterNameLabel->getContentSize().height));
 	characterWordLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	characterWordLabel->setColor(Color3B::WHITE);

@@ -30,8 +30,9 @@ bool Credit::init()
 		return false;
 
 #pragma region 変数宣言
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto origin = Director::getInstance()->getVisibleOrigin();
+	auto directer = Director::getInstance();
+	auto visibleSize = directer->getVisibleSize();
+	auto origin = directer->getVisibleOrigin();
 #pragma endregion
 
 #pragma region SE用意
@@ -41,7 +42,7 @@ bool Credit::init()
 
 #pragma region 背景設定
 	auto backGround = Sprite::create(F_IMAGE + BACK_GROUND);
-	backGround->setContentSize(Director::getInstance()->getVisibleSize());
+	backGround->setContentSize(directer->getVisibleSize());
 	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	this->addChild(backGround, 1);
 #pragma endregion
@@ -118,7 +119,7 @@ bool Credit::init()
 #pragma region クリックリスナー
 	auto listner = EventListenerTouchOneByOne::create();
 	listner->onTouchBegan = CC_CALLBACK_2(Credit::onTouchBegan, this);
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
+	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
 	return true;

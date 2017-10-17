@@ -101,6 +101,8 @@ extern const char* CONVERSATION_LIST;
 extern const char* CREDIT_LIST;
 #pragma endregion
 
+
+
 #pragma region ゲームパラメータ
 class Parameter
 {
@@ -110,6 +112,12 @@ public:
 	static const int SMALL;
 	static const int MIDDLE;
 	static const int LARGE;
+	static const int DEFOULT_GRAVITY_POWER;
+	static const int DEFOULT_JUMP_POWER;
+	static const float ADD_GRAVITY;
+	static const float MOVE_SPEED;
+	static const float GAME_SPEED;
+
 };
 #pragma endregion
 

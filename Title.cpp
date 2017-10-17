@@ -22,8 +22,9 @@ bool Title::init()
 		return false;
 
 #pragma region 変数宣言
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto origin = Director::getInstance()->getVisibleOrigin();
+	auto directer = Director::getInstance();
+	auto visibleSize = directer->getVisibleSize();
+	auto origin = directer->getVisibleOrigin();
 	const auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
 #pragma endregion
 
@@ -40,16 +41,16 @@ bool Title::init()
 
 #pragma region 背景設定
 	auto backGround = Sprite::create(F_IMAGE + BACK_GROUND);
-	backGround->setContentSize(Director::getInstance()->getVisibleSize());
-	backGround->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	backGround->setContentSize(directer->getVisibleSize());
+	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	this->addChild(backGround, 1);
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
 	auto characterImage = Sprite::create(F_MAIN_CHARACTER + F_IMAGE + SMILE);
-	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
-	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
-		, visibleSize.height / 2 + origin.y);
+	characterImage->setScale((origin.y + visibleSize.height) / (characterImage->getContentSize().height));
+	characterImage->setPosition(origin.x + visibleSize.width - (characterImage->getContentSize().width / 4 * characterImage->getScale())
+		, origin.y + visibleSize.height / 2);
 	characterImage->setTag(2);
 	this->addChild(characterImage, 3);
 #pragma endregion

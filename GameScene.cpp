@@ -11,11 +11,6 @@ void nextScene();
 float setEnemySpeed();
 
 const int Game::MAX_LIFE = 3;
-const int Game::DEFOULT_GRAVITY_POWER = 0;
-const int Game::DEFOULT_JUMP_POWER = 23;
-const float Game::ADD_GRAVITY = 0.1f;
-const float Game::MOVE_SPEED = 8.5f;
-const float Game::GAME_SPEED = 0.02f;
 
 Scene* Game::createScene()
 {
@@ -158,7 +153,7 @@ bool Game::init()
 
 #pragma region 繰り返し処理の初期設定
 	this->runAction(Sequence::create(DelayTime::create(1.5f), 
-		CallFunc::create([this](){this->schedule(schedule_selector(Game::main), GAME_SPEED); }),NULL));
+		CallFunc::create([this](){this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED); }),NULL));
 #pragma endregion
 
 	return true;
@@ -177,8 +172,8 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 				mainCharacter->stopActionByTag(101);
 				mainCharacter->setTexture(F_MAIN_CHARACTER + CHARACTER_JUMP);
 				jumpFlag = !jumpFlag;
-				jumpPower = DEFOULT_JUMP_POWER;
-				gravityPoewr = DEFOULT_GRAVITY_POWER;
+				jumpPower = Parameter::DEFOULT_JUMP_POWER;
+				gravityPoewr = Parameter::DEFOULT_GRAVITY_POWER;
 				SimpleAudioEngine::getInstance()->stopAllEffects();
 				srand((unsigned int)time(NULL));
 				int num = rand() % 2;
@@ -205,7 +200,7 @@ void Game::main(float dt)
 {
 #pragma region 変数の宣言
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
-	auto moveVec = Vec2(MOVE_SPEED, 0);
+	auto moveVec = Vec2(Parameter::MOVE_SPEED, 0);
 	auto backGround = this->getChildByTag(51);
 	auto backGround2 = this->getChildByTag(52);
 #pragma endregion
@@ -234,7 +229,7 @@ void Game::main(float dt)
 	{
 		auto mainCharacterPosY = mainCharacter->getPositionY();
 		mainCharacterPosY += jumpPower - (9.8f * gravityPoewr);
-		gravityPoewr += ADD_GRAVITY;
+		gravityPoewr += Parameter::ADD_GRAVITY;
 		mainCharacter->setPositionY(mainCharacterPosY);
 		if (mainCharacterPosY <= defoultPos.y)
 		{
@@ -303,10 +298,10 @@ void Game::main(float dt)
 	if (score != 0 && score % 10 == 0 && !speedChangeFlag)
 	{
 		float acceleration = score / 5000.0f;
-		if (GAME_SPEED - acceleration > 0)
+		if (Parameter::GAME_SPEED - acceleration > 0)
 		{
 			speedChangeFlag = !speedChangeFlag;
-			this->schedule(schedule_selector(Game::main), GAME_SPEED - acceleration);
+			this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED - acceleration);
 		}
 	}
 	else if (score % 11 == 0 && speedChangeFlag)

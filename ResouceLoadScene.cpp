@@ -30,7 +30,7 @@ bool ResouceLoad::init()
 
 	progressLabel = Label::createWithTTF(LOAD_MESSEAGE + 
 		StringUtils::toString(progress) + "%",F_FONTS + JPN_FONTS,48);
-	progressLabel->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	progressLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	this->addChild(progressLabel);
 
 	SimpleAudioEngine::getInstance()->playEffect(LOAD_SE);
