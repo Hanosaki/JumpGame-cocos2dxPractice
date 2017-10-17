@@ -103,7 +103,7 @@ bool Title::init()
 	this->addChild(endMenu, 2);
 #pragma endregion
 
-	SimpleAudioEngine::getInstance()->playBackgroundMusic(TITLE_BGM);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(TITLE_BGM, true);
 
 	return true;
 }

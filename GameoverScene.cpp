@@ -94,6 +94,7 @@ bool GameOver::init()
 
 bool GameOver::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
+	SimpleAudioEngine::getInstance()->stopAllEffects();
 	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Title::createScene(), Color3B::WHITE));
 	return true;
 }
