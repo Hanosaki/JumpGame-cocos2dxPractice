@@ -99,24 +99,6 @@ bool Game::init()
 
 #pragma endregion
 
-#pragma region 再開ボタン
-
-	//auto resumeButton = Sprite::create(F_IMAGE + RESUME_BUTTON);
-	//auto selectedResumeButton = Sprite::create(F_IMAGE + RESUME_BUTTON);
-	//selectedResumeButton->setOpacity(128);
-
-	//auto resumeItem = MenuItemSprite::create(pauseButton, selectedResumeButton, CC_CALLBACK_1(Game::pauseGame, this));
-	//resumeItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-	//resumeItem->setPosition(origin.x + visibleSize.width, origin.y + visibleSize.height);
-	//auto resumeMenu = Menu::create(resumeItem, NULL);
-	//resumeMenu->setPosition(Vec2::ZERO);
-	//resumeMenu->setVisible(false);
-	//resumeMenu->setTag(42);
-	//this->addChild(resumeMenu, 2);
-
-#pragma endregion
-
-
 #pragma region 主人公当たり判定
 	auto hitDeterminationBox = Rect(0, 0,
 		mainCharacter->getContentSize().width / 5.5f * mainCharacter->getScaleX(),
@@ -211,7 +193,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 				jumpFlag = !jumpFlag;
 				jumpPower = Parameter::DEFOULT_JUMP_POWER;
 				gravityPoewr = Parameter::DEFOULT_GRAVITY_POWER;
-				SimpleAudioEngine::getInstance()->stopAllEffects();
+				//SimpleAudioEngine::getInstance()->stopAllEffects();
 				srand((unsigned int)time(NULL));
 				int num = rand() % 2;
 				switch (num)
@@ -285,8 +267,17 @@ void Game::main(float dt)
 		enemyPos = Vec2(enemyDefaultPos);
 		srand((unsigned int)time(NULL));
 		int num = rand() % 3;
+		auto characterImage = (Sprite*)this->getChildByTag(2);
 		if (num == 2)
+		{
 			enemyPos.y *= 3.5f;
+			characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + ANGRY);
+		}
+		else
+		{
+			characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + SURPRISE);
+			SimpleAudioEngine::getInstance()->playEffect(ALERT_SE);
+		}
 		enemySpeed = setEnemySpeed();
 		++score;
 		hitOnlyOne = false;
@@ -400,7 +391,6 @@ void Game::pauseGame(Ref* Sender)
 void Game::setCharacterDefault()
 {
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
-
 	try{
 		/*主人公走りモーション設定*/
 		auto animation = Animation::create();
@@ -419,9 +409,6 @@ void Game::setCharacterDefault()
 		runAnimation->setTag(101);
 		mainCharacter->runAction(runAnimation);
 		/*主人公走りモーション設定*/
-
-		if (auto characterImage = (Sprite*)getChildByTag(2))
-			characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + ANGRY);
 	}
 	catch (char* messeage)
 	{

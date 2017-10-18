@@ -131,6 +131,6 @@ void Title::callCreditScene(Ref* Sender)
 void Title::closeGame(Ref* sender)
 {
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	Director::getInstance()->end();
 	Director::getInstance()->purgeCachedData();//キャッシュ開放
+	Director::getInstance()->end();
 }

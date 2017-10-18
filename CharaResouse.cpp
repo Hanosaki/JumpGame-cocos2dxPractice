@@ -24,6 +24,7 @@ const std::string ENEMY_IMAGE = "enemy.png";
 const std::string SMILE = "喜.png";
 const std::string ANGRY = "怒.png";
 const std::string SAD = "哀.png";
+const std::string SURPRISE = "驚.png";
 const std::string LAUGH = "楽.png";
 const std::string LIFE_ICON = "Life.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
@@ -38,6 +39,7 @@ const std::string TEXT_WINDOW = "TextWindow.png";
 #pragma endregion
 
 #pragma region 音素材名
+const char* ALERT_SE = "SE/Alert.mp3";
 const char* BUTTON_SE = "SE/Button.mp3";
 const char* START_VOICE = "SE/Start.mp3";
 const char* DAMEGE_VOICE = "SE/Damage.mp3";

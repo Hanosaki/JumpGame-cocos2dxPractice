@@ -24,6 +24,7 @@ extern const std::string CREDIT_IMAGE;
 extern const std::string SMILE;
 extern const std::string ANGRY;
 extern const std::string SAD;
+extern const std::string SURPRISE;
 extern const std::string LAUGH;
 extern const std::string END_BUTTON;
 extern const std::string ENEMY_IMAGE;
@@ -43,6 +44,7 @@ extern const std::string TEXT_WINDOW;
 /// <summary>
 /// 音素材ファイルのパス
 /// </summary>
+extern const char* ALERT_SE;
 extern const char* BUTTON_SE;
 extern const char* START_VOICE;
 extern const char* DAMEGE_VOICE;
