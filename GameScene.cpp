@@ -1,6 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "GameScene.h"
 #include "GameoverScene.h"
+#include "GenericFunction.h"
 #include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
 
@@ -33,11 +34,12 @@ bool Game::init()
 	score = 0;
 	hitCounter = 0;
 	animeSpeed = 0.04f;
-	enemySpeed = setEnemySpeed();;
+	enemySpeed = 1.2f;
 	endFlag = false;
 	hitOnlyOne = false;
 	jumpFlag = false;
 	speedChangeFlag = false;
+	isPause = false;
 	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
 	outOfWindowBGPos = Vec2(-visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
@@ -77,7 +79,44 @@ bool Game::init()
 #pragma endregion
 
 	setCharacterDefault();
-	
+
+#pragma region ポーズボタン
+
+	auto pauseButton = Sprite::create(F_IMAGE + PAUSE_BUTTON);
+	pauseButton->setTag(41);
+	auto selectedPauseButton = Sprite::create(F_IMAGE + PAUSE_BUTTON);
+	selectedPauseButton->setOpacity(128);
+	selectedPauseButton->setTag(42);
+
+	auto pauseItem = MenuItemSprite::create(pauseButton, selectedPauseButton, CC_CALLBACK_1(Game::pauseGame, this));
+	pauseItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+	pauseItem->setPosition(origin.x + visibleSize.width, origin.y + visibleSize.height);
+	pauseItem->setTag(43);
+	auto pauseMenu = Menu::create(pauseItem, NULL);
+	pauseMenu->setPosition(Vec2::ZERO);
+	pauseMenu->setTag(44);
+	this->addChild(pauseMenu, 2);
+
+#pragma endregion
+
+#pragma region 再開ボタン
+
+	//auto resumeButton = Sprite::create(F_IMAGE + RESUME_BUTTON);
+	//auto selectedResumeButton = Sprite::create(F_IMAGE + RESUME_BUTTON);
+	//selectedResumeButton->setOpacity(128);
+
+	//auto resumeItem = MenuItemSprite::create(pauseButton, selectedResumeButton, CC_CALLBACK_1(Game::pauseGame, this));
+	//resumeItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+	//resumeItem->setPosition(origin.x + visibleSize.width, origin.y + visibleSize.height);
+	//auto resumeMenu = Menu::create(resumeItem, NULL);
+	//resumeMenu->setPosition(Vec2::ZERO);
+	//resumeMenu->setVisible(false);
+	//resumeMenu->setTag(42);
+	//this->addChild(resumeMenu, 2);
+
+#pragma endregion
+
+
 #pragma region 主人公当たり判定
 	auto hitDeterminationBox = Rect(0, 0,
 		mainCharacter->getContentSize().width / 5.5f * mainCharacter->getScaleX(),
@@ -93,10 +132,8 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(F_MAIN_CHARACTER+ F_IMAGE + ANGRY);
-	characterImage->setScale((visibleSize.height + origin.y) / (characterImage->getContentSize().height));
-	characterImage->setPosition(visibleSize.width + origin.x - (characterImage->getContentSize().width / 4 * characterImage->getScale())
-						,visibleSize.height/2+origin.y) ;
+	GenericFunc genericFunc;
+	auto characterImage = genericFunc.setMainCharacterImage(visibleSize, origin, F_MAIN_CHARACTER + F_IMAGE + ANGRY);
 	characterImage->setOpacity(200);
 	characterImage->setTag(2);
 	this->addChild(characterImage,3);
@@ -147,9 +184,9 @@ bool Game::init()
 
 	// BGM再生
 	SimpleAudioEngine::getInstance()->playBackgroundMusic(MAIN_BGM,true);
+
 	//SE再生
 	SimpleAudioEngine::getInstance()->playEffect(RIVAL_VOICE);
-
 
 #pragma region 繰り返し処理の初期設定
 	this->runAction(Sequence::create(DelayTime::create(1.5f), 
@@ -283,11 +320,14 @@ void Game::main(float dt)
 			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 			gameoverLabel->setScale(3.0f);
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			this->addChild(gameoverLabel);
+			this->addChild(gameoverLabel,4);
 			this->unschedule(schedule_selector(Game::main));
 			mainCharacter->stopAllActions();
 			UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
 			UserDefault::getInstance()->flush();
+			auto menu = (Menu*)this->getChildByTag(44);
+			menu->setEnabled(false);
+			menu->setOpacity(false);
 			endFlag = true;
 		}
 		hitOnlyOne = true;
@@ -301,6 +341,7 @@ void Game::main(float dt)
 		if (Parameter::GAME_SPEED - acceleration > 0)
 		{
 			speedChangeFlag = !speedChangeFlag;
+			this->unschedule(schedule_selector(Game::main));
 			this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED - acceleration);
 		}
 	}
@@ -316,6 +357,44 @@ void Game::main(float dt)
 	}
 #pragma endregion
 }
+
+#pragma region ポーズボタンの処理
+
+void Game::pauseGame(Ref* Sender)
+{
+	auto mainCharacter = (Sprite*)this->getChildByTag(1);
+	Sprite* life[MAX_LIFE];
+	auto menuItem = (MenuItem*)this->getChildByTag(44)->getChildByTag(43);
+	auto selectedButtonImage = (Sprite*)menuItem->getChildByTag(42);
+	auto buttonImage = (Sprite*)menuItem->getChildByTag(41);
+	if (!isPause)
+	{
+		this->pause();
+		mainCharacter->pause();
+		for (int i = 0; i < MAX_LIFE; ++i)
+		{
+			life[i] = (Sprite*)this->getChildByTag(20 + i);
+			life[i]->pause();
+		}
+		buttonImage->setTexture(F_IMAGE + RESUME_BUTTON);
+		selectedButtonImage->setTexture(F_IMAGE + RESUME_BUTTON);
+	}
+	else
+	{
+		this->resume();
+		mainCharacter->resume();
+		for (int i = 0; i < MAX_LIFE; ++i)
+		{
+			life[i] = (Sprite*)this->getChildByTag(20 + i);
+			life[i]->resume();
+		}
+		buttonImage->setTexture(F_IMAGE + PAUSE_BUTTON);
+		selectedButtonImage->setTexture(F_IMAGE + PAUSE_BUTTON);
+	}
+	isPause = !isPause;
+}
+
+#pragma endregion
 
 #pragma region 主人公初期化設定
 void Game::setCharacterDefault()
@@ -362,4 +441,3 @@ void nextScene()
 {
 	Director::getInstance()->replaceScene(GameOver::createScene());
 }
-

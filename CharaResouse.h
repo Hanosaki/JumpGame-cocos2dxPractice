@@ -28,8 +28,9 @@ extern const std::string LAUGH;
 extern const std::string END_BUTTON;
 extern const std::string ENEMY_IMAGE;
 extern const std::string LIFE_ICON;
-extern const std::string LIFE_WINDOW;
 extern const std::string OP_BACK_GROUND;
+extern const std::string PAUSE_BUTTON;
+extern const std::string RESUME_BUTTON;
 extern const std::string CHARACTER_DAMAGE;
 extern const std::string DEFAULT;
 extern const std::string CHARACTER_JUMP;
@@ -59,7 +60,6 @@ extern const char* OP_BGM;
 #pragma region テキスト
 extern const std::string COMPOSERS;
 extern const std::string CREDIT;
-extern const std::string RESOUCE_ERROR;
 extern const std::string GAME_OVER_TEXT;
 extern const std::string HI_SCORE_TEXT;
 extern const std::string LOAD_MESSEAGE;
@@ -70,6 +70,7 @@ extern const std::string PAINTERS;
 extern const std::string PILLS;
 extern const std::string SCORE_TEXT;
 extern const std::string TITLE_TEXT;
+extern const std::string RESOUCE_ERROR;
 extern const std::string RETF_RUN_TITLE_TEXT;
 extern const std::string RIVAL_NAME;
 extern const std::string VOICE_ACTERS;
@@ -100,8 +101,6 @@ extern const char* SCORE_KEY;
 extern const char* CONVERSATION_LIST;
 extern const char* CREDIT_LIST;
 #pragma endregion
-
-
 
 #pragma region ゲームパラメータ
 class Parameter

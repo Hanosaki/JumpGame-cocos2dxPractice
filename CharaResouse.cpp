@@ -26,8 +26,9 @@ const std::string ANGRY = "怒.png";
 const std::string SAD = "哀.png";
 const std::string LAUGH = "楽.png";
 const std::string LIFE_ICON = "Life.png";
-const std::string LIFE_WINDOW = "LifeWindow.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
+const std::string PAUSE_BUTTON = "PauseButton.png";
+const std::string RESUME_BUTTON = "ResumeButton.png";
 const std::string CHARACTER_DAMAGE = "Damage.png";
 const std::string DEFAULT = "0.png";
 const std::string CHARACTER_JUMP = "Jump.png";
@@ -54,7 +55,6 @@ const char* OP_BGM = "BGM/op.mp3";
 #pragma region テキスト
 const std::string COMPOSERS = "BGM";
 const std::string CREDIT = "くれじっと";
-const std::string RESOUCE_ERROR = "ファイルを正常に読み込むことが出来ませんでした．\n開発者にお問い合わせください．";
 const std::string GAME_OVER_TEXT = "ゲームオーバー...";
 const std::string LOAD_MESSEAGE = "ロード中…";
 const std::string LOGO = "ゆかりさんゲーム制作委員会";
@@ -65,6 +65,7 @@ const std::string NOW_RESULT_TEXT = "こんかいのきろく";
 const std::string PILLS = "●";
 const std::string SCORE_TEXT = "Score:";
 const std::string TITLE_TEXT = "ゆかりさんDASH！";
+const std::string RESOUCE_ERROR = "ファイルを正常に読み込むことが出来ませんでした．\n開発者にお問い合わせください．";
 const std::string RETF_RUN_TITLE_TEXT = "Push retrun title...";
 const std::string RIVAL_NAME = "きりたん";
 const std::string VOICE_ACTERS = "キャラクターボイス";
@@ -99,5 +100,4 @@ const int Parameter::DEFOULT_JUMP_POWER = 23;
 const float Parameter::ADD_GRAVITY = 0.1f;
 const float Parameter::MOVE_SPEED = 8.5f;
 const float Parameter::GAME_SPEED = 0.02f;
-
 #pragma endregion

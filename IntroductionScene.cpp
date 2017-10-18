@@ -135,7 +135,7 @@ bool Introduction::init()
 	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
-	SimpleAudioEngine::getInstance()->playBackgroundMusic(OP_BGM, false);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(OP_BGM, true);
 	
 	return true;
 }

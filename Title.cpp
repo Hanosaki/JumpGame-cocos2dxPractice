@@ -2,6 +2,7 @@
 #include "Title.h"
 #include "Credit.h"
 #include "CharaResouse.h"
+#include "GenericFunction.h"
 #include "SimpleAudioEngine.h"
 #include "IntroductionScene.h"
 
@@ -26,6 +27,7 @@ bool Title::init()
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
 	const auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
+	GenericFunc genericFunc;
 #pragma endregion
 
 	//BGM設定
@@ -35,7 +37,7 @@ bool Title::init()
 
 #pragma region タイトル表記
 	auto titleLabel = Label::createWithTTF(TITLE_TEXT, F_FONTS + JPN_FONTS, 64);
-	titleLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (4 * visibleSize.height) / 5);
+	titleLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - titleLabel->getContentSize().height*2);
 	this->addChild(titleLabel, 4);
 #pragma endregion
 
@@ -47,10 +49,7 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = Sprite::create(F_MAIN_CHARACTER + F_IMAGE + SMILE);
-	characterImage->setScale((origin.y + visibleSize.height) / (characterImage->getContentSize().height));
-	characterImage->setPosition(origin.x + visibleSize.width - (characterImage->getContentSize().width / 4 * characterImage->getScale())
-		, origin.y + visibleSize.height / 2);
+	auto characterImage = genericFunc.setMainCharacterImage(visibleSize,origin, F_MAIN_CHARACTER +F_IMAGE + SMILE);
 	characterImage->setTag(2);
 	this->addChild(characterImage, 3);
 #pragma endregion

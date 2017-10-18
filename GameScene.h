@@ -16,6 +16,7 @@ public:
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 	void main(float dt);
 	void setCharacterDefault();
+	void pauseGame(Ref* Sender);
 
 	int score; //敵が画面端に到達した回数
 	int hitCounter; //敵と接触した回数
@@ -27,6 +28,7 @@ public:
 	bool hitOnlyOne; //一度の接触で一度しか接触しないためのフラグ
 	bool jumpFlag;//ジャンプ状態のフラグ
 	bool speedChangeFlag;//ゲーム速度変更時のフラグ
+	bool isPause;//ポーズ状態のフラグ
 	cocos2d::Size visibleSize;//画面サイズ
 	cocos2d::Vec2 origin;
 	cocos2d::Vec2 defoultPos; //主人公スプライトの初期位置

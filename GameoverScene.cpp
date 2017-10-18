@@ -1,6 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "GameoverScene.h"
 #include "CharaResouse.h"
+#include "GenericFunction.h"
 #include "SimpleAudioEngine.h"
 #include "Title.h"
 
@@ -73,10 +74,8 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto charactorImage = Sprite::create(F_MAIN_CHARACTER + F_IMAGE + SAD);
-	charactorImage->setScale((origin.y + visibleSize.height) / (charactorImage->getContentSize().height));
-	charactorImage->setPosition(origin.x + visibleSize.width - (charactorImage->getContentSize().width / 4 * charactorImage->getScale())
-		, visibleSize.height / 2 + origin.y);
+	GenericFunc genericFunc;
+	auto charactorImage = genericFunc.setMainCharacterImage(visibleSize, origin, F_MAIN_CHARACTER + F_IMAGE + SAD);
 	charactorImage->setTag(2);
 	this->addChild(charactorImage, 3);
 #pragma endregion

@@ -2,6 +2,7 @@
 #include "HelloWorldScene.h"
 #include "ResouceLoadScene.h"
 #include "Splash.h"
+#include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
 
 using namespace CocosDenshion;
@@ -45,9 +46,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("JumpGameForAdult", cocos2d::Rect(0, 0, basicSize.width, basicSize.height));
+        glview = GLViewImpl::createWithRect(TITLE_TEXT, cocos2d::Rect(0, 0, basicSize.width, basicSize.height));
 #else
-        glview = GLViewImpl::create("JumpGameForAdult");
+        glview = GLViewImpl::create(TITLE_TEXT);
 #endif
         director->setOpenGLView(glview);
     }
