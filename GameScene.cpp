@@ -193,7 +193,6 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 				jumpFlag = !jumpFlag;
 				jumpPower = Parameter::DEFOULT_JUMP_POWER;
 				gravityPoewr = Parameter::DEFOULT_GRAVITY_POWER;
-				//SimpleAudioEngine::getInstance()->stopAllEffects();
 				srand((unsigned int)time(NULL));
 				int num = rand() % 2;
 				switch (num)
@@ -203,6 +202,8 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 				default:
 					break;
 				}
+				auto characterImage = (Sprite*)this->getChildByTag(2);
+				characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + ANGRY);
 			}
 		}
 			
