@@ -32,12 +32,14 @@ extern const std::string LIFE_ICON;
 extern const std::string OP_BACK_GROUND;
 extern const std::string PAUSE_BUTTON;
 extern const std::string RESUME_BUTTON;
+extern const std::string RETURN_BUTTON;
 extern const std::string CHARACTER_DAMAGE;
 extern const std::string DEFAULT;
 extern const std::string CHARACTER_JUMP;
 extern const std::string SKIP_BUTTON;
 extern const std::string START_BUTTON;
 extern const std::string TEXT_WINDOW;
+extern const std::string HOW_TO_BUTTON;
 #pragma endregion
 
 #pragma region 音素材名

@@ -30,12 +30,14 @@ const std::string LIFE_ICON = "Life.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
 const std::string PAUSE_BUTTON = "PauseButton.png";
 const std::string RESUME_BUTTON = "ResumeButton.png";
+const std::string RETURN_BUTTON = "ReturnButton.png";
 const std::string CHARACTER_DAMAGE = "Damage.png";
 const std::string DEFAULT = "0.png";
 const std::string CHARACTER_JUMP = "Jump.png";
 const std::string SKIP_BUTTON = "SkipButton.png";
 const std::string START_BUTTON = "StartButton.png";
 const std::string TEXT_WINDOW = "TextWindow.png";
+const std::string HOW_TO_BUTTON = "HowToButton.png";
 #pragma endregion
 
 #pragma region 音素材名

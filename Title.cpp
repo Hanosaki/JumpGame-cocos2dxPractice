@@ -5,6 +5,7 @@
 #include "GenericFunction.h"
 #include "SimpleAudioEngine.h"
 #include "IntroductionScene.h"
+#include "HowToScene.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -65,9 +66,25 @@ bool Title::init()
 	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callOPScene, this));
 	auto startMenu = Menu::create(startItem, NULL);
 	startMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2.9f - BUTTON_SIZE.height));
+	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height/2.4f - BUTTON_SIZE.height));
 
 	this->addChild(startMenu, 2);
+#pragma endregion
+
+#pragma region 操作方法説明画面遷移ボタン配置
+	auto howToButton = Sprite::create(F_IMAGE + HOW_TO_BUTTON);
+	howToButton->setContentSize(BUTTON_SIZE);
+
+	auto selectedHowToButton = Sprite::create(F_IMAGE + HOW_TO_BUTTON);
+	selectedHowToButton->setOpacity(128);
+	selectedHowToButton->setContentSize(BUTTON_SIZE);
+
+	auto howToItem = MenuItemSprite::create(howToButton, selectedHowToButton, CC_CALLBACK_1(Title::callHowToScene, this));
+	auto howToMenu = Menu::create(howToItem, NULL);
+	howToMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	howToMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 3 - BUTTON_SIZE.height));
+
+	this->addChild(howToMenu, 2);
 #pragma endregion
 
 #pragma region クレジットボタン配置
@@ -126,6 +143,14 @@ void Title::callCreditScene(Ref* Sender)
 	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::createScene(), Color3B::WHITE));
+}
+
+void Title::callHowToScene(Ref* sender)
+{
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
+	characterImageChange();
+	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, HowTo::createScene(), Color3B::WHITE));
 }
 
 void Title::closeGame(Ref* sender)

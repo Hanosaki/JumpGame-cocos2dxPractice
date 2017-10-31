@@ -16,7 +16,7 @@ public:
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 	void main(float dt);
 	void setCharacterDefault();
-	void pauseGame(Ref* Sender);
+	void pauseGame(cocos2d::Ref* Sender);
 
 	int score; //敵が画面端に到達した回数
 	int hitCounter; //敵と接触した回数

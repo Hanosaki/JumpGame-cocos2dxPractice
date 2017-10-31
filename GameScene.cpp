@@ -71,7 +71,7 @@ bool Game::init()
 
 #pragma region 主人公(animation)スプライトの初期設定
 	auto mainCharacter = Sprite::create(F_ANIMATION+F_RUN+DEFAULT);
-	mainCharacter->setScale((visibleSize.height + origin.y) / (mainCharacter->getContentSize().height*2));
+	mainCharacter->setScale((origin.y + visibleSize.height) / (mainCharacter->getContentSize().height * 2));
 	mainCharacter->setPosition(defoultPos);
 	mainCharacter->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	mainCharacter->setTag(1);

@@ -15,6 +15,7 @@ public:
 	void characterImageChange();
 	void callOPScene(cocos2d::Ref* sender);
 	void callCreditScene(cocos2d::Ref* sender);
+	void callHowToScene(cocos2d::Ref* sender);
 	void closeGame(cocos2d::Ref* sender);
 	
 
