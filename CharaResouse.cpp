@@ -9,6 +9,7 @@ const std::string F_MAIN_CHARACTER = "mainCharacter/";
 const std::string F_RIVAL = "rival/";
 const std::string F_RUN = "run/";
 const std::string F_VOICE = "voice/";
+const std::string F_UI = "UI/";
 #pragma endregion
 
 #pragma region フォント名

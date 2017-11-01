@@ -23,8 +23,8 @@ bool HowTo::init()
 
 #pragma region –ß‚éƒ{ƒ^ƒ“
 
-	auto returnButton = Sprite::create(F_IMAGE + RETURN_BUTTON);
-	auto selectedReturnButton = Sprite::create(F_IMAGE + RETURN_BUTTON);
+	auto returnButton = Sprite::create(F_IMAGE + F_UI + RETURN_BUTTON);
+	auto selectedReturnButton = Sprite::create(F_IMAGE + F_UI + RETURN_BUTTON);
 	selectedReturnButton->setOpacity(128);
 
 	auto returnItem = MenuItemSprite::create(returnButton, selectedReturnButton, CC_CALLBACK_1(HowTo::returnTitle, this));

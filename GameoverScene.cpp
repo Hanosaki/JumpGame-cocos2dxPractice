@@ -67,7 +67,7 @@ bool GameOver::init()
 #pragma endregion
 
 #pragma region 背景宣言
-	auto backGround = Sprite::create(F_IMAGE + BACK_GROUND);
+	auto backGround = Sprite::create(F_IMAGE + F_UI + BACK_GROUND);
 	backGround->setContentSize(directer->getVisibleSize());
 	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	this->addChild(backGround, 1);
@@ -75,7 +75,7 @@ bool GameOver::init()
 
 #pragma region 主人公(立ち絵)の初期設定
 	GenericFunc genericFunc;
-	auto charactorImage = genericFunc.setMainCharacterImage(visibleSize, origin, F_MAIN_CHARACTER + F_IMAGE + SAD);
+	auto charactorImage = genericFunc.setMainCharacterImage(visibleSize, origin, F_IMAGE + F_MAIN_CHARACTER + SAD);
 	charactorImage->setTag(2);
 	this->addChild(charactorImage, 3);
 #pragma endregion

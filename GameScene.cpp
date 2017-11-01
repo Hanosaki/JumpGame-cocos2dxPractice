@@ -56,13 +56,13 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 背景初期設定
-	auto backGround = Sprite::create(F_IMAGE+BACK_GROUND);
+	auto backGround = Sprite::create(F_IMAGE + F_UI + BACK_GROUND);
 	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1f*visibleSize.width, visibleSize.height));
 	backGround->setPosition(visibleSize.width/2 + origin.x, visibleSize.height / 2 + origin.y);
 	backGround->setTag(51);
 	this->addChild(backGround);
 
-	auto backGround2 = Sprite::create(F_IMAGE+BACK_GROUND);
+	auto backGround2 = Sprite::create(F_IMAGE + F_UI + BACK_GROUND);
 	backGround2->setContentSize(backGround->getContentSize());
 	backGround2->setPosition(outOfWindowBGPos);
 	backGround2->setTag(52);
@@ -82,9 +82,9 @@ bool Game::init()
 
 #pragma region ポーズボタン
 
-	auto pauseButton = Sprite::create(F_IMAGE + PAUSE_BUTTON);
+	auto pauseButton = Sprite::create(F_IMAGE + F_UI + PAUSE_BUTTON);
 	pauseButton->setTag(41);
-	auto selectedPauseButton = Sprite::create(F_IMAGE + PAUSE_BUTTON);
+	auto selectedPauseButton = Sprite::create(F_IMAGE + F_UI + PAUSE_BUTTON);
 	selectedPauseButton->setOpacity(128);
 	selectedPauseButton->setTag(42);
 
@@ -115,7 +115,7 @@ bool Game::init()
 
 #pragma region 主人公(立ち絵)の初期設定
 	GenericFunc genericFunc;
-	auto characterImage = genericFunc.setMainCharacterImage(visibleSize, origin, F_MAIN_CHARACTER + F_IMAGE + ANGRY);
+	auto characterImage = genericFunc.setMainCharacterImage(visibleSize, origin, F_IMAGE + F_MAIN_CHARACTER + ANGRY);
 	characterImage->setOpacity(200);
 	characterImage->setTag(2);
 	this->addChild(characterImage,3);
@@ -131,7 +131,7 @@ bool Game::init()
 	Sprite* life[MAX_LIFE];
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
-		life[i] = Sprite::create(F_IMAGE + LIFE_ICON);
+		life[i] = Sprite::create(F_IMAGE + F_UI + LIFE_ICON);
 		life[i]->setScale((visibleSize.height + origin.y) / (6 * life[i]->getContentSize().height));
 		life[i]->setPosition(lifeLabel->getContentSize().width + origin.x + (life[i]->getContentSize().width * life[i]->getScale() * (MAX_LIFE - i)),
 			visibleSize.height + origin.y - life[i]->getContentSize().height * life[i]->getScale() /2 );
@@ -149,7 +149,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 敵の初期設定
-	auto enemy = Sprite::create(F_RIVAL + ENEMY_IMAGE);
+	auto enemy = Sprite::create(F_IMAGE + F_RIVAL + ENEMY_IMAGE);
 	enemy->setPosition(enemyDefaultPos.x*2,enemyDefaultPos.y);
 	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*5));
 	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
@@ -189,7 +189,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 			if (mainCharacter->isRunning())
 			{
 				mainCharacter->stopActionByTag(101);
-				mainCharacter->setTexture(F_MAIN_CHARACTER + CHARACTER_JUMP);
+				mainCharacter->setTexture(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_JUMP);
 				jumpFlag = !jumpFlag;
 				jumpPower = Parameter::DEFOULT_JUMP_POWER;
 				gravityPoewr = Parameter::DEFOULT_GRAVITY_POWER;
@@ -203,7 +203,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 					break;
 				}
 				auto characterImage = (Sprite*)this->getChildByTag(2);
-				characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + ANGRY);
+				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + ANGRY);
 			}
 		}
 			
@@ -272,11 +272,11 @@ void Game::main(float dt)
 		if (num == 2)
 		{
 			enemyPos.y *= 3.5f;
-			characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + ANGRY);
+			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + ANGRY);
 		}
 		else
 		{
-			characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + SURPRISE);
+			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + SURPRISE);
 			SimpleAudioEngine::getInstance()->playEffect(ALERT_SE);
 		}
 		enemySpeed = setEnemySpeed();
@@ -302,8 +302,8 @@ void Game::main(float dt)
 		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
 		auto characterImage = (Sprite*)this->getChildByTag(2);
 		mainCharacter->stopActionByTag(101);
-		mainCharacter->setTexture(F_MAIN_CHARACTER + CHARACTER_DAMAGE);
-		characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE + SAD);
+		mainCharacter->setTexture(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_DAMAGE);
+		characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + SAD);
 		this->getChildByTag(20 + hitCounter)->setVisible(false);
 		++hitCounter;
 		if (hitCounter >= MAX_LIFE)
@@ -368,8 +368,8 @@ void Game::pauseGame(Ref* Sender)
 			life[i] = (Sprite*)this->getChildByTag(20 + i);
 			life[i]->pause();
 		}
-		buttonImage->setTexture(F_IMAGE + RESUME_BUTTON);
-		selectedButtonImage->setTexture(F_IMAGE + RESUME_BUTTON);
+		buttonImage->setTexture(F_IMAGE + F_UI + RESUME_BUTTON);
+		selectedButtonImage->setTexture(F_IMAGE + F_UI + RESUME_BUTTON);
 	}
 	else
 	{
@@ -380,8 +380,8 @@ void Game::pauseGame(Ref* Sender)
 			life[i] = (Sprite*)this->getChildByTag(20 + i);
 			life[i]->resume();
 		}
-		buttonImage->setTexture(F_IMAGE + PAUSE_BUTTON);
-		selectedButtonImage->setTexture(F_IMAGE + PAUSE_BUTTON);
+		buttonImage->setTexture(F_IMAGE + F_UI + PAUSE_BUTTON);
+		selectedButtonImage->setTexture(F_IMAGE + F_UI + PAUSE_BUTTON);
 	}
 	isPause = !isPause;
 }

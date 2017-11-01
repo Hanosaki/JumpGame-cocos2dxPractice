@@ -36,16 +36,16 @@ bool Introduction::init()
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
 
 #pragma region 背景設定
-	auto backGround = Sprite::create(F_IMAGE +OP_BACK_GROUND);
+	auto backGround = Sprite::create(F_IMAGE + F_UI +OP_BACK_GROUND);
 	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	backGround->setContentSize(Size(origin.x + visibleSize.width, origin.y + visibleSize.height));
 	this->addChild(backGround, 1);
 #pragma endregion
 
 #pragma region スキップボタン
-	auto skipButton = Sprite::create(F_IMAGE + SKIP_BUTTON);
+	auto skipButton = Sprite::create(F_IMAGE + F_UI + SKIP_BUTTON);
 	skipButton->setOpacity(128);
-	auto selectedSkipButton = Sprite::create(F_IMAGE + SKIP_BUTTON);
+	auto selectedSkipButton = Sprite::create(F_IMAGE + F_UI + SKIP_BUTTON);
 	selectedSkipButton->setOpacity(64);
 
 	auto skipItem = MenuItemSprite::create(skipButton, selectedSkipButton, CC_CALLBACK_1(Introduction::callGameScene, this));
@@ -57,7 +57,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region 主人公立ち絵
-	auto characterImage = Sprite::create(F_MAIN_CHARACTER + F_IMAGE + SMILE);
+	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + SMILE);
 	characterImage->setScale((origin.y +  visibleSize.height) / (characterImage->getContentSize().height));
 	characterImage->setPosition(origin.x + visibleSize.width / 6, Vec2::ZERO.y);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -68,7 +68,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region ライバル立ち絵
-	auto rivalImage = Sprite::create(F_RIVAL + SMILE);
+	auto rivalImage = Sprite::create(F_IMAGE + F_RIVAL + SMILE);
 	rivalImage->setScale(characterImage->getScale());
 	rivalImage->setPosition(origin.x + visibleSize.width
 		- rivalImage->getContentSize().width / 2 * rivalImage->getScale(),
@@ -80,7 +80,7 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region テキストウィンドウの設定
-	auto textWindow = Sprite::create(F_IMAGE + TEXT_WINDOW);
+	auto textWindow = Sprite::create(F_IMAGE + F_UI + TEXT_WINDOW);
 	textWindow->setContentSize(Size(origin.x + visibleSize.width, origin.y + visibleSize.height / 5));
 	textWindow->setPosition(origin.x + visibleSize.width / 2,
 		textWindow->getContentSize().height / 2);
@@ -190,13 +190,13 @@ void Introduction::spriteChange()
 	{
 		characterImage->setOpacity(128);
 		rivalImage->setOpacity(255);
-		rivalImage->setTexture(F_RIVAL + characterWordMap.at(FACE_KEY).asString() + ".png");
+		rivalImage->setTexture(F_IMAGE + F_RIVAL + characterWordMap.at(FACE_KEY).asString() + ".png");
 	}
 	else if (characterWordMap.at(CHARACTER_NAME_KEY).asString() == MAIN_CHARACTER_NAME)
 	{
 		rivalImage->setOpacity(128);
 		characterImage->setOpacity(255);
-		characterImage->setTexture(F_MAIN_CHARACTER + F_IMAGE +characterWordMap.at(FACE_KEY).asString() + ".png");
+		characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + characterWordMap.at(FACE_KEY).asString() + ".png");
 	}
 	else
 	{

@@ -50,12 +50,12 @@ bool ResouceLoad::init()
 
 	/*画像データのキャッシュ作成*/
 	auto cache = Director::getInstance()->getTextureCache();
-	cache->addImage(F_MAIN_CHARACTER + CHARACTER_JUMP);
-	cache->addImage(F_MAIN_CHARACTER + CHARACTER_DAMAGE);
-	cache->addImage(F_MAIN_CHARACTER + F_IMAGE + SAD);
-	cache->addImage(F_MAIN_CHARACTER + F_IMAGE + SURPRISE);
-	cache->addImage(F_RIVAL + SMILE);
-	cache->addImage(F_IMAGE + OP_BACK_GROUND);
+	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_JUMP);
+	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_DAMAGE);
+	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + SAD);
+	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + SURPRISE);
+	cache->addImage(F_IMAGE + F_RIVAL + SMILE);
+	cache->addImage(F_IMAGE + F_UI +OP_BACK_GROUND);
 
 	this->schedule(schedule_selector(ResouceLoad::setResouseCache), 0.1f,Parameter::ANIMATION_MAX_NUM-1,0.01f);
 
