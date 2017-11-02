@@ -10,6 +10,7 @@ const std::string F_RIVAL = "rival/";
 const std::string F_RUN = "run/";
 const std::string F_VOICE = "voice/";
 const std::string F_UI = "UI/";
+const char* F_BGM = "BGM/";
 #pragma endregion
 
 #pragma region フォント名
@@ -54,7 +55,7 @@ const char* LOGO_SE = "SE/Logo.mp3";
 const char* RIVAL_VOICE = "SE/Attack.mp3";
 const char* MAIN_BGM = "BGM/main.mp3";
 const char* TITLE_BGM = "BGM/Title.mp3";
-const char* OP_BGM = "BGM/op.mp3";
+const char* OP_BGM = "BGM/op.dat";
 #pragma endregion
 
 #pragma region テキスト

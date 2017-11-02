@@ -3,6 +3,7 @@
 #include "SimpleAudioEngine.h"
 #include "ResouceLoadScene.h"
 #include "CharaResouse.h"
+#include "ReplaceFile.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -44,6 +45,8 @@ bool Splash::init()
 
 void Splash::callLoadScene(float dt)
 {
+	FileConverter converter;
+	converter.replaceDATtoMP3(OP_BGM);
 	Director::getInstance()->replaceScene(ResouceLoad::createScene());
 }
 

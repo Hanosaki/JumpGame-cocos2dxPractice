@@ -12,6 +12,7 @@ extern const std::string F_RIVAL;
 extern const std::string F_RUN;
 extern const std::string F_VOICE;
 extern const std::string F_UI;
+extern const char* F_BGM;
 #pragma endregion
 
 #pragma region フォント名
