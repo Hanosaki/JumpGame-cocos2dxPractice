@@ -5,6 +5,7 @@
 #include "FileReadClass.h"
 #include "GameScene.h"
 #include "Converter.h"
+#include "GenericFunction.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -13,9 +14,7 @@ const int ZERO = 0;
 const int NAME_FONT_SIZE = 32;
 const int WORD_FONT_SIZE = 48;
 
-char* setVoiceName(ValueMap valueMap);
 void playVoice(ValueMap valueMap);
-std::string searceVoice(ValueMap valueMap);
 
 Scene* Introduction::createScene()
 {
@@ -121,9 +120,13 @@ bool Introduction::init()
 	for (int i = 0; i < characterWordVector.size(); ++i)
 	{
 		characterWordMap = characterWordVector.at(i).asValueMap();
-		auto voiceName = setVoiceName(characterWordMap);
-		if (strcmp(voiceName, "0"))
+		GenericFunc genericFunc;
+		auto voiceName = genericFunc.setVoiceName(characterWordMap);
+		if (strcmp(voiceName, "0")){
+			Converter converter;
+			converter.replaceDATtoMP3(voiceName);
 			SimpleAudioEngine::getInstance()->preloadEffect(voiceName);
+		}
 	}
 
 #pragma endregion
@@ -215,50 +218,15 @@ void Introduction::spriteChange()
 
 #pragma endregion
 
-#pragma region 音声ファイル名読み込み
-
-char* setVoiceName(ValueMap valueMap)
-{
-	std::string findVoiceName = "";
-	findVoiceName = searceVoice(valueMap);
-	char* voiceName;
-	if (findVoiceName != ""){
-		Converter converter;
-		voiceName = converter.replaceDATtoMP3(findVoiceName);
-	}
-	else
-		voiceName = "0";
-	return voiceName;
-}
-
-#pragma endregion
-
 void playVoice(ValueMap valueMap)
 {
 	std::string findVoiceName = "";
-	findVoiceName = searceVoice(valueMap);
+	GenericFunc genericFunc;
+	findVoiceName = genericFunc.searceVoice(valueMap);
 	
 	if (findVoiceName != ""){
 		Converter converter;
 		auto voiceName = converter.replaceString2Char(findVoiceName + TYPE_MP3);
 		SimpleAudioEngine::getInstance()->playEffect(voiceName);
 	}
-}
-
-std::string searceVoice(ValueMap valueMap)
-{
-	std::string findVoice = "";
-	if (valueMap.at(CHARACTER_NAME_KEY).asString() == RIVAL_NAME)
-	{
-		if (valueMap.at(VOICE_KEY).asString() != "")
-			findVoice = F_SE + F_RIVAL + F_VOICE + valueMap.at(VOICE_KEY).asString();
-	}
-	else if (valueMap.at(CHARACTER_NAME_KEY).asString() == MAIN_CHARACTER_NAME)
-	{
-		if (valueMap.at(VOICE_KEY).asString() != "")
-			findVoice = F_SE + F_MAIN_CHARACTER + F_VOICE + valueMap.at(VOICE_KEY).asString();
-	}
-	
-	return findVoice;
-
 }

@@ -1,10 +1,15 @@
 #pragma execution_character_set("utf-8")
 #include "Converter.h"
 #include "CharaResouse.h"
+#include "FileReadClass.h"
+#include "GenericFunction.h"
 
 USING_NS_CC;
 
 void replaceSet(std::string& path, std::string& sFileName, std::string& tmpPath);
+char* setVoiceName(ValueMap valueMap);
+std::string searceVoice(ValueMap valueMap);
+
 
 char* Converter::replaceDATtoMP3(std::string relativePath)
 {
@@ -80,11 +85,14 @@ char* Converter::replaceString2Char(std::string str)
 	return returnFileName;
 }
 
+//à√çÜâªèàóù
 void Converter::replaceALLMP3toDAT()
 {
 	replaceMP3toDAT(F_BGM + OP_BGM);
 	replaceMP3toDAT(F_BGM + MAIN_BGM);
 	replaceMP3toDAT(F_BGM + TITLE_BGM);
+	replaceMP3toDAT(F_SE + LOAD_SE);
+	replaceMP3toDAT(F_SE + LOGO_SE);
 	replaceMP3toDAT(F_SE + DAMEGE_VOICE);
 	replaceMP3toDAT(F_SE + RIVAL_VOICE);
 	replaceMP3toDAT(F_SE + START_VOICE);
@@ -93,7 +101,18 @@ void Converter::replaceALLMP3toDAT()
 	replaceMP3toDAT(F_SE + JUMP_SE2);
 	replaceMP3toDAT(F_SE + ALERT_SE);
 	replaceMP3toDAT(F_SE + GAMEOVER_SE);
-
+	FileRead fileRead;
+	int wordsNum = 0;
+	auto characterWordVector = fileRead.readCSV(CONVERSATION_LIST);
+	auto characterWordMap = characterWordVector.at(wordsNum).asValueMap();
+	for (int i = 0; i < characterWordVector.size(); ++i)
+	{
+		GenericFunc genericFunc;
+		characterWordMap = characterWordVector.at(i).asValueMap();
+		auto voiceName = genericFunc.setVoiceName(characterWordMap);
+		if (strcmp(voiceName, "0"))
+			replaceMP3toDAT(voiceName);
+	}
 }
 
 void replaceSet(std::string& path, std::string& sFileName, std::string& tmpPath)
