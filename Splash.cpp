@@ -3,7 +3,7 @@
 #include "SimpleAudioEngine.h"
 #include "ResouceLoadScene.h"
 #include "CharaResouse.h"
-#include "ReplaceFile.h"
+#include "Converter.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -24,7 +24,9 @@ bool Splash::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
-	SimpleAudioEngine::getInstance()->preloadEffect(LOGO_SE);
+	Converter converter;
+	auto seName = converter.replaceDATtoMP3(F_SE + LOGO_SE);
+	SimpleAudioEngine::getInstance()->preloadEffect(seName);
 
 	auto logo = Label::createWithTTF(LOGO, F_FONTS + JPN_FONTS, 64);
 	logo->setTextColor(Color4B::WHITE);
@@ -35,7 +37,7 @@ bool Splash::init()
 	auto logoAction = Sequence::create(FadeIn::create(1.0f), DelayTime::create(2.0f), FadeOut::create(1.0f), NULL);
 	logo->runAction(logoAction);
 
-	SimpleAudioEngine::getInstance()->playEffect(LOGO_SE);
+	SimpleAudioEngine::getInstance()->playEffect(seName);
 
 	this->scheduleOnce(schedule_selector(Splash::callLoadScene), 5.0f);
 
@@ -45,8 +47,6 @@ bool Splash::init()
 
 void Splash::callLoadScene(float dt)
 {
-	FileConverter converter;
-	converter.replaceDATtoMP3(OP_BGM);
 	Director::getInstance()->replaceScene(ResouceLoad::createScene());
 }
 

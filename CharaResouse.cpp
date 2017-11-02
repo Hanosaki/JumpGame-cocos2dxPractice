@@ -10,7 +10,13 @@ const std::string F_RIVAL = "rival/";
 const std::string F_RUN = "run/";
 const std::string F_VOICE = "voice/";
 const std::string F_UI = "UI/";
-const char* F_BGM = "BGM/";
+const std::string F_BGM = "BGM/";
+const std::string F_SE = "SE/";
+#pragma endregion
+
+#pragma region 拡張子
+const std::string TYPE_MP3=".mp3";
+const std::string TYPE_DAT=".dat";
 #pragma endregion
 
 #pragma region フォント名
@@ -43,19 +49,19 @@ const std::string HOW_TO_BUTTON = "HowToButton.png";
 #pragma endregion
 
 #pragma region 音素材名
-const char* ALERT_SE = "SE/Alert.mp3";
-const char* BUTTON_SE = "SE/Button.mp3";
-const char* START_VOICE = "SE/Start.mp3";
-const char* DAMEGE_VOICE = "SE/Damage.mp3";
-const char* GAMEOVER_SE = "SE/GameOver.mp3";
-const char* JUMP_SE = "SE/Jump.mp3";
-const char* JUMP_SE2 = "SE/Jump2.mp3";
-const char* LOAD_SE = "SE/Loading.mp3";
-const char* LOGO_SE = "SE/Logo.mp3";
-const char* RIVAL_VOICE = "SE/Attack.mp3";
-const char* MAIN_BGM = "BGM/main.mp3";
-const char* TITLE_BGM = "BGM/Title.mp3";
-const char* OP_BGM = "BGM/op.dat";
+const std::string ALERT_SE = "Alert";
+const std::string BUTTON_SE = "Button";
+const std::string START_VOICE = "Start";
+const std::string DAMEGE_VOICE = "Damage";
+const std::string GAMEOVER_SE = "GameOver";
+const std::string JUMP_SE = "Jump";
+const std::string JUMP_SE2 = "Jump2";
+const std::string LOAD_SE = "Loading";
+const std::string LOGO_SE = "Logo";
+const std::string RIVAL_VOICE = "Attack";
+const std::string MAIN_BGM = "main";
+const std::string TITLE_BGM = "Title";
+const std::string OP_BGM = "op";
 #pragma endregion
 
 #pragma region テキスト

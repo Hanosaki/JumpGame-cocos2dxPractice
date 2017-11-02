@@ -4,6 +4,7 @@
 #include "GenericFunction.h"
 #include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
+#include "Converter.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -70,7 +71,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(animation)スプライトの初期設定
-	auto mainCharacter = Sprite::create(F_ANIMATION+F_RUN+DEFAULT);
+	auto mainCharacter = Sprite::create(F_IMAGE +F_ANIMATION+F_RUN+DEFAULT);
 	mainCharacter->setScale((origin.y + visibleSize.height) / (mainCharacter->getContentSize().height * 2));
 	mainCharacter->setPosition(defoultPos);
 	mainCharacter->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
@@ -165,10 +166,13 @@ bool Game::init()
 #pragma endregion
 
 	// BGM再生
-	SimpleAudioEngine::getInstance()->playBackgroundMusic(MAIN_BGM,true);
+	Converter converter;
+	auto bgmName = converter.replaceString2Char(F_BGM + MAIN_BGM + TYPE_MP3);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName,true);
 
 	//SE再生
-	SimpleAudioEngine::getInstance()->playEffect(RIVAL_VOICE);
+	auto seName = converter.replaceString2Char(F_SE + RIVAL_VOICE + TYPE_MP3);
+	SimpleAudioEngine::getInstance()->playEffect(seName);
 
 #pragma region 繰り返し処理の初期設定
 	this->runAction(Sequence::create(DelayTime::create(1.5f), 
@@ -195,10 +199,13 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 				gravityPoewr = Parameter::DEFOULT_GRAVITY_POWER;
 				srand((unsigned int)time(NULL));
 				int num = rand() % 2;
+				Converter converter;
+				auto jumpSE1 = converter.replaceString2Char(F_SE + JUMP_SE + TYPE_MP3);
+				auto jumpSE2 = converter.replaceString2Char(F_SE + JUMP_SE2 + TYPE_MP3);
 				switch (num)
 				{
-				case 0:SimpleAudioEngine::getInstance()->playEffect(JUMP_SE); break;
-				case 1:SimpleAudioEngine::getInstance()->playEffect(JUMP_SE2); break;
+				case 0:SimpleAudioEngine::getInstance()->playEffect(jumpSE1); break;
+				case 1:SimpleAudioEngine::getInstance()->playEffect(jumpSE2); break;
 				default:
 					break;
 				}
@@ -277,7 +284,9 @@ void Game::main(float dt)
 		else
 		{
 			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + SURPRISE);
-			SimpleAudioEngine::getInstance()->playEffect(ALERT_SE);
+			Converter converter;
+			auto seName = converter.replaceString2Char(F_SE + ALERT_SE + TYPE_MP3);
+			SimpleAudioEngine::getInstance()->playEffect(seName);
 		}
 		enemySpeed = setEnemySpeed();
 		++score;
@@ -298,8 +307,10 @@ void Game::main(float dt)
 
 	if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne){
 		jumpPower = 0;
+		Converter converter;
+		auto seName = converter.replaceString2Char(F_SE + DAMEGE_VOICE + TYPE_MP3);
 		SimpleAudioEngine::getInstance()->stopAllEffects();
-		SimpleAudioEngine::getInstance()->playEffect(DAMEGE_VOICE);
+		SimpleAudioEngine::getInstance()->playEffect(seName);
 		auto characterImage = (Sprite*)this->getChildByTag(2);
 		mainCharacter->stopActionByTag(101);
 		mainCharacter->setTexture(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_DAMAGE);
@@ -396,7 +407,7 @@ void Game::setCharacterDefault()
 		/*主人公走りモーション設定*/
 		auto animation = Animation::create();
 		for (int i = 0; i < Parameter::ANIMATION_MAX_NUM; ++i)
-			animation->addSpriteFrameWithFile(F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png");
+			animation->addSpriteFrameWithFile(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png");
 		if (score % 10 == 0)
 		{
 			float acceleration = score / 7500.0f;

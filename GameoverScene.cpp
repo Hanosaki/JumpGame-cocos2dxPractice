@@ -4,6 +4,7 @@
 #include "GenericFunction.h"
 #include "SimpleAudioEngine.h"
 #include "Title.h"
+#include "Converter.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -21,7 +22,9 @@ bool GameOver::init()
 	if (!Layer::init())
 		return false;
 
-	SimpleAudioEngine::getInstance()->preloadEffect(GAMEOVER_SE);
+	Converter converter;
+	auto seName = converter.replaceDATtoMP3(F_SE + GAMEOVER_SE);
+	SimpleAudioEngine::getInstance()->preloadEffect(seName);
 
 #pragma region 変数宣言
 	auto directer = Director::getInstance();
@@ -86,7 +89,7 @@ bool GameOver::init()
 	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
-	SimpleAudioEngine::getInstance()->playEffect(GAMEOVER_SE);
+	SimpleAudioEngine::getInstance()->playEffect(seName);
 
 	return true;
 }

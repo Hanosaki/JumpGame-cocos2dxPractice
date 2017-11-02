@@ -35,11 +35,6 @@ bool Credit::init()
 	auto origin = directer->getVisibleOrigin();
 #pragma endregion
 
-#pragma region SE用意
-	SimpleAudioEngine::getInstance()->setEffectsVolume(0.5f);
-	SimpleAudioEngine::getInstance()->preloadEffect(START_VOICE);
-#pragma endregion
-
 #pragma region 背景設定
 	auto backGround = Sprite::create(F_IMAGE + F_UI + BACK_GROUND);
 	backGround->setContentSize(directer->getVisibleSize());

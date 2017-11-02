@@ -6,6 +6,7 @@
 #include "SimpleAudioEngine.h"
 #include "IntroductionScene.h"
 #include "HowToScene.h"
+#include "Converter.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -119,7 +120,9 @@ bool Title::init()
 	this->addChild(endMenu, 2);
 #pragma endregion
 
-	SimpleAudioEngine::getInstance()->playBackgroundMusic(TITLE_BGM, true);
+	Converter converter;
+	auto bgmName = converter.replaceString2Char(F_BGM + TITLE_BGM + TYPE_MP3);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName, true);
 
 	return true;
 }
@@ -132,23 +135,29 @@ void Title::characterImageChange()
 
 void Title::callOPScene(Ref* Sender)
 {
-	SimpleAudioEngine::getInstance()->playEffect(START_VOICE);
+	Converter converter;
+	SimpleAudioEngine::getInstance()
+		->playEffect(converter.replaceString2Char(F_SE + START_VOICE + TYPE_MP3));
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Introduction::createScene(), Color3B::BLACK));
 }
 
 void Title::callCreditScene(Ref* Sender)
 {
+	Converter converter;
+	auto seName = converter.replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3);
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
+	SimpleAudioEngine::getInstance()->playEffect(seName);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::createScene(), Color3B::WHITE));
 }
 
 void Title::callHowToScene(Ref* sender)
 {
+	Converter converter;
+	auto seName = converter.replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3);
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
+	SimpleAudioEngine::getInstance()->playEffect(seName);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, HowTo::createScene(), Color3B::WHITE));
 }

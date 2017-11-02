@@ -3,6 +3,7 @@
 #include "Title.h"
 #include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
+#include "Converter.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -24,28 +25,30 @@ bool ResouceLoad::init()
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	progress = 0;
 	animationNum = 0;
+	Converter converter;
 
 	//ロード画面SEのプリロード
-	SimpleAudioEngine::getInstance()->preloadEffect(LOAD_SE);
+	auto audio = SimpleAudioEngine::getInstance();
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE+LOAD_SE));
 
 	progressLabel = Label::createWithTTF(LOAD_MESSEAGE + 
 		StringUtils::toString(progress) + "%",F_FONTS + JPN_FONTS,48);
 	progressLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	this->addChild(progressLabel);
 
-	SimpleAudioEngine::getInstance()->playEffect(LOAD_SE);
+	audio->playEffect(converter.replaceString2Char(F_SE + LOAD_SE + TYPE_MP3));
 
 #pragma region 音素材のプリロード
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(OP_BGM);
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(MAIN_BGM);
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(TITLE_BGM);
-	SimpleAudioEngine::getInstance()->preloadEffect(DAMEGE_VOICE);
-	SimpleAudioEngine::getInstance()->preloadEffect(RIVAL_VOICE);
-	SimpleAudioEngine::getInstance()->preloadEffect(START_VOICE);
-	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
-	SimpleAudioEngine::getInstance()->preloadEffect(BUTTON_SE);
-	SimpleAudioEngine::getInstance()->preloadEffect(JUMP_SE);
-	SimpleAudioEngine::getInstance()->preloadEffect(ALERT_SE);
+	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + OP_BGM));
+	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + MAIN_BGM));
+	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + TITLE_BGM));
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + DAMEGE_VOICE));
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + RIVAL_VOICE));
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + START_VOICE));
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + BUTTON_SE));
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + JUMP_SE));
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + JUMP_SE2));
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + ALERT_SE));
 #pragma endregion
 
 	/*画像データのキャッシュ作成*/
@@ -66,7 +69,7 @@ bool ResouceLoad::init()
 void ResouceLoad::setResouseCache(float dt)
 {
 	auto cache = Director::getInstance()->getTextureCache()
-		->addImage(F_ANIMATION + F_RUN + StringUtils::toString(animationNum) + ".png");
+		->addImage(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(animationNum) + ".png");
 	progress = ((float)animationNum / (Parameter::ANIMATION_MAX_NUM - 1)) * 100;
 	progressLabel->setString(LOAD_MESSEAGE + StringUtils::toString((int)progress) + "%");
 	if (animationNum >= Parameter::ANIMATION_MAX_NUM-1)

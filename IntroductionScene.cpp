@@ -4,6 +4,7 @@
 #include "CharaResouse.h"
 #include "FileReadClass.h"
 #include "GameScene.h"
+#include "Converter.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -14,6 +15,7 @@ const int WORD_FONT_SIZE = 48;
 
 char* setVoiceName(ValueMap valueMap);
 void playVoice(ValueMap valueMap);
+std::string searceVoice(ValueMap valueMap);
 
 Scene* Introduction::createScene()
 {
@@ -119,8 +121,9 @@ bool Introduction::init()
 	for (int i = 0; i < characterWordVector.size(); ++i)
 	{
 		characterWordMap = characterWordVector.at(i).asValueMap();
-		if (strcmp(setVoiceName(characterWordMap),"0"))
-			SimpleAudioEngine::getInstance()->preloadEffect(setVoiceName(characterWordMap));
+		auto voiceName = setVoiceName(characterWordMap);
+		if (strcmp(voiceName, "0"))
+			SimpleAudioEngine::getInstance()->preloadEffect(voiceName);
 	}
 
 #pragma endregion
@@ -135,7 +138,9 @@ bool Introduction::init()
 	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
-	SimpleAudioEngine::getInstance()->playBackgroundMusic(OP_BGM, true);
+	Converter converter;
+	auto bgmName = converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName, true);
 	
 	return true;
 }
@@ -144,8 +149,10 @@ bool Introduction::init()
 
 void Introduction::callGameScene(Ref* Sender)
 {
+	Converter converter;
+	auto seName = converter.replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3);
 	SimpleAudioEngine::getInstance()->stopAllEffects();
-	SimpleAudioEngine::getInstance()->playEffect(BUTTON_SE);
+	SimpleAudioEngine::getInstance()->playEffect(seName);
 	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Game::createScene(), Color3B::WHITE));
 }
 
@@ -212,20 +219,15 @@ void Introduction::spriteChange()
 
 char* setVoiceName(ValueMap valueMap)
 {
-	std::string tmpVoiceName = "";
-
-	if (valueMap.at(CHARACTER_NAME_KEY).asString() == RIVAL_NAME)
-	{
-		if (valueMap.at(VOICE_KEY).asString() != "")
-			tmpVoiceName = F_RIVAL + F_VOICE + valueMap.at(VOICE_KEY).asString() + ".mp3";
+	std::string findVoiceName = "";
+	findVoiceName = searceVoice(valueMap);
+	char* voiceName;
+	if (findVoiceName != ""){
+		Converter converter;
+		voiceName = converter.replaceDATtoMP3(findVoiceName);
 	}
-	else if (valueMap.at(CHARACTER_NAME_KEY).asString() == MAIN_CHARACTER_NAME)
-	{
-		if (valueMap.at(VOICE_KEY).asString() != "")
-			tmpVoiceName = F_MAIN_CHARACTER + F_VOICE + valueMap.at(VOICE_KEY).asString() + ".mp3";
-	}
-	char* voiceName = new char[tmpVoiceName.length() + 1];
-	memcpy(voiceName, tmpVoiceName.c_str(), tmpVoiceName.length() + 1);
+	else
+		voiceName = "0";
 	return voiceName;
 }
 
@@ -233,5 +235,30 @@ char* setVoiceName(ValueMap valueMap)
 
 void playVoice(ValueMap valueMap)
 {
-	SimpleAudioEngine::getInstance()->playEffect(setVoiceName(valueMap));
+	std::string findVoiceName = "";
+	findVoiceName = searceVoice(valueMap);
+	
+	if (findVoiceName != ""){
+		Converter converter;
+		auto voiceName = converter.replaceString2Char(findVoiceName + TYPE_MP3);
+		SimpleAudioEngine::getInstance()->playEffect(voiceName);
+	}
+}
+
+std::string searceVoice(ValueMap valueMap)
+{
+	std::string findVoice = "";
+	if (valueMap.at(CHARACTER_NAME_KEY).asString() == RIVAL_NAME)
+	{
+		if (valueMap.at(VOICE_KEY).asString() != "")
+			findVoice = F_SE + F_RIVAL + F_VOICE + valueMap.at(VOICE_KEY).asString();
+	}
+	else if (valueMap.at(CHARACTER_NAME_KEY).asString() == MAIN_CHARACTER_NAME)
+	{
+		if (valueMap.at(VOICE_KEY).asString() != "")
+			findVoice = F_SE + F_MAIN_CHARACTER + F_VOICE + valueMap.at(VOICE_KEY).asString();
+	}
+	
+	return findVoice;
+
 }

@@ -12,7 +12,14 @@ extern const std::string F_RIVAL;
 extern const std::string F_RUN;
 extern const std::string F_VOICE;
 extern const std::string F_UI;
-extern const char* F_BGM;
+extern const std::string F_BGM;
+extern const std::string F_SE;
+
+#pragma endregion
+
+#pragma region ファイル拡張子
+extern const std::string TYPE_MP3;
+extern const std::string TYPE_DAT;
 #pragma endregion
 
 #pragma region フォント名
@@ -48,19 +55,20 @@ extern const std::string HOW_TO_BUTTON;
 /// <summary>
 /// 音素材ファイルのパス
 /// </summary>
-extern const char* ALERT_SE;
-extern const char* BUTTON_SE;
-extern const char* START_VOICE;
-extern const char* DAMEGE_VOICE;
-extern const char* GAMEOVER_SE;
-extern const char* JUMP_SE;
-extern const char* JUMP_SE2;
-extern const char* RIVAL_VOICE;
-extern const char* LOAD_SE;
-extern const char* LOGO_SE;
-extern const char* TITLE_BGM;
-extern const char* MAIN_BGM;
-extern const char* OP_BGM;
+extern const std::string ALERT_SE;
+extern const std::string BUTTON_SE;
+extern const std::string START_VOICE;
+extern const std::string DAMEGE_VOICE;
+extern const std::string GAMEOVER_SE;
+extern const std::string JUMP_SE;
+extern const std::string JUMP_SE2;
+extern const std::string RIVAL_VOICE;
+extern const std::string LOAD_SE;
+extern const std::string LOGO_SE;
+extern const std::string TITLE_BGM;
+extern const std::string MAIN_BGM;
+extern const std::string OP_BGM;
+
 #pragma endregion
 
 #pragma region テキスト
