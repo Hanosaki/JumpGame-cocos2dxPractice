@@ -6,26 +6,28 @@
 
 USING_NS_CC;
 
-void replaceSet(std::string& path, std::string& sFileName, std::string& tmpPath);
+void replaceSet(std::string& fullPath, std::string& sFileName, std::string& folderName);
 char* setVoiceName(ValueMap valueMap);
 std::string searceVoice(ValueMap valueMap);
 
 
 char* Converter::replaceDATtoMP3(std::string relativePath)
 {
+
 	auto fileUtils = FileUtils::getInstance();
-	auto path = fileUtils->fullPathForFilename(relativePath + TYPE_DAT);
-	auto sFileName = StringUtils::toString(relativePath + TYPE_DAT);
-	
+	auto sFileName = relativePath + TYPE_DAT;
+	auto fullPath = fileUtils->fullPathForFilename(sFileName);
+
 	//datでパスが見つかった場合，変換処理を行う
-	if (path != "")
+	if (fullPath != "")
 	{
-		std::string tmpPath; 
-		replaceSet(path,sFileName,tmpPath);
+		std::string folderName; 
+		replaceSet(fullPath,sFileName,folderName);
 		auto fileUtil = FileUtils::getInstance();
-		if (fileUtil->renameFile(path, sFileName + TYPE_DAT, sFileName + TYPE_MP3))
+		if (fileUtil->renameFile(fullPath, sFileName + TYPE_DAT, sFileName + TYPE_MP3))
 		{
-			sFileName = tmpPath + sFileName + TYPE_MP3;
+			sFileName = folderName + sFileName + TYPE_MP3;
+			CCLOG("sFileName3 %s", sFileName.c_str());
 			auto returnFileName = new char[sFileName.length() + 1];
 			memcpy(returnFileName, sFileName.c_str(), sFileName.length() + 1);
 			return returnFileName;
@@ -37,8 +39,8 @@ char* Converter::replaceDATtoMP3(std::string relativePath)
 	}
 	else //datが見つからない場合，もともとmp3の可能性があるため確認
 	{	
-		path = fileUtils->fullPathForFilename(relativePath+TYPE_MP3);
-		if (path != "")
+		fullPath = fileUtils->fullPathForFilename(relativePath+TYPE_MP3);
+		if (fullPath != "")
 		{
 			//見つかった場合，mp3のファイルpathを返す
 			auto returnFileName = new char[sFileName.length() + 1];
@@ -48,21 +50,22 @@ char* Converter::replaceDATtoMP3(std::string relativePath)
 		else
 			return "FileNotFound!";
 	}
+
 }
 
 char* Converter::replaceMP3toDAT(std::string relativePath)
 {
 	auto file = FileUtils::getInstance();
-	auto path = file->fullPathForFilename(relativePath + TYPE_MP3);
+	auto fullPath = file->fullPathForFilename(relativePath + TYPE_MP3);
 
-	if (path != ""){
+	if (fullPath != ""){
 		auto sFileName = StringUtils::toString(relativePath + TYPE_MP3);
-		std::string tmpPath;
-		replaceSet(path, sFileName, tmpPath);
+		std::string folderName;
+		replaceSet(fullPath, sFileName, folderName);
 		auto fileUtil = FileUtils::getInstance();
-		if (fileUtil->renameFile(path, sFileName +TYPE_MP3, sFileName + TYPE_DAT))
+		if (fileUtil->renameFile(fullPath, sFileName +TYPE_MP3, sFileName + TYPE_DAT))
 		{
-			sFileName = tmpPath + sFileName + TYPE_DAT;
+			sFileName = folderName + sFileName + TYPE_DAT;
 			auto returnFileName = new char[sFileName.length() + 1];
 			memcpy(returnFileName, sFileName.c_str(), sFileName.length() + 1);
 			return returnFileName;
@@ -115,22 +118,40 @@ void Converter::replaceALLMP3toDAT()
 	}
 }
 
-void replaceSet(std::string& path, std::string& sFileName, std::string& tmpPath)
+void replaceSet(std::string& fullPath, std::string& sFileName, std::string& folderName)
 {
-	if (sFileName.find("BGM") != std::string::npos)
+	if (sFileName.find(F_VOICE) == std::string::npos)
 	{
-		tmpPath = F_BGM;
-		sFileName.replace(0, 4, "");
+
+		if (sFileName.find(F_BGM) != std::string::npos)
+		{
+			folderName = F_BGM;
+			sFileName.replace(0, 4, "");
+		}
+		else
+		{
+			folderName = F_SE;
+			sFileName.replace(0, 3, "");
+		}
 	}
 	else
 	{
-		tmpPath = F_SE;
-		sFileName.replace(0, 3, "");
+		if (sFileName.find(F_MAIN_CHARACTER) != std::string::npos)
+		{
+			folderName = F_SE + F_MAIN_CHARACTER + F_VOICE;
+			sFileName.replace(0, folderName.length(), "");
+		}
+		else
+		{
+			folderName = F_SE + F_RIVAL + F_VOICE;
+			sFileName.replace(0, folderName.length(), "");
+		}
+			
 	}
 
 	for (int i = 0; i < sFileName.length(); ++i)
 	{
-		path.pop_back();
+		fullPath.pop_back();
 	}
 
 	for (int i = 0; i < 4; ++i)

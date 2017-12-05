@@ -3,13 +3,18 @@
 
 #include "cocos2d.h"
 
+/// <summary>
+/// リネーム，string→char*変換を行うクラス
+/// 一部Windowsのみで動作するため，Windows以外の環境では使用しないこと
+/// </summary>
+
 class Converter
 {
 public:
-	char* replaceDATtoMP3(std::string relativePath);
-	char* replaceMP3toDAT(std::string relativePath);
+	char* replaceDATtoMP3(std::string relativePath);//Windows Only!
+	char* replaceMP3toDAT(std::string relativePath);//Windows Only!
 	char* replaceString2Char(std::string);
-	void replaceALLMP3toDAT();
+	void replaceALLMP3toDAT();//Windows Only!
 };
 
 

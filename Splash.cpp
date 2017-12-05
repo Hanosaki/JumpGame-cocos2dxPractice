@@ -25,7 +25,18 @@ bool Splash::init()
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	Converter converter;
-	auto seName = converter.replaceDATtoMP3(F_SE + LOGO_SE);
+	char* seName;
+
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)//Windows用処理
+	
+	seName = converter.replaceDATtoMP3(F_SE + LOGO_SE);
+
+#elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Androidの場合
+
+	seName = converter.replaceString2Char(F_SE + LOGO_SE + TYPE_MP3);
+
+#endif
+	
 	SimpleAudioEngine::getInstance()->preloadEffect(seName);
 
 	auto logo = Label::createWithTTF(LOGO, F_FONTS + JPN_FONTS, 64);

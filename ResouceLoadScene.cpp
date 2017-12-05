@@ -29,16 +29,20 @@ bool ResouceLoad::init()
 
 	//ロード画面SEのプリロード
 	auto audio = SimpleAudioEngine::getInstance();
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE+LOAD_SE));
 
 	progressLabel = Label::createWithTTF(LOAD_MESSEAGE + 
 		StringUtils::toString(progress) + "%",F_FONTS + JPN_FONTS,48);
 	progressLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	this->addChild(progressLabel);
 
+#pragma region 音素材のプリロード&ロード中音声再生
+
+
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)//Windowsの処理
+
+	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + LOAD_SE));
 	audio->playEffect(converter.replaceString2Char(F_SE + LOAD_SE + TYPE_MP3));
 
-#pragma region 音素材のプリロード
 	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + OP_BGM));
 	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + MAIN_BGM));
 	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + TITLE_BGM));
@@ -49,6 +53,24 @@ bool ResouceLoad::init()
 	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + JUMP_SE));
 	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + JUMP_SE2));
 	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + ALERT_SE));
+
+#elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Androidの場合
+
+	audio->preloadEffect(converter.replaceString2Char(F_SE + LOAD_SE+ TYPE_MP3));
+	audio->playEffect(converter.replaceString2Char(F_SE + LOAD_SE + TYPE_MP3));
+
+	audio->preloadBackgroundMusic(converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3));
+	audio->preloadBackgroundMusic(converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3));
+	audio->preloadBackgroundMusic(converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3));
+	audio->preloadEffect(converter.replaceString2Char(F_SE + DAMEGE_VOICE + TYPE_MP3));
+	audio->preloadEffect(converter.replaceString2Char(F_SE + RIVAL_VOICE + TYPE_MP3));
+	audio->preloadEffect(converter.replaceString2Char(F_SE + START_VOICE + TYPE_MP3));
+	audio->preloadEffect(converter.replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3));
+	audio->preloadEffect(converter.replaceString2Char(F_SE + JUMP_SE + TYPE_MP3));
+	audio->preloadEffect(converter.replaceString2Char(F_SE + JUMP_SE2 + TYPE_MP3));
+	audio->preloadEffect(converter.replaceString2Char(F_SE + ALERT_SE + TYPE_MP3));
+#endif
+
 #pragma endregion
 
 	/*画像データのキャッシュ作成*/

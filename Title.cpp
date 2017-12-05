@@ -166,7 +166,9 @@ void Title::closeGame(Ref* sender)
 {
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 	Director::getInstance()->purgeCachedData();//キャッシュ開放
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	Converter converter;
 	converter.replaceALLMP3toDAT();
+#endif
 	Director::getInstance()->end();
 }

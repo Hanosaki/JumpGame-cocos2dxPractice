@@ -124,7 +124,11 @@ bool Introduction::init()
 		auto voiceName = genericFunc.setVoiceName(characterWordMap);
 		if (strcmp(voiceName, "0")){
 			Converter converter;
-			converter.replaceDATtoMP3(voiceName);
+		#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+			voiceName = converter.replaceDATtoMP3(voiceName);
+		#elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Androidの場合
+			voiceName = converter.replaceString2Char(voiceName + TYPE_MP3);
+		#endif
 			SimpleAudioEngine::getInstance()->preloadEffect(voiceName);
 		}
 	}
@@ -227,6 +231,7 @@ void playVoice(ValueMap valueMap)
 	if (findVoiceName != ""){
 		Converter converter;
 		auto voiceName = converter.replaceString2Char(findVoiceName + TYPE_MP3);
+		CCLOG("findVoice %s", voiceName);
 		SimpleAudioEngine::getInstance()->playEffect(voiceName);
 	}
 }
