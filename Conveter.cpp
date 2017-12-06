@@ -34,15 +34,28 @@ char* Converter::replaceDATtoMP3(std::string relativePath)
 		}
 		else
 		{
-			return "ConvertFeild!";
+			//ここでmp3の場合の処理を行う
+			fullPath = fileUtils->fullPathForFilename(relativePath + TYPE_MP3);
+			if (fullPath != "")
+			{
+				//見つかった場合，mp3のファイルpathを返す
+				auto returnFileName = new char[sFileName.length() + 1];
+				memcpy(returnFileName, sFileName.c_str(), sFileName.length() + 1);
+				return returnFileName;
+			}
+			else
+				return "FileNotFound!";
 		}
 	}
-	else //datが見つからない場合，もともとmp3の可能性があるため確認
-	{	
-		fullPath = fileUtils->fullPathForFilename(relativePath+TYPE_MP3);
+	else //ファイルが存在しない(既に変換済みの場合)
+	{
+		fullPath = fileUtils->fullPathForFilename(relativePath + TYPE_MP3);
 		if (fullPath != "")
 		{
 			//見つかった場合，mp3のファイルpathを返す
+			for (int i = 0; i < TYPE_DAT.length(); ++i)
+				sFileName.pop_back();
+			sFileName += TYPE_MP3;
 			auto returnFileName = new char[sFileName.length() + 1];
 			memcpy(returnFileName, sFileName.c_str(), sFileName.length() + 1);
 			return returnFileName;
@@ -50,7 +63,6 @@ char* Converter::replaceDATtoMP3(std::string relativePath)
 		else
 			return "FileNotFound!";
 	}
-
 }
 
 char* Converter::replaceMP3toDAT(std::string relativePath)
