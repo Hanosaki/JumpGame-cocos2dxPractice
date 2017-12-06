@@ -379,6 +379,7 @@ void Game::pauseGame(Ref* Sender)
 			life[i] = (Sprite*)this->getChildByTag(20 + i);
 			life[i]->pause();
 		}
+		SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 		buttonImage->setTexture(F_IMAGE + F_UI + RESUME_BUTTON);
 		selectedButtonImage->setTexture(F_IMAGE + F_UI + RESUME_BUTTON);
 	}
@@ -391,6 +392,7 @@ void Game::pauseGame(Ref* Sender)
 			life[i] = (Sprite*)this->getChildByTag(20 + i);
 			life[i]->resume();
 		}
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 		buttonImage->setTexture(F_IMAGE + F_UI + PAUSE_BUTTON);
 		selectedButtonImage->setTexture(F_IMAGE + F_UI + PAUSE_BUTTON);
 	}
