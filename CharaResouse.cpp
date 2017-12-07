@@ -46,6 +46,8 @@ const std::string SKIP_BUTTON = "SkipButton.png";
 const std::string START_BUTTON = "StartButton.png";
 const std::string TEXT_WINDOW = "TextWindow.png";
 const std::string HOW_TO_BUTTON = "HowToButton.png";
+const std::string UI_DESCRIPTION = "HowToImage1.png";
+const std::string JUMP_DESCRIPTION = "HowToImage2.png";
 #pragma endregion
 
 #pragma region 音素材名
@@ -79,6 +81,7 @@ const std::string SCORE_TEXT = "Score:";
 const std::string TITLE_TEXT = "ゆかりさんDASH！";
 const std::string RESOUCE_ERROR = "ファイルを正常に読み込むことが出来ませんでした．\n開発者にお問い合わせください．";
 const std::string RETF_RUN_TITLE_TEXT = "Push retrun title...";
+const std::string RETRUN_TITLE_FROM_HOWTO = "長押しでタイトル画面に戻るよ！";
 const std::string RIVAL_NAME = "きりたん";
 const std::string VOICE_ACTERS = "キャラクターボイス";
 const std::string MAIN_CHARACTER_NAME = "ゆかり";

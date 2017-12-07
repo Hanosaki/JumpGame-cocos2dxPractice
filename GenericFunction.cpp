@@ -47,3 +47,7 @@ std::string GenericFunc::searceVoice(ValueMap valueMap)
 
 }
 
+Vec2 GenericFunc::setWindowCenter(Size visibleSize, Vec2 origin)
+{
+	return Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+}

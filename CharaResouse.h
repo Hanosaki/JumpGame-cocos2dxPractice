@@ -49,6 +49,9 @@ extern const std::string SKIP_BUTTON;
 extern const std::string START_BUTTON;
 extern const std::string TEXT_WINDOW;
 extern const std::string HOW_TO_BUTTON;
+extern const std::string UI_DESCRIPTION;
+extern const std::string JUMP_DESCRIPTION;
+
 #pragma endregion
 
 #pragma region 音素材名
@@ -86,6 +89,7 @@ extern const std::string SCORE_TEXT;
 extern const std::string TITLE_TEXT;
 extern const std::string RESOUCE_ERROR;
 extern const std::string RETF_RUN_TITLE_TEXT;
+extern const std::string RETRUN_TITLE_FROM_HOWTO;
 extern const std::string RIVAL_NAME;
 extern const std::string VOICE_ACTERS;
 extern const std::string MAIN_CHARACTER_NAME;

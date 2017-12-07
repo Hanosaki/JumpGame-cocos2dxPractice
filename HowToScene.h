@@ -12,9 +12,17 @@ public:
 	virtual bool init();
 	CREATE_FUNC(HowTo);
 
-	//bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+	virtual void goTitleTimer(float dt);
 
-	void returnTitle(cocos2d::Ref* Sender);
+	void returnTitle();
+	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+	void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
+	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
+
+
+	int countTimer;
+	float move;
+	cocos2d::Vec2 fingerLocation ,posCenter;
 
 };
 
