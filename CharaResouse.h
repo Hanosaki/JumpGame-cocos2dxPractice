@@ -90,6 +90,7 @@ extern const std::string TITLE_TEXT;
 extern const std::string RESOUCE_ERROR;
 extern const std::string RETF_RUN_TITLE_TEXT;
 extern const std::string RETRUN_TITLE_FROM_HOWTO;
+extern const std::string HOW_TO_ANNOTATION;
 extern const std::string RIVAL_NAME;
 extern const std::string VOICE_ACTERS;
 extern const std::string MAIN_CHARACTER_NAME;

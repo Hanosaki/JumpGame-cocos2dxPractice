@@ -6,7 +6,7 @@
 USING_NS_CC;
 
 std::string setPageNo(int pageNum);
-const int TIME_LIMIT = 5;
+const int TIME_LIMIT = 3;
 
 Scene* HowTo::createScene()
 {
@@ -52,9 +52,11 @@ bool HowTo::init()
 	label->setPosition(posCenter);
 	label->setPositionY(posCenter.y + posCenter.y / 2);
 	label->setColor(Color3B::BLACK);
-	auto fadeOut = FadeTo::create(0.9f, 64);
-	auto fadeIn = FadeTo::create(0.9f, 255);
-	auto seq = Sequence::create(fadeOut, fadeIn, NULL);
+	auto fadeOut = FadeTo::create(1.5f, 0);
+	auto fadeIn = FadeTo::create(1.5f, 255);
+	auto seq = Sequence::create(fadeOut, 
+		CallFunc::create([this](){HowTo::switchText();}), 
+		fadeIn, NULL);
 	auto repeat = RepeatForever::create(seq);
 	label->runAction(repeat);
 	label->setTag(4);
@@ -68,22 +70,6 @@ bool HowTo::init()
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
 
-
-//#pragma region –ß‚éƒ{ƒ^ƒ“
-//
-//	auto returnButton = Sprite::create(F_IMAGE + F_UI + RETURN_BUTTON);
-//	auto selectedReturnButton = Sprite::create(F_IMAGE + F_UI + RETURN_BUTTON);
-//	selectedReturnButton->setOpacity(128);
-//
-//	auto returnItem = MenuItemSprite::create(returnButton, selectedReturnButton, CC_CALLBACK_1(HowTo::returnTitle, this));
-//	returnItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-//	returnItem->setPosition(origin.x + visibleSize.width, origin.y + visibleSize.height);
-//	auto returnMenu = Menu::create(returnItem, NULL);
-//	returnMenu->setPosition(Vec2::ZERO);
-//	this->addChild(returnMenu, 2);
-//
-//#pragma endregion
-
 	return true;
 
 }
@@ -91,7 +77,6 @@ bool HowTo::init()
 bool HowTo::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
 	fingerLocation = touch->getLocation();
-	CCLOG("finger: %f",fingerLocation.x);
 	countTimer = TIME_LIMIT;
 	this->schedule(schedule_selector(HowTo::goTitleTimer), 1.0f);
 	return true;
@@ -99,10 +84,7 @@ bool HowTo::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 
 void HowTo::onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event)
 {
-	move = (touch->getLocation().x - fingerLocation.x) / 50;
-	CCLOG("finger2: %f", fingerLocation.x);
-	CCLOG("touch: %f", touch->getLocation().x);
-	CCLOG("mvoe: %f", move);
+	move = (touch->getLocation().x - fingerLocation.x) / 25;
 	auto uiDescription = (Sprite*)this->getChildByTag(1);
 	auto jumpDescription = (Sprite*)this->getChildByTag(2);
 
@@ -114,34 +96,22 @@ void HowTo::onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event)
 void HowTo::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event)
 {
 	this->unschedule(schedule_selector(HowTo::goTitleTimer));
-	auto uiDescription = (Sprite*)this->getChildByTag(1);
-	auto jumpDescription = (Sprite*)this->getChildByTag(2);
 	auto pageNo = (Label*)this->getChildByTag(3);
-	CCLOG("lastMove %f", move);
 	if (move >= 15)
 	{
-		move = 0.001;
-		while (uiDescription->getPositionX() < posCenter.x)
-		{
-			uiDescription->setPositionX(uiDescription->getPositionX() + move);
-			jumpDescription->setPositionX(jumpDescription->getPositionX() + move);
-		}
-		uiDescription->setPosition(posCenter);
-		jumpDescription->setPositionX(posCenter.x * 3);
-		pageNo->setString(setPageNo(1));		
+		this->schedule(schedule_selector(HowTo::moveImageLeft), 0.01f);
+		pageNo->setString(setPageNo(1));
 	}
 	if (move <= -10)
 	{
-		move = -0.001;
-		while (jumpDescription->getPositionX() > posCenter.x)
-		{
-			uiDescription->setPositionX(uiDescription->getPositionX() + move);
-			jumpDescription->setPositionX(jumpDescription->getPositionX() + move);
-		}
-		jumpDescription->setPosition(posCenter);
-		uiDescription->setPositionX(-posCenter.x);
+		this->schedule(schedule_selector(HowTo::moveImageRight), 0.01f);
 		pageNo->setString(setPageNo(2));
+
 	}
+
+	auto uiDescription = (Sprite*)this->getChildByTag(1);
+	auto jumpDescription = (Sprite*)this->getChildByTag(2);
+
 	if (uiDescription->getPositionX() > posCenter.x)
 	{
 		uiDescription->setPosition(posCenter);
@@ -170,10 +140,59 @@ void HowTo::goTitleTimer(float dt)
 		returnTitle();
 }
 
+void HowTo::moveImageLeft(float dt)
+{
+	auto uiDescription = (Sprite*)this->getChildByTag(1);
+	auto jumpDescription = (Sprite*)this->getChildByTag(2);
+
+	if (uiDescription->getPositionX() < posCenter.x)
+	{
+		uiDescription->setPositionX(uiDescription->getPositionX() + move);
+		jumpDescription->setPositionX(jumpDescription->getPositionX() + move);
+	}
+	else
+	{
+		uiDescription->setPosition(posCenter);
+		jumpDescription->setPositionX(posCenter.x * 3);
+		this->unschedule(schedule_selector(HowTo::moveImageLeft));
+	}
+}
+
+void HowTo::moveImageRight(float dt)
+{
+	auto uiDescription = (Sprite*)this->getChildByTag(1);
+	auto jumpDescription = (Sprite*)this->getChildByTag(2);
+
+	if (jumpDescription->getPositionX() > posCenter.x)
+	{
+		uiDescription->setPositionX(uiDescription->getPositionX() + move);
+		jumpDescription->setPositionX(jumpDescription->getPositionX() + move);
+	}
+	else
+	{
+		jumpDescription->setPosition(posCenter);
+		uiDescription->setPositionX(-posCenter.x);
+		this->unschedule(schedule_selector(HowTo::moveImageRight));
+	}
+}
+
 void HowTo::returnTitle()
 {
 	this->unschedule(schedule_selector(HowTo::goTitleTimer));
 	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Title::createScene(), Color3B::WHITE));
+}
+
+void HowTo::switchText()
+{
+	auto label = (Label*)this->getChildByTag(4);
+	if (label->getString() == RETRUN_TITLE_FROM_HOWTO)
+	{
+		label->setString(HOW_TO_ANNOTATION);
+	}
+	else
+	{
+		label->setString(RETRUN_TITLE_FROM_HOWTO);
+	}
 }
 
 std::string setPageNo(int pageNum)

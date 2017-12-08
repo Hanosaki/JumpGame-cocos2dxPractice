@@ -82,6 +82,7 @@ const std::string TITLE_TEXT = "ゆかりさんDASH！";
 const std::string RESOUCE_ERROR = "ファイルを正常に読み込むことが出来ませんでした．\n開発者にお問い合わせください．";
 const std::string RETF_RUN_TITLE_TEXT = "Push retrun title...";
 const std::string RETRUN_TITLE_FROM_HOWTO = "長押しでタイトル画面に戻るよ！";
+const std::string HOW_TO_ANNOTATION = "スワイプでページが移動できるよ！";
 const std::string RIVAL_NAME = "きりたん";
 const std::string VOICE_ACTERS = "キャラクターボイス";
 const std::string MAIN_CHARACTER_NAME = "ゆかり";

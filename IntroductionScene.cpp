@@ -231,7 +231,6 @@ void playVoice(ValueMap valueMap)
 	if (findVoiceName != ""){
 		Converter converter;
 		auto voiceName = converter.replaceString2Char(findVoiceName + TYPE_MP3);
-		CCLOG("findVoice %s", voiceName);
 		SimpleAudioEngine::getInstance()->playEffect(voiceName);
 	}
 }

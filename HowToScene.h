@@ -13,8 +13,11 @@ public:
 	CREATE_FUNC(HowTo);
 
 	virtual void goTitleTimer(float dt);
+	virtual void moveImageLeft(float dt);
+	virtual void moveImageRight(float dt);
 
 	void returnTitle();
+	void switchText();
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 	void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
 	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
