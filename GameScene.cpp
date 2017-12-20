@@ -119,6 +119,7 @@ bool Game::init()
 	this->addChild(hitDetermination);
 #pragma endregion
 
+
 #pragma region 主人公(立ち絵)の初期設定
 	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
 	characterImage->setPosition(0 , origin.y + visibleSize.height);
@@ -158,6 +159,19 @@ bool Game::init()
 	enemy->setTag(31);
 	this->addChild(enemy,1);
 #pragma endregion
+
+#pragma region 予測線の生成
+	auto noticeRect = Rect(0, 0, visibleSize.width + origin.x, (visibleSize.height + origin.y) / 10);
+	auto noticeLine = Sprite::create();
+	noticeLine->setTextureRect(noticeRect);
+	noticeLine->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	noticeLine->setPosition(origin.x + visibleSize.width / 2, enemy->getPositionY());
+	noticeLine->setColor(Color3B::RED);
+	auto sequence = Sequence::create(FadeOut::create(0.3f),FadeIn::create(0.3f),NULL);
+	noticeLine->runAction(RepeatForever::create(sequence));
+	this->addChild(noticeLine, 0);
+#pragma endregion
+
 
 #pragma region クリックリスナーの初期設定
 	auto listner = EventListenerTouchOneByOne::create();
