@@ -45,7 +45,7 @@ bool Game::init()
 	isPause = false;
 	nextSceneFlag = false;
 	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
-	enemyDefaultPos = Vec2(2 * visibleSize.width + origin.x, visibleSize.height / 6 + origin.y);
+	enemyDefaultPos = Vec2(2.5f * visibleSize.width + origin.x, visibleSize.height / 6 + origin.y);
 	outOfWindowBGPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 #pragma endregion
 
@@ -161,13 +161,14 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 予測線の生成
-	auto noticeRect = Rect(0, 0, visibleSize.width + origin.x, (visibleSize.height + origin.y) / 10);
+	auto noticeRect = Rect(0, 0, visibleSize.width + origin.x, 
+		enemy->getContentSize().height * enemy->getScale());
 	auto noticeLine = Sprite::create();
 	noticeLine->setTextureRect(noticeRect);
 	noticeLine->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	noticeLine->setPosition(origin.x + visibleSize.width / 2, enemy->getPositionY());
-	noticeLine->setColor(Color3B::RED);
-	auto sequence = Sequence::create(FadeOut::create(0.3f),FadeIn::create(0.3f),NULL);
+	noticeLine->setColor(Color3B(255,182,193));
+	auto sequence = Sequence::create(FadeOut::create(0.3f),FadeIn::create(0.5f),NULL);
 	noticeLine->runAction(RepeatForever::create(sequence));
 	noticeLine->setTag(32);
 	this->addChild(noticeLine, 0);
