@@ -24,11 +24,13 @@ public:
 	float animeSpeed;//主人公アニメーションの速さ
 	float enemySpeed;//敵速度の倍率
 	float gravityPoewr;//ジャンプ時の重力
+	float scaleFactor;//スケールの倍率
 	bool endFlag; //ゲーム終了フラグ
 	bool hitOnlyOne; //一度の接触で一度しか接触しないためのフラグ
 	bool jumpFlag;//ジャンプ状態のフラグ
 	bool speedChangeFlag;//ゲーム速度変更時のフラグ
 	bool isPause;//ポーズ状態のフラグ
+	bool nextSceneFlag;//画面遷移のフラグ
 	cocos2d::Size visibleSize;//画面サイズ
 	cocos2d::Vec2 origin;
 	cocos2d::Vec2 defoultPos; //主人公スプライトの初期位置

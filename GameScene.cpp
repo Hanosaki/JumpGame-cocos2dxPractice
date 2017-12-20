@@ -33,6 +33,7 @@ bool Game::init()
 	auto director = Director::getInstance();
 	visibleSize = director->getVisibleSize();
 	origin = director->getVisibleOrigin();
+	scaleFactor = director->getContentScaleFactor();
 	score = 0;
 	hitCounter = 0;
 	animeSpeed = 0.04f;
@@ -42,13 +43,11 @@ bool Game::init()
 	jumpFlag = false;
 	speedChangeFlag = false;
 	isPause = false;
+	nextSceneFlag = false;
 	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
 	outOfWindowBGPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 #pragma endregion
-
-	/*フレームサイズの取得*/
-	auto scaleFactor = director->getContentScaleFactor();
 
 	/*音量設定*/
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
@@ -123,27 +122,22 @@ bool Game::init()
 #pragma region 主人公(立ち絵)の初期設定
 	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
 	characterImage->setPosition(0 , origin.y + visibleSize.height);
-	characterImage->setScale(scaleFactor - 0.5*scaleFactor);
+	characterImage->setScale(scaleFactor - 0.65*scaleFactor);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 	characterImage->setTag(2);
 	this->addChild(characterImage,3);
 #pragma endregion
 
 #pragma region 体力ゲージの初期設定
-	auto lifeLabel = Label::createWithTTF("LIFE:", F_FONTS + ENG_FONTS,36);
-	lifeLabel->setPosition(origin.x + lifeLabel->getContentSize().width / 2,
-		visibleSize.height + origin.y - lifeLabel->getContentSize().height / 2);
-	lifeLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	this->addChild(lifeLabel, 3);
-
 	Sprite* life[MAX_LIFE];
+	auto lifePostionXBase = characterImage->getContentSize().width * characterImage->getScale();
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
 		life[i] = Sprite::create(F_IMAGE + F_UI + LIFE_ICON);
-		life[i]->setScale((visibleSize.height + origin.y) / (6 * life[i]->getContentSize().height));
-		life[i]->setPosition(lifeLabel->getContentSize().width + origin.x + (life[i]->getContentSize().width * life[i]->getScale() * (MAX_LIFE - i)),
-			visibleSize.height + origin.y - life[i]->getContentSize().height * life[i]->getScale() /2 );
 		life[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		life[i]->setScale((visibleSize.height + origin.y) / (6 * life[i]->getContentSize().height));
+		life[i]->setPosition(lifePostionXBase + origin.x + (life[i]->getContentSize().width * life[i]->getScale() * (MAX_LIFE - i)),
+			characterImage->getPositionY() );
 		life[i]->setTag(20+i);
 		auto rollSpeed = 0.5f;
 		auto angle = 25;
@@ -222,7 +216,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 		}
 			
 	}
-	else
+	else if (nextSceneFlag)
 	{
 		Director::getInstance()->replaceScene(GameOver::createScene());
 	}
@@ -342,26 +336,41 @@ void Game::main(float dt)
 	}
 	else
 	{
-		auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, F_FONTS + JPN_FONTS, Parameter::LARGE);
-		gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
-		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+		if (SimpleAudioEngine::getInstance()->isBackgroundMusicPlaying())
+		{
+			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+			auto menu = (Menu*)this->getChildByTag(44);
+			menu->setEnabled(false);
+			menu->setOpacity(false);
+			mainCharacter->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			mainCharacter->runAction(RepeatForever::create(RotateBy::create(1.f, -360.f*5)));
+
+		}
 		enemyPos -= 2 * moveVec*enemySpeed;
 		enemy->setPosition(enemyPos);
 		if (score < 20)
 			mainCharacter->setPositionX(mainCharacter->getPositionX() - moveVec.x * 3);
 		else
 			mainCharacter->setPositionX(mainCharacter->getPositionX() - moveVec.x * enemySpeed *2);
+
 		if (enemyPos.x + enemy->getContentSize().width < 0 && 
 			mainCharacter->getPositionX() < -mainCharacter->getContentSize().width/2)
 		{
+			auto gameoverLabel = Label::createWithTTF(GAME_OVER_TEXT, F_FONTS + JPN_FONTS, Parameter::LARGE * scaleFactor);
+			gameoverLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 			this->addChild(gameoverLabel, 4);
+			auto anotation = Label::createWithTTF("タップでスコア画面に移動", F_FONTS + JPN_FONTS, Parameter::MIDDLE * scaleFactor);
+			anotation->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+			anotation->setPositionX(gameoverLabel->getPositionX());
+			anotation->setPositionY(gameoverLabel->getPositionY() - anotation->getContentSize().height);
+			auto sequence = Sequence::create(FadeOut::create(1.f), FadeIn::create(1.f), NULL);
+			anotation->runAction(RepeatForever::create(sequence));
+			this->addChild(anotation, 4);
 			this->unschedule(schedule_selector(Game::main));
 			mainCharacter->stopAllActions();
 			UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
 			UserDefault::getInstance()->flush();
-			auto menu = (Menu*)this->getChildByTag(44);
-			menu->setEnabled(false);
-			menu->setOpacity(false);
+			nextSceneFlag = true;
 		}
 	}
 	
