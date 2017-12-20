@@ -47,7 +47,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect(TITLE_TEXT, cocos2d::Rect(0, 0, HIVision.width, HIVision.height));
+        glview = GLViewImpl::createWithRect(TITLE_TEXT, cocos2d::Rect(0, 0, basicSize.width, basicSize.height));
+		//glview = GLViewImpl::createWithRect(TITLE_TEXT, cocos2d::Rect(0, 0, HIVision.width, HIVision.height));
 #else
         glview = GLViewImpl::create(TITLE_TEXT);
 #endif
@@ -64,20 +65,31 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	glview->setDesignResolutionSize(basicSize.width, basicSize.height, ResolutionPolicy::EXACT_FIT);
     auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
-    if (frameSize.height > mediumResolutionSize.height)
+    if (frameSize.height > HIVision.height)
     {        
         director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height, largeResolutionSize.width/designResolutionSize.width));
+		CCLOG("I am large!");
     }
+	else if (frameSize.height > basicSize.height)
+	{
+		director->setContentScaleFactor(MIN(HIVision.height / basicSize.height, HIVision.width / basicSize.width));
+		CCLOG("I am HiVision!");
+	}
+	else
+	{
+		director->setContentScaleFactor(MIN(1, 1));
+		CCLOG("I am basic!");
+	}
     // if the frame's height is larger than the height of small size.
-    else if (frameSize.height > smallResolutionSize.height)
-    {        
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
-    }
-    // if the frame's height is smaller than the height of medium size.
-    else
-    {        
-        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
-    }
+  //  else if (frameSize.height > smallResolutionSize.height)
+  //  {        
+		//director->setContentScaleFactor(MIN(mediumResolutionSize.height / basicSize.height, mediumResolutionSize.width / basicSize.width));
+  //  }
+  //  // if the frame's height is smaller than the height of medium size.
+  //  else
+  //  {        
+		//director->setContentScaleFactor(MIN(smallResolutionSize.height / basicSize.height, smallResolutionSize.width / basicSize.width));
+  //  }
 
     register_all_packages();
 

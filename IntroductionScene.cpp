@@ -31,6 +31,7 @@ bool Introduction::init()
 	auto directer = Director::getInstance();
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
+	auto scaleFactor = directer->getContentScaleFactor();
 
 	/*音量設定*/
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
@@ -50,6 +51,7 @@ bool Introduction::init()
 	selectedSkipButton->setOpacity(64);
 
 	auto skipItem = MenuItemSprite::create(skipButton, selectedSkipButton, CC_CALLBACK_1(Introduction::callGameScene, this));
+	skipItem->setScale(scaleFactor - 0.5*scaleFactor);
 	skipItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
 	skipItem->setPosition(origin.x + visibleSize.width, origin.y + visibleSize.height);
 	auto skipMenu = Menu::create(skipItem, NULL);

@@ -32,10 +32,12 @@ bool Title::init()
 	GenericFunc genericFunc;
 #pragma endregion
 
+	auto audioEngine = SimpleAudioEngine::getInstance();
+
 	//BGM設定
-	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.4f);
+	audioEngine->setBackgroundMusicVolume(0.4f);
 	// SE設定
-	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
+	audioEngine->setEffectsVolume(0.8f);
 
 #pragma region タイトル表記
 	auto titleLabel = Label::createWithTTF(TITLE_TEXT, F_FONTS + JPN_FONTS, 64);
@@ -56,36 +58,20 @@ bool Title::init()
 	this->addChild(characterImage, 3);
 #pragma endregion
 
-#pragma region スタートボタン配置
-	auto startButton = Sprite::create(F_IMAGE + F_UI + START_BUTTON);
-	startButton->setContentSize(BUTTON_SIZE);
+#pragma region 終了ボタン配置
+	auto endButton = Sprite::create(F_IMAGE + F_UI + END_BUTTON);
+	endButton->setContentSize(BUTTON_SIZE);
 
-	auto selectedStartButton = Sprite::create(F_IMAGE + F_UI + START_BUTTON);
-	selectedStartButton->setOpacity(128);
-	selectedStartButton->setContentSize(BUTTON_SIZE);
+	auto selectedEndButton = Sprite::create(F_IMAGE + F_UI + END_BUTTON);
+	selectedEndButton->setOpacity(128);
+	selectedEndButton->setContentSize(BUTTON_SIZE);
 
-	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callOPScene, this));
-	auto startMenu = Menu::create(startItem, NULL);
-	startMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	startMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height/2.4f - BUTTON_SIZE.height));
+	auto endItem = MenuItemSprite::create(endButton, selectedEndButton, CC_CALLBACK_1(Title::closeGame, this));
+	auto endMenu = Menu::create(endItem, NULL);
+	endMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	endMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, endButton->getContentSize().height/2));
 
-	this->addChild(startMenu, 2);
-#pragma endregion
-
-#pragma region 操作方法説明画面遷移ボタン配置
-	auto howToButton = Sprite::create(F_IMAGE + F_UI + HOW_TO_BUTTON);
-	howToButton->setContentSize(BUTTON_SIZE);
-
-	auto selectedHowToButton = Sprite::create(F_IMAGE + F_UI + HOW_TO_BUTTON);
-	selectedHowToButton->setOpacity(128);
-	selectedHowToButton->setContentSize(BUTTON_SIZE);
-
-	auto howToItem = MenuItemSprite::create(howToButton, selectedHowToButton, CC_CALLBACK_1(Title::callHowToScene, this));
-	auto howToMenu = Menu::create(howToItem, NULL);
-	howToMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	howToMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 3 - BUTTON_SIZE.height));
-
-	this->addChild(howToMenu, 2);
+	this->addChild(endMenu, 2);
 #pragma endregion
 
 #pragma region クレジットボタン配置
@@ -99,25 +85,44 @@ bool Title::init()
 	auto creditItem = MenuItemSprite::create(creditButton, selectedCreditButton, CC_CALLBACK_1(Title::callCreditScene, this));
 	auto creditMenu = Menu::create(creditItem, NULL);
 	creditMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	creditMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 4 - BUTTON_SIZE.height));
+	creditMenu->setPositionX(endMenu->getPositionX());
+	creditMenu->setPositionY(endMenu->getPositionY() + creditButton->getContentSize().height);
 
 	this->addChild(creditMenu, 2);
 #pragma endregion
 
-#pragma region 終了ボタン配置
-	auto endButton = Sprite::create(F_IMAGE + F_UI + END_BUTTON);
-	endButton->setContentSize(BUTTON_SIZE);
+#pragma region 操作方法説明画面遷移ボタン配置
+	auto howToButton = Sprite::create(F_IMAGE + F_UI + HOW_TO_BUTTON);
+	howToButton->setContentSize(BUTTON_SIZE);
 
-	auto selectedEndButton = Sprite::create(F_IMAGE + F_UI + END_BUTTON);
-	selectedEndButton->setOpacity(128);
-	selectedEndButton->setContentSize(BUTTON_SIZE);
+	auto selectedHowToButton = Sprite::create(F_IMAGE + F_UI + HOW_TO_BUTTON);
+	selectedHowToButton->setOpacity(128);
+	selectedHowToButton->setContentSize(BUTTON_SIZE);
 
-	auto endItem = MenuItemSprite::create(endButton, selectedEndButton, CC_CALLBACK_1(Title::closeGame, this));
-	auto endMenu = Menu::create(endItem, NULL);
-	endMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	endMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 5 - BUTTON_SIZE.height*1.5));
+	auto howToItem = MenuItemSprite::create(howToButton, selectedHowToButton, CC_CALLBACK_1(Title::callHowToScene, this));
+	auto howToMenu = Menu::create(howToItem, NULL);
+	howToMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	howToMenu->setPositionX(creditMenu->getPositionX());
+	howToMenu->setPositionY(creditMenu->getPositionY() + howToButton->getContentSize().height);
 
-	this->addChild(endMenu, 2);
+	this->addChild(howToMenu, 2);
+#pragma endregion
+
+#pragma region スタートボタン配置
+	auto startButton = Sprite::create(F_IMAGE + F_UI + START_BUTTON);
+	startButton->setContentSize(BUTTON_SIZE);
+
+	auto selectedStartButton = Sprite::create(F_IMAGE + F_UI + START_BUTTON);
+	selectedStartButton->setOpacity(128);
+	selectedStartButton->setContentSize(BUTTON_SIZE);
+
+	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callOPScene, this));
+	auto startMenu = Menu::create(startItem, NULL);
+	startMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	startMenu->setPositionX(howToMenu->getPositionX());
+	startMenu->setPositionY(howToMenu->getPositionY() + startButton->getContentSize().height);
+
+	this->addChild(startMenu, 2);
 #pragma endregion
 
 	Converter converter;
