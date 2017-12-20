@@ -45,7 +45,7 @@ bool Game::init()
 	isPause = false;
 	nextSceneFlag = false;
 	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
-	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
+	enemyDefaultPos = Vec2(2 * visibleSize.width + origin.x, visibleSize.height / 6 + origin.y);
 	outOfWindowBGPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 #pragma endregion
 
@@ -294,8 +294,8 @@ void Game::main(float dt)
 
 	#pragma region エネミーの行動及び初期化
 		enemyPos -= 2 * moveVec*enemySpeed;
-		if (enemyPos.x + enemy->getContentSize().width < -visibleSize.width/2){
-			enemyPos = Vec2(enemyDefaultPos);
+		if (enemyPos.x + enemy->getContentSize().width < 0){
+			enemyPos = enemyDefaultPos;
 			srand((unsigned int)time(NULL));
 			int num = rand() % 3;
 			auto characterImage = (Sprite*)this->getChildByTag(2);
@@ -330,7 +330,7 @@ void Game::main(float dt)
 		auto rectMainCharactor = hitDetermination->getBoundingBox();
 		auto rectEnemy = enemy->getBoundingBox();
 
-		if (rectMainCharactor.intersectsRect(rectEnemy)/* && hitCounter < MAX_LIFE*/)
+		if (rectMainCharactor.intersectsRect(rectEnemy))
 		{
 			jumpPower = 0;
 			Converter converter;
@@ -360,7 +360,7 @@ void Game::main(float dt)
 			menu->setEnabled(false);
 			menu->setOpacity(false);
 			mainCharacter->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			mainCharacter->runAction(RepeatForever::create(RotateBy::create(1.f, -360.f*5)));
+			mainCharacter->runAction(RepeatForever::create(RotateBy::create(0.7f, -360.f*5)));
 
 		}
 		enemyPos -= 2 * moveVec*enemySpeed;
