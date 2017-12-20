@@ -496,7 +496,7 @@ void Game::setCharacterDefault()
 float setEnemySpeed()
 {
 	srand((unsigned int)time(NULL));
-	float enemySpeed = random(1.0f, 2.1f);
+	float enemySpeed = random(1.2f, 1.9f);
 	return enemySpeed;
 }
 
