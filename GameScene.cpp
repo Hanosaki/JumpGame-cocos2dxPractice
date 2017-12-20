@@ -169,6 +169,7 @@ bool Game::init()
 	noticeLine->setColor(Color3B::RED);
 	auto sequence = Sequence::create(FadeOut::create(0.3f),FadeIn::create(0.3f),NULL);
 	noticeLine->runAction(RepeatForever::create(sequence));
+	noticeLine->setTag(32);
 	this->addChild(noticeLine, 0);
 #pragma endregion
 
@@ -291,9 +292,9 @@ void Game::main(float dt)
 
 	#pragma endregion
 
-	#pragma region エネミーの行動
+	#pragma region エネミーの行動及び初期化
 		enemyPos -= 2 * moveVec*enemySpeed;
-		if (enemyPos.x + enemy->getContentSize().width < 0){
+		if (enemyPos.x + enemy->getContentSize().width < -visibleSize.width/2){
 			enemyPos = Vec2(enemyDefaultPos);
 			srand((unsigned int)time(NULL));
 			int num = rand() % 3;
@@ -316,6 +317,8 @@ void Game::main(float dt)
 			scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
 		}
 		enemy->setPosition(enemyPos);
+		auto noticeLine = (Sprite*)this->getChildByTag(32);
+		noticeLine->setPositionY(enemy->getPositionY());
 	#pragma endregion
 
 	#pragma region 接触判定
@@ -327,7 +330,7 @@ void Game::main(float dt)
 		auto rectMainCharactor = hitDetermination->getBoundingBox();
 		auto rectEnemy = enemy->getBoundingBox();
 
-		if (rectMainCharactor.intersectsRect(rectEnemy) && hitCounter < MAX_LIFE)
+		if (rectMainCharactor.intersectsRect(rectEnemy)/* && hitCounter < MAX_LIFE*/)
 		{
 			jumpPower = 0;
 			Converter converter;
