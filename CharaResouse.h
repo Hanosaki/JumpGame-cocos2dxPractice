@@ -28,29 +28,32 @@ extern const std::string ENG_FONTS;
 #pragma endregion
 
 #pragma region 画像名
+extern const std::string ANGRY;
 extern const std::string BACK_GROUND;
 extern const std::string CREDIT_IMAGE;
-extern const std::string SMILE;
-extern const std::string ANGRY;
-extern const std::string SAD;
-extern const std::string SURPRISE;
-extern const std::string LAUGH;
+extern const std::string CHARACTER_JUMP;
+extern const std::string DAMAGE_ANIME;
+extern const std::string FACE_AWARENESS;
+extern const std::string FACE_DAMAGE;
+extern const std::string FACE_NORMAL;
+extern const std::string DEFAULT;
 extern const std::string END_BUTTON;
 extern const std::string ENEMY_IMAGE;
+extern const std::string HOW_TO_BUTTON;
+extern const std::string JUMP_DESCRIPTION;
+extern const std::string LAUGH;
 extern const std::string LIFE_ICON;
 extern const std::string OP_BACK_GROUND;
 extern const std::string PAUSE_BUTTON;
 extern const std::string RESUME_BUTTON;
 extern const std::string RETURN_BUTTON;
-extern const std::string CHARACTER_DAMAGE;
-extern const std::string DEFAULT;
-extern const std::string CHARACTER_JUMP;
 extern const std::string SKIP_BUTTON;
+extern const std::string SMILE;
+extern const std::string SAD;
+extern const std::string SURPRISE;
 extern const std::string START_BUTTON;
 extern const std::string TEXT_WINDOW;
-extern const std::string HOW_TO_BUTTON;
 extern const std::string UI_DESCRIPTION;
-extern const std::string JUMP_DESCRIPTION;
 
 #pragma endregion
 

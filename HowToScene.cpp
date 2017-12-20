@@ -6,7 +6,6 @@
 USING_NS_CC;
 
 std::string setPageNo(int pageNum);
-const int TIME_LIMIT = 3;
 
 Scene* HowTo::createScene()
 {
@@ -77,7 +76,6 @@ bool HowTo::init()
 bool HowTo::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
 	fingerLocation = touch->getLocation();
-	countTimer = TIME_LIMIT;
 	this->schedule(schedule_selector(HowTo::goTitleTimer), 1.0f);
 	return true;
 }
@@ -126,18 +124,13 @@ void HowTo::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event)
 	}
 
 	auto label = (Label*)this->getChildByTag(4);
-	label->setString(RETRUN_TITLE_FROM_HOWTO);
 
 }
 
 void HowTo::goTitleTimer(float dt)
 {
 	auto label = (Label*)this->getChildByTag(4);
-	label->setString(StringUtils::toString(countTimer) + "...");
-	if (countTimer > 0)
-		--countTimer;
-	else
-		returnTitle();
+	returnTitle();
 }
 
 void HowTo::moveImageLeft(float dt)

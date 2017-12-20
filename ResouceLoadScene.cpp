@@ -76,7 +76,7 @@ bool ResouceLoad::init()
 	/*画像データのキャッシュ作成*/
 	auto cache = Director::getInstance()->getTextureCache();
 	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_JUMP);
-	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_DAMAGE);
+	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + DAMAGE_ANIME);
 	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + SAD);
 	cache->addImage(F_IMAGE + F_MAIN_CHARACTER + SURPRISE);
 	cache->addImage(F_IMAGE + F_RIVAL + SMILE);

@@ -25,29 +25,32 @@ const std::string ENG_FONTS = "Marker Felt.ttf";
 #pragma endregion
 
 #pragma region 画像名
+const std::string ANGRY = "怒.png";
 const std::string BACK_GROUND = "bg.png";
 const std::string CREDIT_IMAGE = "CreditButton.png";
+const std::string CHARACTER_JUMP = "Jump.png";
+const std::string DAMAGE_ANIME = "Damage.png";
+const std::string FACE_AWARENESS = "察知.png";
+const std::string FACE_DAMAGE = "ダメージ.png";
+const std::string FACE_NORMAL = "通常.png";
+const std::string DEFAULT = "0.png";
 const std::string END_BUTTON = "CloseButton.png";
 const std::string ENEMY_IMAGE = "enemy.png";
-const std::string SMILE = "喜.png";
-const std::string ANGRY = "怒.png";
-const std::string SAD = "哀.png";
-const std::string SURPRISE = "驚.png";
+const std::string HOW_TO_BUTTON = "HowToButton.png";
+const std::string JUMP_DESCRIPTION = "HowToImage2.png";
 const std::string LAUGH = "楽.png";
 const std::string LIFE_ICON = "Life.png";
 const std::string OP_BACK_GROUND = "OP_BG.png";
 const std::string PAUSE_BUTTON = "PauseButton.png";
 const std::string RESUME_BUTTON = "ResumeButton.png";
 const std::string RETURN_BUTTON = "ReturnButton.png";
-const std::string CHARACTER_DAMAGE = "Damage.png";
-const std::string DEFAULT = "0.png";
-const std::string CHARACTER_JUMP = "Jump.png";
+const std::string SMILE = "喜.png";
+const std::string SAD = "哀.png";
+const std::string SURPRISE = "驚.png";
 const std::string SKIP_BUTTON = "SkipButton.png";
 const std::string START_BUTTON = "StartButton.png";
 const std::string TEXT_WINDOW = "TextWindow.png";
-const std::string HOW_TO_BUTTON = "HowToButton.png";
 const std::string UI_DESCRIPTION = "HowToImage1.png";
-const std::string JUMP_DESCRIPTION = "HowToImage2.png";
 #pragma endregion
 
 #pragma region 音素材名

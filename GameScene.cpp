@@ -43,7 +43,7 @@ bool Game::init()
 	isPause = false;
 	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
 	enemyDefaultPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 6 + origin.y);
-	outOfWindowBGPos = Vec2(-visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	outOfWindowBGPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 #pragma endregion
 
 	/*音量設定*/
@@ -76,6 +76,7 @@ bool Game::init()
 	mainCharacter->setPosition(defoultPos);
 	mainCharacter->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	mainCharacter->setTag(1);
+	mainCharacter->setFlipX(true);
 	this->addChild(mainCharacter,1);
 #pragma endregion
 
@@ -115,9 +116,11 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	GenericFunc genericFunc;
-	auto characterImage = genericFunc.setMainCharacterImage(visibleSize, origin, F_IMAGE + F_MAIN_CHARACTER + ANGRY);
-	characterImage->setOpacity(200);
+	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
+	characterImage->setPosition(0 , origin.y + visibleSize.height);
+	characterImage->setScale(visibleSize.width / 1280);
+	CCLOG("scale:%f", origin.x);
+	characterImage->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 	characterImage->setTag(2);
 	this->addChild(characterImage,3);
 #pragma endregion
@@ -210,7 +213,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 					break;
 				}
 				auto characterImage = (Sprite*)this->getChildByTag(2);
-				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + ANGRY);
+				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
 			}
 		}
 			
@@ -236,14 +239,14 @@ void Game::main(float dt)
 	auto pos = backGround->getPosition();
 	auto pos2 = backGround2->getPosition();
 	if (!hitOnlyOne){
-		pos += moveVec;
-		pos2 += moveVec;
+		pos -= moveVec;
+		pos2 -= moveVec;
 	}
 
-	if (pos.x - backGround->getContentSize().width / 2 > visibleSize.width){
+	if (pos.x + backGround->getContentSize().width / 2 < 0){
 		pos = Vec2(outOfWindowBGPos);
 	}
-	if (pos2.x - backGround2->getContentSize().width / 2 > visibleSize.width){
+	if (pos2.x + backGround2->getContentSize().width / 2 <0){
 		pos2 = Vec2(outOfWindowBGPos);
 	}
 	backGround->setPosition(pos);
@@ -279,11 +282,11 @@ void Game::main(float dt)
 		if (num == 2)
 		{
 			enemyPos.y *= 3.5f;
-			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + ANGRY);
+			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_NORMAL);
 		}
 		else
 		{
-			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + SURPRISE);
+			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
 			Converter converter;
 			auto seName = converter.replaceString2Char(F_SE + ALERT_SE + TYPE_MP3);
 			SimpleAudioEngine::getInstance()->playEffect(seName);
@@ -313,8 +316,8 @@ void Game::main(float dt)
 		SimpleAudioEngine::getInstance()->playEffect(seName);
 		auto characterImage = (Sprite*)this->getChildByTag(2);
 		mainCharacter->stopActionByTag(101);
-		mainCharacter->setTexture(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_DAMAGE);
-		characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + SAD);
+		mainCharacter->setTexture(F_IMAGE + F_MAIN_CHARACTER + DAMAGE_ANIME);
+		characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_DAMAGE);
 		this->getChildByTag(20 + hitCounter)->setVisible(false);
 		++hitCounter;
 		if (hitCounter >= MAX_LIFE)

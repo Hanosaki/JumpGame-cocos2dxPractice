@@ -23,7 +23,6 @@ public:
 	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
 
-	int countTimer;
 	float move;
 	cocos2d::Vec2 fingerLocation ,posCenter;
 
