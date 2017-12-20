@@ -4,6 +4,7 @@
 #include "Splash.h"
 #include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
+#include "Converter.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
