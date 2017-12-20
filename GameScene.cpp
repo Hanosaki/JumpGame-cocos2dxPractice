@@ -154,7 +154,7 @@ bool Game::init()
 #pragma region 敵の初期設定
 	auto enemy = Sprite::create(F_IMAGE + F_RIVAL + ENEMY_IMAGE);
 	enemy->setPosition(enemyDefaultPos.x*2,enemyDefaultPos.y);
-	enemy->setScale((visibleSize.height+origin.y) / (enemy->getContentSize().height*5));
+	enemy->setScale(scaleFactor + 0.75*scaleFactor);
 	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 	enemy->setTag(31);
 	this->addChild(enemy,1);
@@ -293,6 +293,7 @@ void Game::main(float dt)
 	#pragma endregion
 
 	#pragma region エネミーの行動及び初期化
+		auto noticeLine = (Sprite*)this->getChildByTag(32);
 		enemyPos -= 2 * moveVec*enemySpeed;
 		if (enemyPos.x + enemy->getContentSize().width < 0){
 			enemyPos = enemyDefaultPos;
@@ -315,10 +316,15 @@ void Game::main(float dt)
 			++score;
 			hitOnlyOne = false;
 			scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
+			noticeLine->setVisible(true);
 		}
 		enemy->setPosition(enemyPos);
-		auto noticeLine = (Sprite*)this->getChildByTag(32);
-		noticeLine->setPositionY(enemy->getPositionY());
+		if (enemy->getPositionX() - (enemy->getContentSize().width * enemy->getScale()) / 2 > visibleSize.width)
+			noticeLine->setPositionY(enemy->getPositionY());
+		else if (noticeLine->isVisible())
+		{
+			noticeLine->setVisible(false);
+		}
 	#pragma endregion
 
 	#pragma region 接触判定
