@@ -122,7 +122,7 @@ bool Game::init()
 #pragma region 主人公(立ち絵)の初期設定
 	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
 	characterImage->setPosition(0 , origin.y + visibleSize.height);
-	characterImage->setScale(scaleFactor - 0.65*scaleFactor);
+	characterImage->setScale(scaleFactor - 0.6f*scaleFactor);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 	characterImage->setTag(2);
 	this->addChild(characterImage,3);
@@ -130,14 +130,14 @@ bool Game::init()
 
 #pragma region 体力ゲージの初期設定
 	Sprite* life[MAX_LIFE];
-	auto lifePostionXBase = characterImage->getContentSize().width * characterImage->getScale();
+	auto lifePostionBase = characterImage->getContentSize() * characterImage->getScale();
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
 		life[i] = Sprite::create(F_IMAGE + F_UI + LIFE_ICON);
 		life[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		life[i]->setScale((visibleSize.height + origin.y) / (6 * life[i]->getContentSize().height));
-		life[i]->setPosition(lifePostionXBase + origin.x + (life[i]->getContentSize().width * life[i]->getScale() * (MAX_LIFE - i)),
-			characterImage->getPositionY() );
+		life[i]->setPosition(lifePostionBase.width + origin.x + (life[i]->getContentSize().width * life[i]->getScale() * (MAX_LIFE - i)),
+			origin.y + visibleSize.height - lifePostionBase.height / 2);
 		life[i]->setTag(20+i);
 		auto rollSpeed = 0.5f;
 		auto angle = 25;
