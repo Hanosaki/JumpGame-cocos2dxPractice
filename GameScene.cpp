@@ -153,7 +153,7 @@ bool Game::init()
 
 #pragma region 敵の初期設定
 	auto enemy = Sprite::create(F_IMAGE + F_RIVAL + ENEMY_IMAGE);
-	enemy->setPosition(enemyDefaultPos.x*2,enemyDefaultPos.y);
+	enemy->setPosition(enemyDefaultPos.x*1.25f,enemyDefaultPos.y);
 	enemy->setScale(scaleFactor + 0.75*scaleFactor);
 	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
 	enemy->setTag(31);
@@ -277,9 +277,14 @@ void Game::main(float dt)
 	{
 
 	#pragma region ジャンプ処理
+		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
+		CCLOG("distance %f", distance);
+		if (-780 <= distance && distance < 0 && !jumpFlag)
+			jumpFlag = !jumpFlag;
 
 		if (jumpFlag)
 		{
+			CCLOG("Jump! %f", distance);
 			auto mainCharacterPosY = mainCharacter->getPositionY();
 			mainCharacterPosY += jumpPower - (9.8f * gravityPoewr);
 			gravityPoewr += Parameter::ADD_GRAVITY;
