@@ -17,6 +17,8 @@ public:
 	void main(float dt);
 	void setCharacterDefault();
 	void pauseGame(cocos2d::Ref* Sender);
+	void jump();
+	void tutorial();
 
 	int score; //敵が画面端に到達した回数
 	int hitCounter; //敵と接触した回数
@@ -31,6 +33,7 @@ public:
 	bool speedChangeFlag;//ゲーム速度変更時のフラグ
 	bool isPause;//ポーズ状態のフラグ
 	bool nextSceneFlag;//画面遷移のフラグ
+	bool isFirstPlay;//初プレイ時のフラグ
 	cocos2d::Size visibleSize;//画面サイズ
 	cocos2d::Vec2 origin;
 	cocos2d::Vec2 defoultPos; //主人公スプライトの初期位置

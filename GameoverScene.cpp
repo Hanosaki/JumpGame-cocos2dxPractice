@@ -29,6 +29,7 @@ bool GameOver::init()
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	 seName = converter.replaceString2Char(F_SE + GAMEOVER_SE + TYPE_MP3);
 #endif
+	 CCLOG("sename:%s",seName);
 	SimpleAudioEngine::getInstance()->preloadEffect(seName);
 
 #pragma region 変数宣言

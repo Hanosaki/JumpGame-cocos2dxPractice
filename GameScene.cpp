@@ -53,6 +53,14 @@ bool Game::init()
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
 
+#pragma region 初プレイのチェック
+	auto hiScore = UserDefault::getInstance()->getIntegerForKey(HI_SCORE_KEY, 0);
+	if (hiScore == 0)
+		isFirstPlay = true;//ハイスコアが0なら初プレイ
+	else
+		isFirstPlay = false;
+#pragma endregion
+
 #pragma region スコア生成
 	scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), F_FONTS+ENG_FONTS, 36);
 	scoreLabel->setPosition(Vec2(visibleSize.width / 2 +origin.x , visibleSize.height + origin.y - scoreLabel->getContentSize().height));
@@ -111,14 +119,13 @@ bool Game::init()
 		mainCharacter->getContentSize().height / 2.5f * mainCharacter->getScaleY());
 	auto hitDetermination = Sprite::create();
 	hitDetermination->setTextureRect(hitDeterminationBox);
-	hitDetermination->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+	hitDetermination->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	hitDetermination->setPositionX(mainCharacter->getPositionX());
 	hitDetermination->setTag(11);
 	hitDetermination->setColor(Color3B::BLACK);
 	hitDetermination->setVisible(false);
 	this->addChild(hitDetermination);
 #pragma endregion
-
 
 #pragma region 主人公(立ち絵)の初期設定
 	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
@@ -201,35 +208,34 @@ bool Game::init()
 
 bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
+
 #pragma region ジャンプ開始
 	if (!endFlag)
 	{
-		if (!jumpFlag && !hitOnlyOne)
+		#pragma region 初回プレイ時の処理
+		if (isFirstPlay)
 		{
+			if (!this->isScheduled(schedule_selector(Game::main)))
+			{
+				isFirstPlay = false;
+				jump();
+				this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED);
+				this->removeChildByTag(53);
+				this->removeChildByTag(54);
+			}
+		}
+		#pragma endregion
+		else if (!jumpFlag && !hitOnlyOne)
+		{
+		#pragma region 通常プレイ時の処理
 			auto mainCharacter = (Sprite*)this->getChildByTag(1);
 			if (mainCharacter->isRunning())
 			{
-				mainCharacter->stopActionByTag(101);
-				mainCharacter->setTexture(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_JUMP);
-				jumpFlag = !jumpFlag;
-				jumpPower = Parameter::DEFOULT_JUMP_POWER;
-				gravityPoewr = Parameter::DEFOULT_GRAVITY_POWER;
-				srand((unsigned int)time(NULL));
-				int num = rand() % 2;
-				Converter converter;
-				auto jumpSE1 = converter.replaceString2Char(F_SE + JUMP_SE + TYPE_MP3);
-				auto jumpSE2 = converter.replaceString2Char(F_SE + JUMP_SE2 + TYPE_MP3);
-				switch (num)
-				{
-				case 0:SimpleAudioEngine::getInstance()->playEffect(jumpSE1); break;
-				case 1:SimpleAudioEngine::getInstance()->playEffect(jumpSE2); break;
-				default:
-					break;
-				}
-				auto characterImage = (Sprite*)this->getChildByTag(2);
-				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
+				jump();
 			}
+		#pragma endregion
 		}
+		
 			
 	}
 	else if (nextSceneFlag)
@@ -237,6 +243,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 		Director::getInstance()->replaceScene(GameOver::createScene());
 	}
 #pragma endregion
+
 	return true;
 }
 
@@ -244,7 +251,7 @@ void Game::main(float dt)
 {
 #pragma region 変数の宣言
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
-	auto moveVec = Vec2(Parameter::MOVE_SPEED, 0);
+	auto move = Parameter::MOVE_SPEED;
 	auto backGround = this->getChildByTag(51);
 	auto backGround2 = this->getChildByTag(52);
 	auto enemy = this->getChildByTag(31);
@@ -252,39 +259,44 @@ void Game::main(float dt)
 #pragma endregion
 
 #pragma region 背景アニメーション
-	auto pos = backGround->getPosition();
-	auto pos2 = backGround2->getPosition();
+	auto pos = backGround->getPosition().x;
+	auto pos2 = backGround2->getPosition().x;
 	if (!hitOnlyOne){
-		pos -= moveVec;
-		pos2 -= moveVec;
+		pos -= move;
+		pos2 -= move;
 	}
 
-	if (pos.x + backGround->getContentSize().width / 2 < 0){
-		pos = Vec2(outOfWindowBGPos);
+	if (pos + backGround->getContentSize().width / 2 < 0){
+		pos = outOfWindowBGPos.x;
 	}
-	if (pos2.x + backGround2->getContentSize().width / 2 <0){
-		pos2 = Vec2(outOfWindowBGPos);
+	if (pos2 + backGround2->getContentSize().width / 2 <0){
+		pos2 = outOfWindowBGPos.x;
 	}
-	backGround->setPosition(pos);
-	backGround2->setPosition(pos2);
+	backGround->setPositionX(pos);
+	backGround2->setPositionX(pos2);
 #pragma endregion
 
+#pragma region 初回プレイ時のチュートリアル呼び出し
+	if (isFirstPlay)
+	{
+		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
+		if (distance >= -780)
+			tutorial();
+	}
+#pragma endregion
 
+#pragma region ゲームオーバーフラグの起動
 	if (hitCounter >= MAX_LIFE && !endFlag)
 		endFlag = !endFlag;
+#pragma endregion
 
 	if (!endFlag)
 	{
 
 	#pragma region ジャンプ処理
-		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
-		CCLOG("distance %f", distance);
-		if (-780 <= distance && distance < 0 && !jumpFlag)
-			jumpFlag = !jumpFlag;
-
+		
 		if (jumpFlag)
 		{
-			CCLOG("Jump! %f", distance);
 			auto mainCharacterPosY = mainCharacter->getPositionY();
 			mainCharacterPosY += jumpPower - (9.8f * gravityPoewr);
 			gravityPoewr += Parameter::ADD_GRAVITY;
@@ -300,7 +312,7 @@ void Game::main(float dt)
 
 	#pragma region エネミーの行動及び初期化
 		auto noticeLine = (Sprite*)this->getChildByTag(32);
-		enemyPos -= 2 * moveVec*enemySpeed;
+		enemyPos.x -= 2 * move*enemySpeed;
 		if (enemyPos.x + enemy->getContentSize().width < 0){
 			enemyPos = enemyDefaultPos;
 			srand((unsigned int)time(NULL));
@@ -342,7 +354,7 @@ void Game::main(float dt)
 		auto rectMainCharactor = hitDetermination->getBoundingBox();
 		auto rectEnemy = enemy->getBoundingBox();
 
-		if (rectMainCharactor.intersectsRect(rectEnemy))
+		if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne)
 		{
 			jumpPower = 0;
 			Converter converter;
@@ -353,18 +365,19 @@ void Game::main(float dt)
 			mainCharacter->stopActionByTag(101);
 			mainCharacter->setTexture(F_IMAGE + F_MAIN_CHARACTER + DAMAGE_ANIME);
 			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_DAMAGE);
-			if (!hitOnlyOne)
-			{
-				this->getChildByTag(20 + hitCounter)->setVisible(false);
-				hitOnlyOne = true;
-				++hitCounter;
-			}
+			this->getChildByTag(20 + hitCounter)->setVisible(false);
+			hitOnlyOne = true;
+			++hitCounter;
+
 		}
 	#pragma endregion
 
 	}
 	else
 	{
+
+#pragma region ゲームオーバー時の処理
+
 		if (SimpleAudioEngine::getInstance()->isBackgroundMusicPlaying())
 		{
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
@@ -372,15 +385,18 @@ void Game::main(float dt)
 			menu->setEnabled(false);
 			menu->setOpacity(false);
 			mainCharacter->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-			mainCharacter->runAction(RepeatForever::create(RotateBy::create(0.7f, -360.f*5)));
+			float rotateSpeed = 0.7f - score / 100;
+			mainCharacter->runAction(RepeatForever::create(RotateBy::create(rotateSpeed, -360.f*5)));
 
 		}
-		enemyPos -= 2 * moveVec*enemySpeed;
+		enemyPos.x -= 2 * move*enemySpeed;
 		enemy->setPosition(enemyPos);
+		auto mainCharacterPos = mainCharacter->getPosition();
 		if (score < 20)
-			mainCharacter->setPositionX(mainCharacter->getPositionX() - moveVec.x * 3);
+			mainCharacter->setPositionX(mainCharacterPos.x - move * 3);
 		else
-			mainCharacter->setPositionX(mainCharacter->getPositionX() - moveVec.x * enemySpeed *2);
+			mainCharacter->setPositionX(mainCharacterPos.x - move * enemySpeed *2);
+		mainCharacter->setPositionY(mainCharacterPos.y + move*4);
 
 		if (enemyPos.x + enemy->getContentSize().width < 0 && 
 			mainCharacter->getPositionX() < -mainCharacter->getContentSize().width/2)
@@ -401,6 +417,9 @@ void Game::main(float dt)
 			UserDefault::getInstance()->flush();
 			nextSceneFlag = true;
 		}
+
+#pragma endregion
+	
 	}
 	
 
@@ -427,6 +446,32 @@ void Game::main(float dt)
 	}
 #pragma endregion
 }
+
+#pragma region ジャンプ処理
+void Game::jump()
+{
+	auto mainCharacter = (Sprite*)this->getChildByTag(1);
+	mainCharacter->stopActionByTag(101);
+	mainCharacter->setTexture(F_IMAGE + F_MAIN_CHARACTER + CHARACTER_JUMP);
+	jumpFlag = !jumpFlag;
+	jumpPower = Parameter::DEFOULT_JUMP_POWER;
+	gravityPoewr = Parameter::DEFOULT_GRAVITY_POWER;
+	srand((unsigned int)time(NULL));
+	int num = rand() % 2;
+	Converter converter;
+	auto jumpSE1 = converter.replaceString2Char(F_SE + JUMP_SE + TYPE_MP3);
+	auto jumpSE2 = converter.replaceString2Char(F_SE + JUMP_SE2 + TYPE_MP3);
+	switch (num)
+	{
+	case 0:SimpleAudioEngine::getInstance()->playEffect(jumpSE1); break;
+	case 1:SimpleAudioEngine::getInstance()->playEffect(jumpSE2); break;
+	default:
+		break;
+	}
+	auto characterImage = (Sprite*)this->getChildByTag(2);
+	characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
+}
+#pragma endregion
 
 #pragma region ポーズボタンの処理
 
@@ -496,6 +541,36 @@ void Game::setCharacterDefault()
 		puts(messeage);
 	}
 }
+#pragma endregion
+
+#pragma region チュートリアル
+
+void Game::tutorial()
+{
+#pragma region 画面暗転用Spriteの作成
+	auto blackBox = Rect(0,0,visibleSize.width,visibleSize.height);
+	auto blackEffect = Sprite::create();
+	blackEffect->setTextureRect(blackBox);
+	blackEffect->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
+	blackEffect->setColor(Color3B::BLACK);
+	blackEffect->setOpacity(128);
+	blackEffect->setTag(53);
+	this->addChild(blackEffect, 4);
+#pragma endregion
+	
+	this->unschedule(schedule_selector(Game::main));
+
+	auto mainCharactor = this->getChildByTag(1);
+	mainCharactor->pause();
+	auto annotation = Label::createWithTTF("画面をタップしてきりたんぽを回避！", F_FONTS + JPN_FONTS, Parameter::LARGE * scaleFactor);
+	auto sequence = Sequence::create(FadeOut::create(0.5f), FadeIn::create(0.5f), NULL);
+	annotation->runAction(RepeatForever::create(sequence));
+	annotation->setPosition(blackEffect->getPosition());
+	annotation->setTag(54);
+	this->addChild(annotation,5);
+
+}
+
 #pragma endregion
 
 float setEnemySpeed()
