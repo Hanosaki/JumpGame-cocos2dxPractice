@@ -49,6 +49,8 @@ bool Game::init()
 	outOfWindowBGPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 #pragma endregion
 
+	GenericFunc genericFunc;
+
 	/*音量設定*/
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
@@ -68,25 +70,21 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 背景初期設定
-	auto backGround = Sprite::create(F_IMAGE + F_UI + BACK_GROUND);
+	auto backGround = genericFunc.createSprite(F_IMAGE + F_UI + BACK_GROUND,
+		origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 , 51);
 	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1f*visibleSize.width, visibleSize.height));
-	backGround->setPosition(visibleSize.width/2 + origin.x, visibleSize.height / 2 + origin.y);
-	backGround->setTag(51);
 	this->addChild(backGround);
 
-	auto backGround2 = Sprite::create(F_IMAGE + F_UI + BACK_GROUND);
+	auto backGround2 = genericFunc.createSprite(F_IMAGE + F_UI + BACK_GROUND,
+		outOfWindowBGPos.x, outOfWindowBGPos.y, 52);
 	backGround2->setContentSize(backGround->getContentSize());
-	backGround2->setPosition(outOfWindowBGPos);
-	backGround2->setTag(52);
 	this->addChild(backGround2);
 #pragma endregion
 
 #pragma region 主人公(animation)スプライトの初期設定
-	auto mainCharacter = Sprite::create(F_IMAGE +F_ANIMATION+F_RUN+DEFAULT);
+	auto mainCharacter = genericFunc.createSprite(F_IMAGE + F_ANIMATION + F_RUN + DEFAULT,
+		defoultPos.x,defoultPos.y, Vec2::ANCHOR_MIDDLE_BOTTOM  ,1);
 	mainCharacter->setScale((origin.y + visibleSize.height) / (mainCharacter->getContentSize().height * 2));
-	mainCharacter->setPosition(defoultPos);
-	mainCharacter->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-	mainCharacter->setTag(1);
 	mainCharacter->setFlippedX(true);
 	this->addChild(mainCharacter,1);
 #pragma endregion
@@ -117,12 +115,14 @@ bool Game::init()
 	auto hitDeterminationBox = Rect(0, 0,
 		mainCharacter->getContentSize().width / 5.5f * mainCharacter->getScaleX(),
 		mainCharacter->getContentSize().height / 2.5f * mainCharacter->getScaleY());
-	auto hitDetermination = Sprite::create();
-	hitDetermination->setTextureRect(hitDeterminationBox);
-	hitDetermination->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-	hitDetermination->setPositionX(mainCharacter->getPositionX());
-	hitDetermination->setTag(11);
-	hitDetermination->setColor(Color3B::BLACK);
+	auto hitDetermination = genericFunc.createSpriteWithRect(hitDeterminationBox,
+		mainCharacter->getPositionX, 0, Vec2::ANCHOR_MIDDLE_BOTTOM, Color3B::BLACK, 11);
+	//	/* Sprite::create()*/
+	//hitDetermination->setTextureRect(hitDeterminationBox);
+	//hitDetermination->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+	//hitDetermination->setPositionX(mainCharacter->getPositionX());
+	//hitDetermination->setTag(11);
+	//hitDetermination->setColor(Color3B::BLACK);
 	hitDetermination->setVisible(false);
 	this->addChild(hitDetermination);
 #pragma endregion

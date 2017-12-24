@@ -46,6 +46,52 @@ std::string GenericFunc::searceVoice(ValueMap valueMap)
 
 }
 
+Sprite* GenericFunc::createSprite(std::string fileName, float x, float y , int tag)
+{
+	auto scale = Director::getInstance()->getContentScaleFactor();
+	auto sprite = Sprite::create(fileName);
+	sprite->setPositionX(x);
+	sprite->setPositionY(y);
+	sprite->setTag(tag);
+	sprite->setScale(scale);
+	return sprite;
+}
+
+Sprite* GenericFunc::createSprite(std::string fileName, float x, float y, Vec2 anchor, int tag)
+{
+	auto scale = Director::getInstance()->getContentScaleFactor();
+	auto sprite = Sprite::create(fileName);
+	sprite->setAnchorPoint(anchor);
+	sprite->setPositionX(x);
+	sprite->setPositionY(y);
+	sprite->setTag(tag);
+	sprite->setScale(scale);
+	return sprite;
+}
+
+Sprite* GenericFunc::createSprite(std::string fileName, float x, float y, Vec2 anchor  ,float scale, int tag )
+{
+	auto sprite = Sprite::create(fileName);
+	sprite->setAnchorPoint(anchor);
+	sprite->setPositionX(x);
+	sprite->setPositionY(y);
+	sprite->setTag(tag);
+	sprite->setScale(scale);
+	return sprite;
+}
+
+Sprite* GenericFunc::createSpriteWithRect(Rect rect, float x, float y, Vec2 anchor, Color3B color, int tag)
+{
+	auto sprite = Sprite::create();
+	sprite->setTextureRect(rect);
+	sprite->setAnchorPoint(anchor);
+	sprite->setPositionX(x);
+	sprite->setPositionY(y);
+	sprite->setColor(color);
+	sprite->setTag(tag);
+	return sprite;
+}
+
 Vec2 GenericFunc::setWindowCenter(Size visibleSize, Vec2 origin)
 {
 	return Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
