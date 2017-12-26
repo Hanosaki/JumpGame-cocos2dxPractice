@@ -44,7 +44,7 @@ bool Game::init()
 	speedChangeFlag = false;
 	isPause = false;
 	nextSceneFlag = false;
-	defoultPos = Vec2(visibleSize.width / 6 + origin.x,  origin.y);
+	defoultPos = Vec2(visibleSize.width / 6 + origin.x, origin.y);
 	enemyDefaultPos = Vec2(2.5f * visibleSize.width + origin.x, visibleSize.height / 6 + origin.y);
 	outOfWindowBGPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 #pragma endregion
@@ -64,14 +64,14 @@ bool Game::init()
 #pragma endregion
 
 #pragma region スコア生成
-	scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), F_FONTS+ENG_FONTS, 36);
-	scoreLabel->setPosition(Vec2(visibleSize.width / 2 +origin.x , visibleSize.height + origin.y - scoreLabel->getContentSize().height));
-	this->addChild(scoreLabel,1);
+	scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), F_FONTS + ENG_FONTS, 36);
+	scoreLabel->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height + origin.y - scoreLabel->getContentSize().height));
+	this->addChild(scoreLabel, 1);
 #pragma endregion
 
 #pragma region 背景初期設定
 	auto backGround = genericFunc.createSprite(F_IMAGE + F_UI + BACK_GROUND,
-		origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 , 51);
+		origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2, 51);
 	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1f*visibleSize.width, visibleSize.height));
 	this->addChild(backGround);
 
@@ -83,10 +83,10 @@ bool Game::init()
 
 #pragma region 主人公(animation)スプライトの初期設定
 	auto mainCharacter = genericFunc.createSprite(F_IMAGE + F_ANIMATION + F_RUN + DEFAULT,
-		defoultPos.x,defoultPos.y, Vec2::ANCHOR_MIDDLE_BOTTOM  ,1);
+		defoultPos.x, defoultPos.y, Vec2::ANCHOR_MIDDLE_BOTTOM, 1);
 	mainCharacter->setScale((origin.y + visibleSize.height) / (mainCharacter->getContentSize().height * 2));
 	mainCharacter->setFlippedX(true);
-	this->addChild(mainCharacter,1);
+	this->addChild(mainCharacter, 1);
 #pragma endregion
 
 	setCharacterDefault();
@@ -116,71 +116,58 @@ bool Game::init()
 		mainCharacter->getContentSize().width / 5.5f * mainCharacter->getScaleX(),
 		mainCharacter->getContentSize().height / 2.5f * mainCharacter->getScaleY());
 	auto hitDetermination = genericFunc.createSpriteWithRect(hitDeterminationBox,
-		mainCharacter->getPositionX, 0, Vec2::ANCHOR_MIDDLE_BOTTOM, Color3B::BLACK, 11);
-	//	/* Sprite::create()*/
-	//hitDetermination->setTextureRect(hitDeterminationBox);
-	//hitDetermination->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-	//hitDetermination->setPositionX(mainCharacter->getPositionX());
-	//hitDetermination->setTag(11);
-	//hitDetermination->setColor(Color3B::BLACK);
+		mainCharacter->getPositionX(), 0, Vec2::ANCHOR_MIDDLE_BOTTOM, Color3B::BLACK, 11);
 	hitDetermination->setVisible(false);
 	this->addChild(hitDetermination);
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
 	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
-	characterImage->setPosition(0 , origin.y + visibleSize.height);
-	characterImage->setScale(scaleFactor - 0.6f*scaleFactor);
-	characterImage->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
-	characterImage->setTag(2);
-	this->addChild(characterImage,3);
+	characterImage = genericFunc.createSprite(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS,
+		0, origin.y + visibleSize.height, Vec2::ANCHOR_TOP_LEFT, scaleFactor - 0.6*scaleFactor, 2);
+	this->addChild(characterImage, 3);
 #pragma endregion
 
 #pragma region 体力ゲージの初期設定
 	Sprite* life[MAX_LIFE];
-	auto lifePostionBase = characterImage->getContentSize() * characterImage->getScale();
+	auto lifeIcon = Sprite::create(F_IMAGE + F_UI + LIFE_ICON);
+	auto lifePostionBase = Vec2(2 * characterImage->getContentSize().width/3 * characterImage->getScale(),
+		characterImage->getContentSize().height * characterImage->getScale());
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
-		life[i] = Sprite::create(F_IMAGE + F_UI + LIFE_ICON);
-		life[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-		life[i]->setScale((visibleSize.height + origin.y) / (6 * life[i]->getContentSize().height));
-		life[i]->setPosition(lifePostionBase.width + origin.x + (life[i]->getContentSize().width * life[i]->getScale() * (MAX_LIFE - i)),
-			origin.y + visibleSize.height - lifePostionBase.height / 2);
-		life[i]->setTag(20+i);
+		auto scale = scaleFactor - 0.91*scaleFactor;
+		life[i] = genericFunc.createSprite(F_IMAGE + F_UI + LIFE_ICON,
+			origin.x + lifePostionBase.x + lifeIcon->getContentSize().width * scale * (MAX_LIFE - i),
+			origin.y + visibleSize.height - lifePostionBase.y / 2, Vec2::ANCHOR_MIDDLE, scale, 20 + i);
 		auto rollSpeed = 0.5f;
 		auto angle = 25;
-		auto rollLeft = RotateTo::create(rollSpeed,angle);
-		auto rollRight = RotateTo::create(rollSpeed,-angle);
+		auto rollLeft = RotateTo::create(rollSpeed, angle);
+		auto rollRight = RotateTo::create(rollSpeed, -angle);
 		auto sequence = Sequence::create(rollLeft, rollRight, NULL);
 		life[i]->runAction(RepeatForever::create(sequence));
-		this->addChild(life[i],3);
+		this->addChild(life[i], 3);
 	}
 
 #pragma endregion
 
 #pragma region 敵の初期設定
-	auto enemy = Sprite::create(F_IMAGE + F_RIVAL + ENEMY_IMAGE);
-	enemy->setPosition(enemyDefaultPos.x*1.25f,enemyDefaultPos.y);
-	enemy->setScale(scaleFactor + 0.75*scaleFactor);
-	enemy->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-	enemy->setTag(31);
-	this->addChild(enemy,1);
+	auto enemy = genericFunc.createSprite(F_IMAGE + F_RIVAL + ENEMY_IMAGE,
+		 enemyDefaultPos.x*1.25f, enemyDefaultPos.y, Vec2::ANCHOR_MIDDLE_RIGHT,
+		 scaleFactor + 0.75*scaleFactor, 31);
+	this->addChild(enemy, 1);
 #pragma endregion
 
 #pragma region 予測線の生成
-	auto noticeRect = Rect(0, 0, visibleSize.width + origin.x, 
+	auto noticeRect = Rect(0, 0, visibleSize.width + origin.x,
 		enemy->getContentSize().height * enemy->getScale());
-	auto noticeLine = Sprite::create();
-	noticeLine->setTextureRect(noticeRect);
-	noticeLine->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	noticeLine->setPosition(origin.x + visibleSize.width / 2, enemy->getPositionY());
-	noticeLine->setColor(Color3B(255,182,193));
-	auto sequence = Sequence::create(FadeOut::create(0.3f),FadeIn::create(0.5f),NULL);
+	auto noticeLine = genericFunc.createSpriteWithRect(noticeRect,
+		origin.x + visibleSize.width / 2, enemy->getPositionY(),
+		Vec2::ANCHOR_MIDDLE, Color3B(255, 182, 193), 32);
+	auto sequence = Sequence::create(FadeOut::create(0.3f), FadeIn::create(0.5f), NULL);
 	noticeLine->runAction(RepeatForever::create(sequence));
 	noticeLine->setTag(32);
 	this->addChild(noticeLine, 0);
 #pragma endregion
-
 
 #pragma region クリックリスナーの初期設定
 	auto listner = EventListenerTouchOneByOne::create();
@@ -192,15 +179,15 @@ bool Game::init()
 	// BGM再生
 	Converter converter;
 	auto bgmName = converter.replaceString2Char(F_BGM + MAIN_BGM + TYPE_MP3);
-	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName,true);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName, true);
 
 	//SE再生
 	auto seName = converter.replaceString2Char(F_SE + RIVAL_VOICE + TYPE_MP3);
 	SimpleAudioEngine::getInstance()->playEffect(seName);
 
 #pragma region 繰り返し処理の初期設定
-	this->runAction(Sequence::create(DelayTime::create(1.5f), 
-		CallFunc::create([this](){this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED); }),NULL));
+	this->runAction(Sequence::create(DelayTime::create(1.5f),
+		CallFunc::create([this](){this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED); }), NULL));
 #pragma endregion
 
 	return true;
@@ -295,6 +282,11 @@ void Game::main(float dt)
 
 	#pragma region ジャンプ処理
 		
+		/*autoPlay機能*/
+		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
+		if (distance >= -780 && !jumpFlag && enemyPos.y == enemyDefaultPos.y)
+			jump();
+
 		if (jumpFlag)
 		{
 			auto mainCharacterPosY = mainCharacter->getPositionY();
