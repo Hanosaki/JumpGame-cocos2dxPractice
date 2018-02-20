@@ -187,10 +187,13 @@ bool Game::init()
 
 #pragma region 繰り返し処理の初期設定
 	//ゲームメイン処理
-	this->runAction(Sequence::create(DelayTime::create(1.5f),
-		CallFunc::create([this](){this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED); }), NULL));
+	this->runAction(Sequence::create(DelayTime::create(1.5f), CallFunc::create([this]()
+	{
+		this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED); 
+	}), NULL));
 	
-	this->schedule(schedule_selector(Game::moveCharacters), Parameter::GAME_SPEED);//主人公のジャンプモーション及び敵の再生成処理
+	this->schedule(schedule_selector(Game::moveCharacters), Parameter::GAME_SPEED);//主人公のジャンプモーション
+	
 #pragma endregion
 
 	return true;
@@ -286,33 +289,6 @@ void Game::main(float dt)
 	#pragma region エネミーの移動
 		auto noticeLine = (Sprite*)this->getChildByTag(32);//予告線スプライトの取得
 		enemyPos.x -= 2 * move*enemySpeed;
-
-#pragma region 旧エネミー生成処理
-		/*if (enemyPos.x + enemy->getContentSize().width < 0){
-			enemyPos = enemyDefaultPos;
-			srand((unsigned int)time(NULL));
-			int num = rand() % 3;
-			auto characterImage = (Sprite*)this->getChildByTag(2);
-			if (num == 2)
-			{
-				enemyPos.y *= 3.5f;
-				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_NORMAL);
-			}
-			else
-			{
-				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
-				Converter converter;
-				auto seName = converter.replaceString2Char(F_SE + ALERT_SE + TYPE_MP3);
-				SimpleAudioEngine::getInstance()->playEffect(seName);
-			}
-			enemySpeed = setEnemySpeed();
-			++score;
-			hitOnlyOne = false;
-			scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
-			noticeLine->setVisible(true);
-		}*/
-#pragma endregion
-
 		enemy->setPosition(enemyPos);
 		if (enemy->getPositionX() - (enemy->getContentSize().width * enemy->getScale()) / 2 > visibleSize.width)
 			noticeLine->setPositionY(enemy->getPositionY());
@@ -320,6 +296,17 @@ void Game::main(float dt)
 		{
 			noticeLine->setVisible(false);
 		}
+
+		if (enemyPos.x + enemy->getContentSize().width < 0
+			&& enemy->isVisible()
+			&& mainCharacter->getPositionY() == defoultPos.y)
+		{
+			++score;
+			enemy->setVisible(false);//画面外に消えたら非表示に
+			this->scheduleOnce(schedule_selector(Game::enemyResporn), 0.5f);//敵の再生成
+			hitOnlyOne = false;
+		}
+
 	#pragma endregion
 
 	#pragma region 接触判定
@@ -424,7 +411,7 @@ void Game::main(float dt)
 #pragma endregion
 }
 
-#pragma region 主人公モーション及び敵の再生成処理
+#pragma region 主人公のジャンプアニメーション
 void Game::moveCharacters(float dt)
 {
 	if (!endFlag)
@@ -436,9 +423,9 @@ void Game::moveCharacters(float dt)
 	#pragma region ジャンプ処理
 
 		/*autoPlay機能*/
-		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
-		if (distance >= -780 && !jumpFlag && enemyPos.y == enemyDefaultPos.y)
-			jump();
+		//auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
+		//if (distance >= -780 && !jumpFlag && enemyPos.y == enemyDefaultPos.y)
+		//	jump();
 
 		if (jumpFlag)
 		{
@@ -454,39 +441,42 @@ void Game::moveCharacters(float dt)
 		}
 
 	#pragma endregion
-
-	#pragma region エネミー生成処理
-		if (enemyPos.x + enemy->getContentSize().width < 0){
-			auto noticeLine = this->getChildByTag(32);
-			enemyPos = enemyDefaultPos;
-			srand((unsigned int)time(NULL));
-			int num = rand() % 3;
-			auto characterImage = (Sprite*)this->getChildByTag(2);
-			if (num == 2)
-			{
-				enemyPos.y *= 3.5f;
-				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_NORMAL);
-			}
-			else
-			{
-				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
-				Converter converter;
-				auto seName = converter.replaceString2Char(F_SE + ALERT_SE + TYPE_MP3);
-				SimpleAudioEngine::getInstance()->playEffect(seName);
-			}
-			enemySpeed = setEnemySpeed();
-			++score;
-			hitOnlyOne = false;
-			scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
-			noticeLine->setVisible(true);
-			enemy->setPosition(enemyPos);
-		}
-	#pragma endregion
-
 	}
 }
 #pragma endregion
 
+#pragma region 敵の再生成処理
+void Game::enemyResporn(float dt)
+{
+	if (!endFlag)
+	{
+		auto enemy = this->getChildByTag(31);
+		auto enemyPos = enemy->getPosition();
+		auto noticeLine = this->getChildByTag(32);
+		enemyPos = enemyDefaultPos;
+		srand((unsigned int)time(NULL));
+		int num = rand() % 3;
+		auto characterImage = (Sprite*)this->getChildByTag(2);
+		if (num == 2)
+		{
+			enemyPos.y *= 3.5f;
+			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_NORMAL);
+		}
+		else
+		{
+			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
+			Converter converter;
+			auto seName = converter.replaceString2Char(F_SE + ALERT_SE + TYPE_MP3);
+			SimpleAudioEngine::getInstance()->playEffect(seName);
+		}
+		enemySpeed = setEnemySpeed();
+		scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
+		noticeLine->setVisible(true);
+		enemy->setPosition(enemyPos);
+		enemy->setVisible(true);//再生成が終了したら表示
+	}
+}
+#pragma endregion
 
 #pragma region ジャンプ処理
 void Game::jump()
