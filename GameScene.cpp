@@ -135,7 +135,7 @@ bool Game::init()
 		characterImage->getContentSize().height * characterImage->getScale());
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
-		auto scale = scaleFactor - 0.91*scaleFactor;
+		auto scale = scaleFactor - 0.65*scaleFactor;
 		life[i] = genericFunc.createSprite(F_IMAGE + F_UI + LIFE_ICON,
 			origin.x + lifePostionBase.x + lifeIcon->getContentSize().width * scale * (MAX_LIFE - i),
 			origin.y + visibleSize.height - lifePostionBase.y / 2, Vec2::ANCHOR_MIDDLE, scale, 20 + i);
