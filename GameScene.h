@@ -15,6 +15,7 @@ public:
 	CREATE_FUNC(Game);
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 	void main(float dt);
+	void moveCharacters(float dt);
 	void setCharacterDefault();
 	void pauseGame(cocos2d::Ref* Sender);
 	void jump();

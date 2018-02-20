@@ -186,8 +186,11 @@ bool Game::init()
 	SimpleAudioEngine::getInstance()->playEffect(seName);
 
 #pragma region 繰り返し処理の初期設定
+	//ゲームメイン処理
 	this->runAction(Sequence::create(DelayTime::create(1.5f),
 		CallFunc::create([this](){this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED); }), NULL));
+	
+	this->schedule(schedule_selector(Game::moveCharacters), Parameter::GAME_SPEED);//主人公のジャンプモーション及び敵の再生成処理
 #pragma endregion
 
 	return true;
@@ -280,32 +283,12 @@ void Game::main(float dt)
 	if (!endFlag)
 	{
 
-	#pragma region ジャンプ処理
-		
-		/*autoPlay機能*/
-		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
-		if (distance >= -780 && !jumpFlag && enemyPos.y == enemyDefaultPos.y)
-			jump();
-
-		if (jumpFlag)
-		{
-			auto mainCharacterPosY = mainCharacter->getPositionY();
-			mainCharacterPosY += jumpPower - (9.8f * gravityPoewr);
-			gravityPoewr += Parameter::ADD_GRAVITY;
-			mainCharacter->setPositionY(mainCharacterPosY);
-			if (mainCharacterPosY <= defoultPos.y)
-			{
-				jumpFlag = !jumpFlag;
-				mainCharacter->setPositionY(defoultPos.y);
-			}
-		}
-
-	#pragma endregion
-
-	#pragma region エネミーの行動及び初期化
-		auto noticeLine = (Sprite*)this->getChildByTag(32);
+	#pragma region エネミーの移動
+		auto noticeLine = (Sprite*)this->getChildByTag(32);//予告線スプライトの取得
 		enemyPos.x -= 2 * move*enemySpeed;
-		if (enemyPos.x + enemy->getContentSize().width < 0){
+
+#pragma region 旧エネミー生成処理
+		/*if (enemyPos.x + enemy->getContentSize().width < 0){
 			enemyPos = enemyDefaultPos;
 			srand((unsigned int)time(NULL));
 			int num = rand() % 3;
@@ -327,7 +310,9 @@ void Game::main(float dt)
 			hitOnlyOne = false;
 			scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
 			noticeLine->setVisible(true);
-		}
+		}*/
+#pragma endregion
+
 		enemy->setPosition(enemyPos);
 		if (enemy->getPositionX() - (enemy->getContentSize().width * enemy->getScale()) / 2 > visibleSize.width)
 			noticeLine->setPositionY(enemy->getPositionY());
@@ -438,6 +423,70 @@ void Game::main(float dt)
 	}
 #pragma endregion
 }
+
+#pragma region 主人公モーション及び敵の再生成処理
+void Game::moveCharacters(float dt)
+{
+	if (!endFlag)
+	{
+		auto mainCharacter = this->getChildByTag(1);
+		auto enemy = this->getChildByTag(31);
+		auto enemyPos = enemy->getPosition();
+
+	#pragma region ジャンプ処理
+
+		/*autoPlay機能*/
+		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
+		if (distance >= -780 && !jumpFlag && enemyPos.y == enemyDefaultPos.y)
+			jump();
+
+		if (jumpFlag)
+		{
+			auto mainCharacterPosY = mainCharacter->getPositionY();
+			mainCharacterPosY += jumpPower - (9.8f * gravityPoewr);
+			gravityPoewr += Parameter::ADD_GRAVITY;
+			mainCharacter->setPositionY(mainCharacterPosY);
+			if (mainCharacterPosY <= defoultPos.y)
+			{
+				jumpFlag = !jumpFlag;
+				mainCharacter->setPositionY(defoultPos.y);
+			}
+		}
+
+	#pragma endregion
+
+	#pragma region エネミー生成処理
+		if (enemyPos.x + enemy->getContentSize().width < 0){
+			auto noticeLine = this->getChildByTag(32);
+			enemyPos = enemyDefaultPos;
+			srand((unsigned int)time(NULL));
+			int num = rand() % 3;
+			auto characterImage = (Sprite*)this->getChildByTag(2);
+			if (num == 2)
+			{
+				enemyPos.y *= 3.5f;
+				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_NORMAL);
+			}
+			else
+			{
+				characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
+				Converter converter;
+				auto seName = converter.replaceString2Char(F_SE + ALERT_SE + TYPE_MP3);
+				SimpleAudioEngine::getInstance()->playEffect(seName);
+			}
+			enemySpeed = setEnemySpeed();
+			++score;
+			hitOnlyOne = false;
+			scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
+			noticeLine->setVisible(true);
+			enemy->setPosition(enemyPos);
+		}
+	#pragma endregion
+
+	}
+}
+#pragma endregion
+
 
 #pragma region ジャンプ処理
 void Game::jump()
