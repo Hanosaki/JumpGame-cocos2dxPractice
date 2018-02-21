@@ -296,17 +296,41 @@ void Game::main(float dt)
 		{
 			noticeLine->setVisible(false);
 		}
+	#pragma endregion
+
+	#pragma region エネミー初期化処理及び背景変更処理
 
 		if (enemyPos.x + enemy->getContentSize().width < 0
 			&& enemy->isVisible()
 			&& mainCharacter->getPositionY() == defoultPos.y)
 		{
 			++score;
-			enemy->setVisible(false);//画面外に消えたら非表示に
-			this->scheduleOnce(schedule_selector(Game::enemyResporn), 0.5f);//敵の再生成
-			hitOnlyOne = false;
+			scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
+			if (score % 20 != 0)
+			{
+				enemy->setVisible(false);//画面外に消えたら非表示に
+				this->scheduleOnce(schedule_selector(Game::enemyResporn), 0.5f);//敵の再生成
+				hitOnlyOne = false;
+			}
+			else if (score < 80)
+			{
+				enemy->setVisible(false);//画面外に消えたら非表示に
+		#pragma region ホワイトアウト処理
+				auto whiteBox = Rect(0, 0, origin.x + visibleSize.width, origin.y + visibleSize.height);
+				auto genericFunc = GenericFunc();
+				auto whiteEffect = genericFunc.createSpriteWithRect(whiteBox,
+					origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2,
+					Vec2::ANCHOR_MIDDLE, Color3B::WHITE, 53);
+				whiteEffect->setOpacity(0);
+				this->addChild(whiteEffect, 6);
+				auto seq = Sequence::create(FadeIn::create(0.5f), FadeOut::create(0.5f), NULL);
+				whiteEffect->runAction(seq);
+		#pragma endregion
+				this->scheduleOnce(schedule_selector(Game::changeBackGround),0.5f);
+				this->scheduleOnce(schedule_selector(Game::enemyResporn), 1.5f);//敵の再生成
+				hitOnlyOne = false;
+			}
 		}
-
 	#pragma endregion
 
 	#pragma region 接触判定
@@ -385,8 +409,6 @@ void Game::main(float dt)
 #pragma endregion
 	
 	}
-	
-
 #pragma region ゲーム速度変更
 	if (score != 0 && score % 10 == 0 && !speedChangeFlag)
 	{
@@ -402,13 +424,6 @@ void Game::main(float dt)
 		speedChangeFlag = !speedChangeFlag;
 #pragma endregion
 
-#pragma region 主人公初期化呼び出し
-	if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne
-		&& mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
-	{
-		setCharacterDefault();
-	}
-#pragma endregion
 }
 
 #pragma region 主人公のジャンプアニメーション
@@ -441,6 +456,15 @@ void Game::moveCharacters(float dt)
 		}
 
 	#pragma endregion
+
+	#pragma region 主人公初期化呼び出し
+		if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne
+			&& mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
+		{
+			setCharacterDefault();
+		}
+	#pragma endregion
+
 	}
 }
 #pragma endregion
@@ -470,7 +494,6 @@ void Game::enemyResporn(float dt)
 			SimpleAudioEngine::getInstance()->playEffect(seName);
 		}
 		enemySpeed = setEnemySpeed();
-		scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
 		noticeLine->setVisible(true);
 		enemy->setPosition(enemyPos);
 		enemy->setVisible(true);//再生成が終了したら表示
@@ -604,12 +627,46 @@ void Game::tutorial()
 
 #pragma endregion
 
+#pragma region 背景の変更
+void Game::changeBackGround(float dt)
+{
+	auto backGround = (Sprite*)this->getChildByTag(51);
+	auto backGround2 = (Sprite*)this->getChildByTag(52);
+	switch (score)
+	{
+	case 20:
+		backGround->setTexture(F_IMAGE + F_UI + BACK_GROUND2);
+		backGround->setContentSize(Size(origin.x + visibleSize.width + 0.1f*visibleSize.width, origin.y + visibleSize.height));
+		backGround2->setTexture(F_IMAGE + F_UI + BACK_GROUND2);
+		backGround2->setContentSize(backGround->getContentSize());
+		break;
+	case 40:
+		backGround->setTexture(F_IMAGE + F_UI + BACK_GROUND3);
+		backGround->setContentSize(Size(origin.x + visibleSize.width + 0.1f*visibleSize.width, origin.y + visibleSize.height));
+		backGround2->setTexture(F_IMAGE + F_UI + BACK_GROUND3);
+		backGround2->setContentSize(backGround->getContentSize());
+		break;
+	case 60:
+		backGround->setTexture(F_IMAGE + F_UI + BACK_GROUND4);
+		backGround->setContentSize(Size(origin.x + visibleSize.width + 0.1f*visibleSize.width, origin.y + visibleSize.height));
+		backGround2->setTexture(F_IMAGE + F_UI + BACK_GROUND4);
+		backGround2->setContentSize(backGround->getContentSize());
+		break;
+	default:
+		break;
+	}
+}
+
+#pragma endregion
+
+#pragma region 敵の速度変更関数
 float setEnemySpeed()
 {
 	srand((unsigned int)time(NULL));
 	float enemySpeed = random(1.2f, 1.9f);
 	return enemySpeed;
 }
+#pragma endregion
 
 void nextScene()
 {

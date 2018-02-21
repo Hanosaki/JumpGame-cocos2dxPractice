@@ -17,6 +17,7 @@ public:
 	void main(float dt);
 	void moveCharacters(float dt);
 	void enemyResporn(float dt);
+	void changeBackGround(float dt);
 	void setCharacterDefault();
 	void pauseGame(cocos2d::Ref* Sender);
 	void jump();

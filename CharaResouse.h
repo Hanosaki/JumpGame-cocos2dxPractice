@@ -30,6 +30,9 @@ extern const std::string ENG_FONTS;
 #pragma region 画像名
 extern const std::string ANGRY;
 extern const std::string BACK_GROUND;
+extern const std::string BACK_GROUND2;
+extern const std::string BACK_GROUND3;
+extern const std::string BACK_GROUND4;
 extern const std::string CREDIT_IMAGE;
 extern const std::string CHARACTER_JUMP;
 extern const std::string DAMAGE_ANIME;
