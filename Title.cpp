@@ -42,11 +42,12 @@ bool Title::init()
 #pragma region タイトル表記
 	auto titleLabel = Label::createWithTTF(TITLE_TEXT, F_FONTS + JPN_FONTS, 64);
 	titleLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - titleLabel->getContentSize().height*2);
+	titleLabel->setColor(Color3B::BLACK);
 	this->addChild(titleLabel, 4);
 #pragma endregion
 
 #pragma region 背景設定
-	auto backGround = Sprite::create(F_IMAGE + F_UI + BACK_GROUND);
+	auto backGround = Sprite::create(F_IMAGE + F_UI + OP_BACK_GROUND);
 	backGround->setContentSize(directer->getVisibleSize());
 	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	this->addChild(backGround, 1);

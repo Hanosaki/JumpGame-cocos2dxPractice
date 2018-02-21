@@ -26,7 +26,7 @@ const std::string ENG_FONTS = "Marker Felt.ttf";
 
 #pragma region 画像名
 const std::string ANGRY = "怒.png";
-const std::string BACK_GROUND = "BackGround1.png";
+const std::string BACK_GROUND = "BackGround1.jpg";
 const std::string BACK_GROUND2 = "BackGround2.jpg";
 const std::string BACK_GROUND3 = "BackGround3.jpg";
 const std::string BACK_GROUND4 = "BackGround4.jpg";
