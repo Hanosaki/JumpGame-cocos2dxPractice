@@ -43,10 +43,12 @@ bool GameOver::init()
 #pragma region ゲームオーバー表記
 	auto gameOverLabel = Label::createWithTTF(NOW_RESULT_TEXT, F_FONTS + JPN_FONTS, Parameter::LARGE);
 	gameOverLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (4 * visibleSize.height) / 5);
+	gameOverLabel->setColor(Color3B::BLACK);
 	this->addChild(gameOverLabel, 4);
 
 	auto scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), F_FONTS + ENG_FONTS, Parameter::LARGE);
 	scoreLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (3 * visibleSize.height / 5));
+	scoreLabel->setColor(Color3B::BLACK);
 	this->addChild(scoreLabel, 4);
 
 	Label* hiScoreLabel;
@@ -60,6 +62,7 @@ bool GameOver::init()
 		hiScoreLabel = Label::createWithTTF(HI_SCORE_TEXT + StringUtils::toString(hiScore),
 		F_FONTS + ENG_FONTS, Parameter::LARGE);
 	hiScoreLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (2 * visibleSize.height / 5));
+	hiScoreLabel->setColor(Color3B::BLACK);
 	this->addChild(hiScoreLabel, 4);
 #pragma endregion
 

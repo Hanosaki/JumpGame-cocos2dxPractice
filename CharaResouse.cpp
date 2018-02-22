@@ -120,6 +120,6 @@ const int Parameter::LARGE = 64;
 const int Parameter::DEFOULT_GRAVITY_POWER = 0;
 const int Parameter::DEFOULT_JUMP_POWER = 23;
 const float Parameter::ADD_GRAVITY = 0.1f;
-const float Parameter::MOVE_SPEED = 8.5f;
+const float Parameter::MOVE_SPEED = 8.0f;
 const float Parameter::GAME_SPEED = 0.02f;
 #pragma endregion

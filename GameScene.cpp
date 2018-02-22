@@ -72,12 +72,14 @@ bool Game::init()
 #pragma region 背景初期設定
 	auto backGround = genericFunc.createSprite(F_IMAGE + F_UI + BACK_GROUND,
 		origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2, 51);
-	backGround->setContentSize((Size)Vec2(visibleSize.width + 0.1f*visibleSize.width, visibleSize.height));
+	backGround->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	backGround->setScale(scaleFactor);
 	this->addChild(backGround);
 
 	auto backGround2 = genericFunc.createSprite(F_IMAGE + F_UI + BACK_GROUND,
 		outOfWindowBGPos.x, outOfWindowBGPos.y, 52);
-	backGround2->setContentSize(backGround->getContentSize());
+	backGround2->setScale(scaleFactor);
+	backGround2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	this->addChild(backGround2);
 #pragma endregion
 
@@ -254,16 +256,16 @@ void Game::main(float dt)
 #pragma region 背景アニメーション
 	auto pos = backGround->getPosition().x;
 	auto pos2 = backGround2->getPosition().x;
+
+	if (pos + backGround->getContentSize().width*scaleFactor / 2 <= 0){
+		pos = outOfWindowBGPos.x;
+	}
+	if (pos2 + backGround2->getContentSize().width*scaleFactor / 2 <=0){
+		pos2 = outOfWindowBGPos.x;
+	}
 	if (!hitOnlyOne){
 		pos -= move;
 		pos2 -= move;
-	}
-
-	if (pos + backGround->getContentSize().width / 2 < 0){
-		pos = outOfWindowBGPos.x;
-	}
-	if (pos2 + backGround2->getContentSize().width / 2 <0){
-		pos2 = outOfWindowBGPos.x;
 	}
 	backGround->setPositionX(pos);
 	backGround2->setPositionX(pos2);
@@ -273,7 +275,7 @@ void Game::main(float dt)
 	if (isFirstPlay)
 	{
 		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
-		if (distance >= -780)
+		if (distance >= -700)
 			tutorial();
 	}
 #pragma endregion
@@ -616,7 +618,7 @@ void Game::tutorial()
 
 	auto mainCharactor = this->getChildByTag(1);
 	mainCharactor->pause();
-	auto annotation = Label::createWithTTF("画面をタップしてきりたんぽを回避！", F_FONTS + JPN_FONTS, Parameter::LARGE * scaleFactor);
+	auto annotation = Label::createWithTTF("画面をタップしてきりたんぽを回避！", F_FONTS + JPN_FONTS, Parameter::LARGE);
 	auto sequence = Sequence::create(FadeOut::create(0.5f), FadeIn::create(0.5f), NULL);
 	annotation->runAction(RepeatForever::create(sequence));
 	annotation->setPosition(blackEffect->getPosition());
@@ -636,21 +638,15 @@ void Game::changeBackGround(float dt)
 	{
 	case 20:
 		backGround->setTexture(F_IMAGE + F_UI + BACK_GROUND2);
-		backGround->setContentSize(Size(origin.x + visibleSize.width + 0.1f*visibleSize.width, origin.y + visibleSize.height));
 		backGround2->setTexture(F_IMAGE + F_UI + BACK_GROUND2);
-		backGround2->setContentSize(backGround->getContentSize());
 		break;
 	case 40:
 		backGround->setTexture(F_IMAGE + F_UI + BACK_GROUND3);
-		backGround->setContentSize(Size(origin.x + visibleSize.width + 0.1f*visibleSize.width, origin.y + visibleSize.height));
 		backGround2->setTexture(F_IMAGE + F_UI + BACK_GROUND3);
-		backGround2->setContentSize(backGround->getContentSize());
 		break;
 	case 60:
 		backGround->setTexture(F_IMAGE + F_UI + BACK_GROUND4);
-		backGround->setContentSize(Size(origin.x + visibleSize.width + 0.1f*visibleSize.width, origin.y + visibleSize.height));
 		backGround2->setTexture(F_IMAGE + F_UI + BACK_GROUND4);
-		backGround2->setContentSize(backGround->getContentSize());
 		break;
 	default:
 		break;
