@@ -92,23 +92,6 @@ bool Title::init()
 	this->addChild(creditMenu, 2);
 #pragma endregion
 
-#pragma region 操作方法説明画面遷移ボタン配置
-	auto howToButton = Sprite::create(F_IMAGE + F_UI + HOW_TO_BUTTON);
-	howToButton->setContentSize(BUTTON_SIZE);
-
-	auto selectedHowToButton = Sprite::create(F_IMAGE + F_UI + HOW_TO_BUTTON);
-	selectedHowToButton->setOpacity(128);
-	selectedHowToButton->setContentSize(BUTTON_SIZE);
-
-	auto howToItem = MenuItemSprite::create(howToButton, selectedHowToButton, CC_CALLBACK_1(Title::callHowToScene, this));
-	auto howToMenu = Menu::create(howToItem, NULL);
-	howToMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	howToMenu->setPositionX(creditMenu->getPositionX());
-	howToMenu->setPositionY(creditMenu->getPositionY() + howToButton->getContentSize().height);
-
-	this->addChild(howToMenu, 2);
-#pragma endregion
-
 #pragma region スタートボタン配置
 	auto startButton = Sprite::create(F_IMAGE + F_UI + START_BUTTON);
 	startButton->setContentSize(BUTTON_SIZE);
@@ -120,8 +103,8 @@ bool Title::init()
 	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callOPScene, this));
 	auto startMenu = Menu::create(startItem, NULL);
 	startMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	startMenu->setPositionX(howToMenu->getPositionX());
-	startMenu->setPositionY(howToMenu->getPositionY() + startButton->getContentSize().height);
+	startMenu->setPositionX(creditMenu->getPositionX());
+	startMenu->setPositionY(creditMenu->getPositionY() + startButton->getContentSize().height);
 
 	this->addChild(startMenu, 2);
 #pragma endregion
@@ -156,16 +139,6 @@ void Title::callCreditScene(Ref* Sender)
 	SimpleAudioEngine::getInstance()->playEffect(seName);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::createScene(), Color3B::WHITE));
-}
-
-void Title::callHowToScene(Ref* sender)
-{
-	Converter converter;
-	auto seName = converter.replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3);
-	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	SimpleAudioEngine::getInstance()->playEffect(seName);
-	characterImageChange();
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, HowTo::createScene(), Color3B::WHITE));
 }
 
 void Title::closeGame(Ref* sender)

@@ -50,8 +50,6 @@ bool Splash::init()
 
 	SimpleAudioEngine::getInstance()->playEffect(seName);
 
-	UserDefault::getInstance()->deleteValueForKey(HI_SCORE_KEY);
-
 	this->scheduleOnce(schedule_selector(Splash::callLoadScene), 5.0f);
 
 	return true;

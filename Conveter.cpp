@@ -10,6 +10,7 @@ void replaceSet(std::string& fullPath, std::string& sFileName, std::string& fold
 char* setVoiceName(ValueMap valueMap);
 std::string searceVoice(ValueMap valueMap);
 
+#pragma region DATをMP3に置き換える処理
 
 char* Converter::replaceDATtoMP3(std::string relativePath)
 {
@@ -27,7 +28,6 @@ char* Converter::replaceDATtoMP3(std::string relativePath)
 		if (fileUtil->renameFile(fullPath, sFileName + TYPE_DAT, sFileName + TYPE_MP3))
 		{
 			sFileName = folderName + sFileName + TYPE_MP3;
-			CCLOG("sFileName3 %s", sFileName.c_str());
 			auto returnFileName = new char[sFileName.length() + 1];
 			memcpy(returnFileName, sFileName.c_str(), sFileName.length() + 1);
 			return returnFileName;
@@ -65,6 +65,10 @@ char* Converter::replaceDATtoMP3(std::string relativePath)
 	}
 }
 
+#pragma endregion
+
+#pragma region MP3をDATに置き換える処理
+
 char* Converter::replaceMP3toDAT(std::string relativePath)
 {
 	auto file = FileUtils::getInstance();
@@ -93,6 +97,10 @@ char* Converter::replaceMP3toDAT(std::string relativePath)
 	}
 }
 
+#pragma endregion
+
+#pragma region stringをchar配列に変換する関数
+
 char* Converter::replaceString2Char(std::string str)
 {
 	auto returnFileName = new char[str.length() + 1];
@@ -100,7 +108,9 @@ char* Converter::replaceString2Char(std::string str)
 	return returnFileName;
 }
 
-//暗号化処理
+#pragma endregion
+
+#pragma region 一括暗号化処理
 void Converter::replaceALLMP3toDAT()
 {
 	replaceMP3toDAT(F_BGM + OP_BGM);
@@ -129,6 +139,9 @@ void Converter::replaceALLMP3toDAT()
 			replaceMP3toDAT(voiceName);
 	}
 }
+#pragma endregion
+
+#pragma region ファイル拡張子変換処理
 
 void replaceSet(std::string& fullPath, std::string& sFileName, std::string& folderName)
 {
@@ -171,3 +184,5 @@ void replaceSet(std::string& fullPath, std::string& sFileName, std::string& fold
 		sFileName.pop_back();
 	}
 }
+
+#pragma endregion
