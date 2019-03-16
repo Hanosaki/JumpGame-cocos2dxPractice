@@ -121,6 +121,7 @@ bool Credit::init()
 
 bool Credit::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event*event)
 {
+	//画面がタップされたらトップ画面に遷移する
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Title::creatScene(), Color3B::WHITE));
 	return true;
 }
