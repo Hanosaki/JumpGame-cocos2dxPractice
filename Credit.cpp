@@ -113,14 +113,30 @@ bool Credit::init()
 
 }
 
+/*文字設定をまとめて行う処理*/
+Label* createLabel(Label* baseLabel, const int creditNum,std::string key)
+{
+	Label* credit;
+	for (int i = 0; i < creditNum; ++i)
+	{
+		auto creditMap = creaditValues.at(i).asValueMap();
+		credit = setCredit(creditMap,key);
+		credit->setPosition(30, -30 * (i + 1));
+		credit->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+		baseLabel->addChild(credit);
+	}
+}
+
 Label* setCredit(ValueMap valueMap,std::string columnName)
 {
+	//ラベル表示文字を設定
 	auto label = Label::createWithTTF(PILLS + valueMap.at(columnName).asString(), F_FONTS + JPN_FONTS, Parameter::VERY_SMALL);
 	return label;
 }
 
 bool Credit::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event*event)
 {
+	//画面がタップされたらタイトル画面に遷移する
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Title::createScene(), Color3B::WHITE));
 	return true;
 }
