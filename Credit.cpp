@@ -39,16 +39,8 @@ bool Credit::init()
 	auto backGround = Sprite::create(F_IMAGE + F_UI + BACK_GROUND);
 	backGround->setContentSize(directer->getVisibleSize());
 	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
+	backGround->setColor(Color3B(128, 128, 128));//暗転させる
 	this->addChild(backGround, 1);
-#pragma endregion
-
-#pragma region 背景を暗転させる
-	auto blackEffect = Sprite::create();
-	blackEffect->setColor(Color3B::BLACK);
-	blackEffect->setOpacity(128);
-	blackEffect->setTextureRect(backGround->getBoundingBox());
-	blackEffect->setPosition(backGround->getPosition());
-	this->addChild(blackEffect, 2);
 #pragma endregion
 
 #pragma region 画面名表記

@@ -93,7 +93,7 @@ Menu* Title::createButton(const std::string fileName,const ccMenuCallback& callb
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
 	//ボタンサイズを画面サイズに合わせて設定
-	const auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
+	auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
 
 	auto button = Sprite::create(fileName);
 	button->setContentSize(BUTTON_SIZE);
@@ -101,23 +101,28 @@ Menu* Title::createButton(const std::string fileName,const ccMenuCallback& callb
 	auto selectedButton = Sprite::create(fileName);
 	selectedButton->setOpacity(128);
 	selectedButton->setContentSize(BUTTON_SIZE);
-
+	
 	auto item = MenuItemSprite::create(button, selectedButton, callback);
+	//Menuクラスからコンテンツサイズを取得するためにタグ設定
 	item->setTag(1);
+	
 	auto menu = Menu::create(item, NULL);
 	menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	
 	return menu;
 
 }
 
 void Title::characterImageChange()
 {
+	//キャラの立ち絵を笑顔に変更
 	auto characterImage = (Sprite*)this->getChildByTag(2);
 	characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + LAUGH);
 }
 
 void Title::callOPScene(Ref* Sender)
 {
+	//OPシーンに遷移させる
 	Converter converter;
 	SimpleAudioEngine::getInstance()
 		->playEffect(converter.replaceString2Char(F_SE + START_VOICE + TYPE_MP3));
@@ -127,6 +132,7 @@ void Title::callOPScene(Ref* Sender)
 
 void Title::callCreditScene(Ref* Sender)
 {
+	//使用素材一覧シーンに遷移させる
 	Converter converter;
 	auto seName = converter.replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3);
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
@@ -137,6 +143,7 @@ void Title::callCreditScene(Ref* Sender)
 
 void Title::closeGame(Ref* sender)
 {
+	//ゲームを終了させる
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 	Director::getInstance()->purgeCachedData();//キャッシュ開放
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
