@@ -82,23 +82,23 @@ bool ResouceLoad::init()
 	cache->addImage(F_IMAGE + F_RIVAL + SMILE);
 	cache->addImage(F_IMAGE + F_UI +OP_BACK_GROUND);
 
-	this->schedule(schedule_selector(ResouceLoad::setResouseCache), 0.1f,Parameter::ANIMATION_MAX_NUM-1,0.01f);
+	this->schedule(schedule_selector(ResouceLoad::loadAnimeCache), 0.1f, Parameter::ANIMATION_MAX_NUM - 1, 0.01f);
 
 	return true;
 
 }
 
-void ResouceLoad::setResouseCache(float dt)
+void ResouceLoad::loadAnimeCache(float dt)
 {
 	auto cache = Director::getInstance()->getTextureCache()
-		->addImage(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(animationNum) + ".png");
+		->addImage(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(animationNum) + ".png");//アニメーション画像のキャッシュを作成
 	progress = ((float)animationNum / (Parameter::ANIMATION_MAX_NUM - 1)) * 100;
 	progressLabel->setString(LOAD_MESSEAGE + StringUtils::toString((int)progress) + "%");
 	if (animationNum >= Parameter::ANIMATION_MAX_NUM-1)
 	{
-		if (cache)
+		if (cache)//キャッシュの生成に成功した場合、タイトル画面へ
 			Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Title::createScene(), Color3B::WHITE));
-		else
+		else//キャッシュの生成に失敗した場合、エラー表示へ
 			progressLabel->setString(RESOUCE_ERROR);
 	}
 	++animationNum;

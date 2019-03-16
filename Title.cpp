@@ -11,6 +11,9 @@
 using namespace CocosDenshion;
 USING_NS_CC;
 
+void setButtonPosition(Menu* menu);//画面下部にボタンを設置
+void setButtonPosition(Menu* baseMenu, Menu* addMenu);//一つ目のボタンの上に二つ目のボタンを設置
+
 Scene* Title::createScene()
 {
 	auto scene = Scene::create();
@@ -28,7 +31,6 @@ bool Title::init()
 	auto directer = Director::getInstance();
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
-	const auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
 	GenericFunc genericFunc;
 #pragma endregion
 
@@ -60,53 +62,21 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 終了ボタン配置
-	auto endButton = Sprite::create(F_IMAGE + F_UI + END_BUTTON);
-	endButton->setContentSize(BUTTON_SIZE);
-
-	auto selectedEndButton = Sprite::create(F_IMAGE + F_UI + END_BUTTON);
-	selectedEndButton->setOpacity(128);
-	selectedEndButton->setContentSize(BUTTON_SIZE);
-
-	auto endItem = MenuItemSprite::create(endButton, selectedEndButton, CC_CALLBACK_1(Title::closeGame, this));
-	auto endMenu = Menu::create(endItem, NULL);
-	endMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	endMenu->setPosition(Vec2(origin.x + visibleSize.width / 2, endButton->getContentSize().height/2));
-
-	this->addChild(endMenu, 2);
+	auto endButton = createButton(F_IMAGE + F_UI + END_BUTTON, CC_CALLBACK_1(Title::closeGame, this));
+	setButtonPosition(endButton);
+	this->addChild(endButton, 2);
 #pragma endregion
 
 #pragma region クレジットボタン配置
-	auto creditButton = Sprite::create(F_IMAGE + F_UI + CREDIT_IMAGE);
-	creditButton->setContentSize(BUTTON_SIZE);
-
-	auto selectedCreditButton = Sprite::create(F_IMAGE + F_UI + CREDIT_IMAGE);
-	selectedCreditButton->setOpacity(128);
-	selectedCreditButton->setContentSize(BUTTON_SIZE);
-
-	auto creditItem = MenuItemSprite::create(creditButton, selectedCreditButton, CC_CALLBACK_1(Title::callCreditScene, this));
-	auto creditMenu = Menu::create(creditItem, NULL);
-	creditMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	creditMenu->setPositionX(endMenu->getPositionX());
-	creditMenu->setPositionY(endMenu->getPositionY() + creditButton->getContentSize().height);
-
-	this->addChild(creditMenu, 2);
+	auto creditButton = createButton(F_IMAGE + F_UI + CREDIT_IMAGE, CC_CALLBACK_1(Title::callCreditScene, this));
+	setButtonPosition(endButton, creditButton);
+	this->addChild(creditButton, 2);
 #pragma endregion
 
 #pragma region スタートボタン配置
-	auto startButton = Sprite::create(F_IMAGE + F_UI + START_BUTTON);
-	startButton->setContentSize(BUTTON_SIZE);
-
-	auto selectedStartButton = Sprite::create(F_IMAGE + F_UI + START_BUTTON);
-	selectedStartButton->setOpacity(128);
-	selectedStartButton->setContentSize(BUTTON_SIZE);
-
-	auto startItem = MenuItemSprite::create(startButton, selectedStartButton, CC_CALLBACK_1(Title::callOPScene, this));
-	auto startMenu = Menu::create(startItem, NULL);
-	startMenu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	startMenu->setPositionX(creditMenu->getPositionX());
-	startMenu->setPositionY(creditMenu->getPositionY() + startButton->getContentSize().height);
-
-	this->addChild(startMenu, 2);
+	auto startButton = createButton(F_IMAGE + F_UI + START_BUTTON, CC_CALLBACK_1(Title::callOPScene, this));
+	setButtonPosition(creditButton,startButton);
+	this->addChild(startButton, 2);
 #pragma endregion
 
 	Converter converter;
@@ -114,6 +84,30 @@ bool Title::init()
 	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName, true);
 
 	return true;
+}
+
+Menu* Title::createButton(const std::string fileName,const ccMenuCallback& callback)
+{
+	
+	auto directer = Director::getInstance();
+	auto visibleSize = directer->getVisibleSize();
+	auto origin = directer->getVisibleOrigin();
+	//ボタンサイズを画面サイズに合わせて設定
+	const auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
+
+	auto button = Sprite::create(fileName);
+	button->setContentSize(BUTTON_SIZE);
+
+	auto selectedButton = Sprite::create(fileName);
+	selectedButton->setOpacity(128);
+	selectedButton->setContentSize(BUTTON_SIZE);
+
+	auto item = MenuItemSprite::create(button, selectedButton, callback);
+	item->setTag(1);
+	auto menu = Menu::create(item, NULL);
+	menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	return menu;
+
 }
 
 void Title::characterImageChange()
@@ -150,4 +144,21 @@ void Title::closeGame(Ref* sender)
 	converter.replaceALLMP3toDAT();
 #endif
 	Director::getInstance()->end();
+}
+
+void setButtonPosition(Menu* menu)
+{
+	auto directer = Director::getInstance();
+	auto visibleSize = directer->getVisibleSize();
+	auto origin = directer->getVisibleOrigin();
+	menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	menu->setPosition(Vec2(origin.x + visibleSize.width / 2, menu->getChildByTag(1)->getContentSize().height / 2));
+
+}
+
+void setButtonPosition(Menu* baseMenu, Menu* addMenu)
+{
+	addMenu->setPositionX(baseMenu->getPositionX());
+	addMenu->setPositionY(baseMenu->getPositionY() + addMenu->getChildByTag(1)->getContentSize().height);
+
 }

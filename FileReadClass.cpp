@@ -9,16 +9,20 @@ ValueVector FileRead::readCSV(const char* fileName)
 {
 	ValueVector charcterWords;
 	std::string csvStr = FileUtils::getInstance()->getStringFromFile(fileName);
-	ValueVector balls = this->split(csvStr,"\n");
-	ValueVector keys = this->split(balls.at(ZERO).asString(), ",");
-	for (int i = 1; i < (int)balls.size(); ++i)
+	ValueVector balls = this->split(csvStr,"\n");//一列ごとに切り分けて読み込み
+	ValueVector keys = this->split(balls.at(ZERO).asString(), ",");	//行ごとの属性付の為のキーを設定
+	balls.erase(balls.begin());//属性付用のデータの削除
+
+	//セル毎に変数へ格納
+	for each (auto var in balls)
 	{
 		ValueMap wordMap;
-		ValueVector wordVector = this->split(balls.at(i).asString(), ",");
-		for (int j = ZERO; j < (int)wordVector.size(); ++j)
+		ValueVector wordVector = split(var.asString(), ",");
+		for(int j = ZERO; j < (int)wordVector.size(); ++j)
 			wordMap[keys.at(j).asString()] = wordVector.at(j).asString();
 		charcterWords.push_back((Value)wordMap);
 	}
+
 	return charcterWords;
 }
 

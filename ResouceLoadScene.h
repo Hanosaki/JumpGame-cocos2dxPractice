@@ -1,10 +1,10 @@
-﻿/// <summary> 
-/// 各種リソースファイルを読み込むためのクラスのヘッダファイル
-/// @author Sigure
-/// @date 2017/10/03
-/// </summary>
-#ifndef __RESOUCE_LOAD_SCENE_H__
+﻿#ifndef __RESOUCE_LOAD_SCENE_H__
 #define __RESOUCE_LOAD_SCENE_H__
+
+/*
+リソースをメモリーに展開するためのクラス
+*/
+
 #include "cocos2d.h"
 
 class ResouceLoad : public cocos2d::Layer
@@ -14,12 +14,12 @@ public:
 	virtual bool init();
 	CREATE_FUNC(ResouceLoad);
 
-	virtual void setResouseCache(float dt);
+	virtual void loadAnimeCache(float dt);//非同期っぽく見せる同期読み込み関数
 
-	cocos2d::Label* progressLabel;
+	cocos2d::Label* progressLabel;//読み込み進捗を表示するためのラベル
 
-	int animationNum;
-	float progress;
+	int animationNum;//アニメーション画像の番号
+	float progress;//読み込み進捗率
 
 };
 
