@@ -1,9 +1,10 @@
-﻿/// <summary> ゲームシーン用クラスの定義ファイル
-/// @author Sigure
-/// @date 2017/04/12
-/// </summary>
-#ifndef __GAME_SCENE_H__
+﻿#ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
+
+/*
+ゲームメイン部分のクラス
+*/
+
 #include "cocos2d.h"
 
 class Game : public cocos2d::Layer

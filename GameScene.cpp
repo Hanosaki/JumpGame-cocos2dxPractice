@@ -70,6 +70,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 背景初期設定
+	/*ループ用に同じものを二枚設置*/
 	auto backGround = genericFunc.createSprite(F_IMAGE + F_UI + BACK_GROUND,
 		origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2, 51);
 	backGround->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
