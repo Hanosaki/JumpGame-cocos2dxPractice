@@ -9,6 +9,7 @@ using namespace CocosDenshion;
 USING_NS_CC;
 
 Label* setCredit(ValueMap valueMap, std::string columnName);
+void createLabel(Label* baseLabel, const int creditNum, std::string key, ValueVector creaditValues);//ラベルを生成して、ベースラベルの子要素に追加する
 
 #pragma region 定数宣言
 const int Credit::NUM_OF_PAINTERS = 4;
@@ -49,23 +50,16 @@ bool Credit::init()
 	this->addChild(creditLabel, 3);
 #pragma endregion
 
+	FileRead fileRead;
+	auto creaditValues = fileRead.readCSV(CREDIT_LIST);
+
 #pragma region 使用素材製作者表記
 
 #pragma region イラストレーター
 
 	auto painters = Label::createWithTTF(PAINTERS, F_FONTS + JPN_FONTS, Parameter::SMALL);
 	painters->setPosition(origin.x + visibleSize.width / 6, origin.y + (3 * visibleSize.height) / 5);
-	Label* painter[NUM_OF_PAINTERS];
-	FileRead fileRead;
-	auto creaditValues = fileRead.readCSV(CREDIT_LIST);
-	for (int i = 0; i < NUM_OF_PAINTERS; ++i)
-	{
-		auto creditMap = creaditValues.at(i).asValueMap();
-		painter[i] = setCredit(creditMap, PAINTER_KEY);
-		painter[i]->setPosition(30, -30*(i+1));
-		painter[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-		painters->addChild(painter[i]);
-	}
+	createLabel(painters, NUM_OF_PAINTERS, PAINTER_KEY, creaditValues);
 	this->addChild(painters, 3);
 
 #pragma endregion
@@ -73,15 +67,7 @@ bool Credit::init()
 #pragma region コンポーサー
 	auto composers = Label::createWithTTF(COMPOSERS, F_FONTS + JPN_FONTS, Parameter::SMALL);
 	composers->setPosition(origin.x + visibleSize.width / 2.5, origin.y + (3 * visibleSize.height) / 5);
-	Label* composer[NUM_OF_COMPOSERS];
-	for (int i = 0; i < NUM_OF_COMPOSERS; ++i)
-	{
-		auto creditMap = creaditValues.at(i).asValueMap();
-		composer[i] = setCredit(creditMap,COMPOSER_KEY);
-		composer[i]->setPosition(30, -30 * (i + 1));
-		composer[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-		composers->addChild(composer[i]);
-	}
+	createLabel(composers, NUM_OF_COMPOSERS, COMPOSER_KEY, creaditValues);
 	this->addChild(composers, 3);
 #pragma endregion
 
@@ -89,15 +75,7 @@ bool Credit::init()
 	auto voiceActors = Label::createWithTTF(VOICE_ACTERS, F_FONTS + JPN_FONTS, Parameter::SMALL);
 	voiceActors->setPosition(origin.x + visibleSize.width - voiceActors->getContentSize().width,
 		origin.y + (3 * visibleSize.height) / 5);
-	Label* voiceActor[NUM_OF_VOICE_ACTERS];
-	for (int i = 0; i < NUM_OF_VOICE_ACTERS; ++i)
-	{
-		auto creditMap = creaditValues.at(i).asValueMap();
-		voiceActor[i] = setCredit(creditMap,VOICE_ACTER_KEY);
-		voiceActor[i]->setPosition(30, -30 * (i + 1));
-		voiceActor[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-		voiceActors->addChild(voiceActor[i]);
-	}
+	createLabel(voiceActors, NUM_OF_VOICE_ACTERS, VOICE_ACTER_KEY, creaditValues);
 	this->addChild(voiceActors, 3);
 #pragma endregion
 
@@ -113,8 +91,7 @@ bool Credit::init()
 
 }
 
-/*文字設定をまとめて行う処理*/
-Label* createLabel(Label* baseLabel, const int creditNum,std::string key)
+void createLabel(Label* baseLabel, const int creditNum, std::string key, ValueVector creaditValues)
 {
 	Label* credit;
 	for (int i = 0; i < creditNum; ++i)
