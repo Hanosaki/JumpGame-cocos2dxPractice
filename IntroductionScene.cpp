@@ -45,11 +45,14 @@ bool Introduction::init()
 #pragma endregion
 
 #pragma region スキップボタン
+	
+	/*ボタン画像の登録*/
 	auto skipButton = Sprite::create(F_IMAGE + F_UI + SKIP_BUTTON);
 	skipButton->setOpacity(128);
 	auto selectedSkipButton = Sprite::create(F_IMAGE + F_UI + SKIP_BUTTON);
 	selectedSkipButton->setOpacity(64);
 
+	/*ボタンをメニューとして登録*/
 	auto skipItem = MenuItemSprite::create(skipButton, selectedSkipButton, CC_CALLBACK_1(Introduction::callGameScene, this));
 	skipItem->setScale(scaleFactor - 0.5*scaleFactor);
 	skipItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
@@ -124,6 +127,7 @@ bool Introduction::init()
 		characterWordMap = characterWordVector.at(i).asValueMap();
 		GenericFunc genericFunc;
 		auto voiceName = genericFunc.setVoiceName(characterWordMap);
+		//音声ファイル名がcsvファイルから取得できた場合、同じファイル名のmp3をプリロードする
 		if (strcmp(voiceName, "0")){
 			Converter converter;
 		#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
@@ -176,6 +180,7 @@ bool Introduction::onTouchBegan(Touch* touch, Event* event)
 
 void Introduction::onTouchEnded(Touch* touch, Event*event)
 {
+	//現在の行数が、csvファイルの行数未満なら行を進め、以上になった場合、シーンを遷移する
 	if (wordsNum < characterWordVector.size() - 1){
 		++wordsNum;
 		SimpleAudioEngine::getInstance()->stopAllEffects();
@@ -202,6 +207,7 @@ void Introduction::spriteChange()
 {
 	auto characterImage = (Sprite*)this->getChildByTag(1);
 	auto rivalImage = (Sprite*)this->getChildByTag(2);
+	//バリューマップ内に記述されているキャラクター名に対応したキャラの画像を変更する
 	if (characterWordMap.at(CHARACTER_NAME_KEY).asString() == RIVAL_NAME)
 	{
 		characterImage->setOpacity(128);
@@ -229,7 +235,7 @@ void playVoice(ValueMap valueMap)
 	std::string findVoiceName = "";
 	GenericFunc genericFunc;
 	findVoiceName = genericFunc.searceVoice(valueMap);
-	
+	//mp3ファイルが見つかっているなら、音声を再生する。
 	if (findVoiceName != ""){
 		Converter converter;
 		auto voiceName = converter.replaceString2Char(findVoiceName + TYPE_MP3);

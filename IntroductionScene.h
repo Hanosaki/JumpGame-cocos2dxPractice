@@ -1,6 +1,10 @@
 ﻿#ifndef __INTRODUCTION_SCENE_H__
 #define __INTRODUCTION_SCENE_H__
 
+/*--------------
+会話シーンのクラス
+---------------*/
+
 #include "cocos2d.h"
 
 class Introduction : public cocos2d::Layer
@@ -17,11 +21,11 @@ public:
 	void spriteChange();
 	void callGameScene(cocos2d::Ref* Sender);
 
-	cocos2d::ValueVector characterWordVector;
-	cocos2d::ValueMap characterWordMap;
-	cocos2d::Label* characterNameLabel;
-	cocos2d::Label* characterWordLabel;
-	int wordsNum;
+	cocos2d::ValueVector characterWordVector;//csvファイルの内容を格納
+	cocos2d::ValueMap characterWordMap;//ValueVectorから切り出したデータを格納
+	cocos2d::Label* characterNameLabel;//ValueVectorから切り出したキャラクター名を格納
+	cocos2d::Label* characterWordLabel;//ValueVectorから切り出した台詞を格納
+	int wordsNum;//現在表示している行数(csvファイルに準拠)
 
 };
 
