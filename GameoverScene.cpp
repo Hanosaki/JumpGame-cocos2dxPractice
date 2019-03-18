@@ -29,7 +29,6 @@ bool GameOver::init()
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	 seName = converter.replaceString2Char(F_SE + GAMEOVER_SE + TYPE_MP3);
 #endif
-	 CCLOG("sename:%s",seName);
 	SimpleAudioEngine::getInstance()->preloadEffect(seName);
 
 #pragma region 変数宣言
@@ -43,16 +42,17 @@ bool GameOver::init()
 #pragma region ゲームオーバー表記
 	auto gameOverLabel = Label::createWithTTF(NOW_RESULT_TEXT, F_FONTS + JPN_FONTS, Parameter::LARGE);
 	gameOverLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (4 * visibleSize.height) / 5);
-	gameOverLabel->setColor(Color3B::BLACK);
+	gameOverLabel->setColor(Color3B::WHITE);
 	this->addChild(gameOverLabel, 4);
 
 	auto scoreLabel = Label::createWithTTF(SCORE_TEXT + StringUtils::toString(score), F_FONTS + ENG_FONTS, Parameter::LARGE);
 	scoreLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (3 * visibleSize.height / 5));
-	scoreLabel->setColor(Color3B::BLACK);
+	scoreLabel->setColor(Color3B::WHITE);
 	this->addChild(scoreLabel, 4);
 
 	Label* hiScoreLabel;
-	if (hiScore < score)
+
+	if (hiScore < score)//ハイスコアを更新していたら、ハイスコアデータを更新
 	{
 		hiScoreLabel = Label::createWithTTF(HI_SCORE_TEXT + StringUtils::toString(score) + NEW_RECORED_TEXT,
 			F_FONTS + ENG_FONTS, Parameter::LARGE);
@@ -62,7 +62,7 @@ bool GameOver::init()
 		hiScoreLabel = Label::createWithTTF(HI_SCORE_TEXT + StringUtils::toString(hiScore),
 		F_FONTS + ENG_FONTS, Parameter::LARGE);
 	hiScoreLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + (2 * visibleSize.height / 5));
-	hiScoreLabel->setColor(Color3B::BLACK);
+	hiScoreLabel->setColor(Color3B::WHITE);
 	this->addChild(hiScoreLabel, 4);
 #pragma endregion
 
@@ -82,6 +82,7 @@ bool GameOver::init()
 	auto backGround = Sprite::create(F_IMAGE + F_UI + OP_BACK_GROUND);
 	backGround->setContentSize(directer->getVisibleSize());
 	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
+	backGround->setColor(Color3B(64,64,64));
 	this->addChild(backGround, 1);
 #pragma endregion
 
