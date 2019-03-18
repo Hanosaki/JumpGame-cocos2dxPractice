@@ -16,9 +16,10 @@ Sprite* GenericFunc::setMainCharacterImage(Size visibleSize, Vec2 origin,std::st
 
 char* GenericFunc::setVoiceName(ValueMap valueMap)
 {
-	std::string findVoiceName = "";
+	std::string findVoiceName = "";//音声データを発見できなかった場合の為に、入力無しで初期化
 	findVoiceName = searceVoice(valueMap);
 	char* voiceName;
+	//音声ファイルが見つかった場合はファイル名を、見つからなかった場合は0を返す
 	if (findVoiceName != ""){
 		Converter converter;
 		voiceName = converter.replaceString2Char(findVoiceName);
@@ -30,7 +31,8 @@ char* GenericFunc::setVoiceName(ValueMap valueMap)
 
 std::string GenericFunc::searceVoice(ValueMap valueMap)
 {
-	std::string findVoice = "";
+	std::string findVoice = "";//音声データを発見できなかった場合の為に、入力無しで初期化
+	//キャラクターの名前がkeyに入っていた場合、音声ファイル名を探す
 	if (valueMap.at(CHARACTER_NAME_KEY).asString() == RIVAL_NAME)
 	{
 		if (valueMap.at(VOICE_KEY).asString() != "")
