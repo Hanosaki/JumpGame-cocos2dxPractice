@@ -95,13 +95,14 @@ bool Game::init()
 	setCharacterDefault();
 
 #pragma region ポーズボタン
-
+	/*ボタン用画像の登録*/
 	auto pauseButton = Sprite::create(F_IMAGE + F_UI + PAUSE_BUTTON);
 	pauseButton->setTag(41);
 	auto selectedPauseButton = Sprite::create(F_IMAGE + F_UI + PAUSE_BUTTON);
 	selectedPauseButton->setOpacity(128);
 	selectedPauseButton->setTag(42);
 
+	/*メニューの登録*/
 	auto pauseItem = MenuItemSprite::create(pauseButton, selectedPauseButton, CC_CALLBACK_1(Game::pauseGame, this));
 	pauseItem->setScale(scaleFactor - 0.5*scaleFactor);
 	pauseItem->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
@@ -115,6 +116,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公当たり判定
+	/*主人公の前側に透明な四角を生成して当たり判定にする*/
 	auto hitDeterminationBox = Rect(0, 0,
 		mainCharacter->getContentSize().width / 5.5f * mainCharacter->getScaleX(),
 		mainCharacter->getContentSize().height / 2.5f * mainCharacter->getScaleY());
@@ -136,6 +138,7 @@ bool Game::init()
 	auto lifeIcon = Sprite::create(F_IMAGE + F_UI + LIFE_ICON);
 	auto lifePostionBase = Vec2(2 * characterImage->getContentSize().width/3 * characterImage->getScale(),
 		characterImage->getContentSize().height * characterImage->getScale());
+	//最大体力分体力ゲージを描画する
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
 		auto scale = scaleFactor - 0.65*scaleFactor;
@@ -161,6 +164,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 予測線の生成
+	//予測線用のボックスを作成
 	auto noticeRect = Rect(0, 0, visibleSize.width + origin.x,
 		enemy->getContentSize().height * enemy->getScale());
 	auto noticeLine = genericFunc.createSpriteWithRect(noticeRect,
@@ -209,6 +213,7 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 	if (!endFlag)
 	{
 		#pragma region 初回プレイ時の処理
+		//初プレイフラグが立っていたら、説明画面が出るまで操作を不能にする
 		if (isFirstPlay)
 		{
 			if (!this->isScheduled(schedule_selector(Game::main)))
@@ -225,16 +230,15 @@ bool Game::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 		{
 		#pragma region 通常プレイ時の処理
 			auto mainCharacter = (Sprite*)this->getChildByTag(1);
+			//画面がタップされたら、キャラをジャンプさせる
 			if (mainCharacter->isRunning())
 			{
 				jump();
 			}
 		#pragma endregion
-		}
-		
-			
+		}			
 	}
-	else if (nextSceneFlag)
+	else if (nextSceneFlag)//シーン遷移のフラグが立っていたら、次のシーンに遷移する
 	{
 		Director::getInstance()->replaceScene(GameOver::createScene());
 	}
@@ -257,7 +261,7 @@ void Game::main(float dt)
 #pragma region 背景アニメーション
 	auto pos = backGround->getPosition().x;
 	auto pos2 = backGround2->getPosition().x;
-
+	//スプライトが完全に画面外に移動したら、右端へ移動させる
 	if (pos + backGround->getContentSize().width*scaleFactor / 2 <= 0){
 		pos = outOfWindowBGPos.x;
 	}
@@ -273,6 +277,7 @@ void Game::main(float dt)
 #pragma endregion
 
 #pragma region 初回プレイ時のチュートリアル呼び出し
+	//初回プレイのフラグが立っていたら説明画面を呼び出す
 	if (isFirstPlay)
 	{
 		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
@@ -282,18 +287,17 @@ void Game::main(float dt)
 #pragma endregion
 
 #pragma region ゲームオーバーフラグの起動
-	if (hitCounter >= MAX_LIFE && !endFlag)
+	if (hitCounter >= MAX_LIFE && !endFlag)//被弾数が体力の最大値以上なら、ゲームオーバーにする
 		endFlag = !endFlag;
 #pragma endregion
 
-	if (!endFlag)
+	if (!endFlag)//ゲーム終了フラグが立っていなければ、処理を続ける
 	{
-
 	#pragma region エネミーの移動
 		auto noticeLine = (Sprite*)this->getChildByTag(32);//予告線スプライトの取得
 		enemyPos.x -= 2 * move*enemySpeed;
 		enemy->setPosition(enemyPos);
-		if (enemy->getPositionX() - (enemy->getContentSize().width * enemy->getScale()) / 2 > visibleSize.width)
+		if (enemy->getPositionX() - (enemy->getContentSize().width * enemy->getScale()) / 2 > visibleSize.width)//同軸にきりたんぽが来た時に、ボイスを再生
 			noticeLine->setPositionY(enemy->getPositionY());
 		else if (noticeLine->isVisible())
 		{
@@ -302,20 +306,20 @@ void Game::main(float dt)
 	#pragma endregion
 
 	#pragma region エネミー初期化処理及び背景変更処理
-
+		//きりたんぽが完全に画面外に出た際、右側に再生成する。
 		if (enemyPos.x + enemy->getContentSize().width < 0
 			&& enemy->isVisible()
 			&& mainCharacter->getPositionY() == defoultPos.y)
 		{
 			++score;
 			scoreLabel->setString(SCORE_TEXT + StringUtils::toString(score));
-			if (score % 20 != 0)
+			if (score % 20 != 0)//スコアが20の倍数になった際、二段階まで背景を変更する
 			{
 				enemy->setVisible(false);//画面外に消えたら非表示に
 				this->scheduleOnce(schedule_selector(Game::enemyResporn), 0.5f);//敵の再生成
 				hitOnlyOne = false;
 			}
-			else if (score < 80)
+			else if (score < 80)//スコアが20の倍数かつ80未満なら、背景画像を変更する
 			{
 				enemy->setVisible(false);//画面外に消えたら非表示に
 		#pragma region ホワイトアウト処理
@@ -329,7 +333,7 @@ void Game::main(float dt)
 				auto seq = Sequence::create(FadeIn::create(0.5f), FadeOut::create(0.5f), NULL);
 				whiteEffect->runAction(seq);
 		#pragma endregion
-				this->scheduleOnce(schedule_selector(Game::changeBackGround),0.5f);
+				this->scheduleOnce(schedule_selector(Game::changeBackGround),0.5f);//背景を変更する
 				this->scheduleOnce(schedule_selector(Game::enemyResporn), 1.5f);//敵の再生成
 				hitOnlyOne = false;
 			}
@@ -344,7 +348,7 @@ void Game::main(float dt)
 
 		auto rectMainCharactor = hitDetermination->getBoundingBox();
 		auto rectEnemy = enemy->getBoundingBox();
-
+		//きりたんぽと主人公の当たり判定が重なった場合、処理を行う
 		if (rectMainCharactor.intersectsRect(rectEnemy) && !hitOnlyOne)
 		{
 			jumpPower = 0;
@@ -369,7 +373,7 @@ void Game::main(float dt)
 
 #pragma region ゲームオーバー時の処理
 
-		if (SimpleAudioEngine::getInstance()->isBackgroundMusicPlaying())
+		if (SimpleAudioEngine::getInstance()->isBackgroundMusicPlaying())//BGMが再生されていた場合、再生を止める
 		{
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			auto menu = (Menu*)this->getChildByTag(44);
@@ -383,12 +387,14 @@ void Game::main(float dt)
 		enemyPos.x -= 2 * move*enemySpeed;
 		enemy->setPosition(enemyPos);
 		auto mainCharacterPos = mainCharacter->getPosition();
-		if (score < 20)
+
+		if (score < 20)//スコアが20未満の場合、少し早めに主人公を後ろに吹き飛ばす
 			mainCharacter->setPositionX(mainCharacterPos.x - move * 3);
-		else
+		else//スコアが20以上の場合、敵の速度に合わせて主人公を後ろに吹き飛ばす
 			mainCharacter->setPositionX(mainCharacterPos.x - move * enemySpeed *2);
 		mainCharacter->setPositionY(mainCharacterPos.y + move*4);
 
+		//きりたんぽと主人公が画面外に消えたのちに、ゲームオーバーの表示を出す
 		if (enemyPos.x + enemy->getContentSize().width < 0 && 
 			mainCharacter->getPositionX() < -mainCharacter->getContentSize().width/2)
 		{
@@ -404,7 +410,7 @@ void Game::main(float dt)
 			this->addChild(anotation, 4);
 			this->unschedule(schedule_selector(Game::main));
 			mainCharacter->stopAllActions();
-			UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);
+			UserDefault::getInstance()->setIntegerForKey(SCORE_KEY, score);//ユーザーのスコアを保存する
 			UserDefault::getInstance()->flush();
 			nextSceneFlag = true;
 		}
@@ -423,7 +429,7 @@ void Game::main(float dt)
 			this->schedule(schedule_selector(Game::main), Parameter::GAME_SPEED - acceleration);
 		}
 	}
-	else if (score % 11 == 0 && speedChangeFlag)
+	else if (score % 11 == 0 && speedChangeFlag)//スコアが11の倍数かつスピード変更フラグがオンの場合、速度変更フラグをオフにする
 		speedChangeFlag = !speedChangeFlag;
 #pragma endregion
 
@@ -440,18 +446,13 @@ void Game::moveCharacters(float dt)
 
 	#pragma region ジャンプ処理
 
-		/*autoPlay機能*/
-		//auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
-		//if (distance >= -780 && !jumpFlag && enemyPos.y == enemyDefaultPos.y)
-		//	jump();
-
-		if (jumpFlag)
+		if (jumpFlag)//ジャンプフラグがオンになった際、ジャンプの処理を行う
 		{
 			auto mainCharacterPosY = mainCharacter->getPositionY();
 			mainCharacterPosY += jumpPower - (9.8f * gravityPoewr);
 			gravityPoewr += Parameter::ADD_GRAVITY;
 			mainCharacter->setPositionY(mainCharacterPosY);
-			if (mainCharacterPosY <= defoultPos.y)
+			if (mainCharacterPosY <= defoultPos.y)//ジャンプ後に、主人公がデフォルトの座標以下に移動した際、ジャンプフラグをオフにする
 			{
 				jumpFlag = !jumpFlag;
 				mainCharacter->setPositionY(defoultPos.y);
@@ -461,6 +462,7 @@ void Game::moveCharacters(float dt)
 	#pragma endregion
 
 	#pragma region 主人公初期化呼び出し
+		//主人公のアニメーションを再度0から再生する
 		if (mainCharacter->getPosition() == defoultPos && !hitOnlyOne
 			&& mainCharacter->getNumberOfRunningActions() == 0 && !endFlag)
 		{
@@ -484,7 +486,7 @@ void Game::enemyResporn(float dt)
 		srand((unsigned int)time(NULL));
 		int num = rand() % 3;
 		auto characterImage = (Sprite*)this->getChildByTag(2);
-		if (num == 2)
+		if (num == 2)//敵の高さをランダムで設定する、主人公と同軸の場合アラートを出す
 		{
 			enemyPos.y *= 3.5f;
 			characterImage->setTexture(F_IMAGE + F_MAIN_CHARACTER + FACE_NORMAL);
@@ -518,7 +520,7 @@ void Game::jump()
 	Converter converter;
 	auto jumpSE1 = converter.replaceString2Char(F_SE + JUMP_SE + TYPE_MP3);
 	auto jumpSE2 = converter.replaceString2Char(F_SE + JUMP_SE2 + TYPE_MP3);
-	switch (num)
+	switch (num)//ジャンプＳＥをランダムで再生
 	{
 	case 0:SimpleAudioEngine::getInstance()->playEffect(jumpSE1); break;
 	case 1:SimpleAudioEngine::getInstance()->playEffect(jumpSE2); break;
@@ -539,7 +541,7 @@ void Game::pauseGame(Ref* Sender)
 	auto menuItem = (MenuItem*)this->getChildByTag(44)->getChildByTag(43);
 	auto selectedButtonImage = (Sprite*)menuItem->getChildByTag(42);
 	auto buttonImage = (Sprite*)menuItem->getChildByTag(41);
-	if (!isPause)
+	if (!isPause)//ポーズ中なら再開する
 	{
 		this->pause();
 		mainCharacter->pause();
@@ -552,7 +554,7 @@ void Game::pauseGame(Ref* Sender)
 		buttonImage->setTexture(F_IMAGE + F_UI + RESUME_BUTTON);
 		selectedButtonImage->setTexture(F_IMAGE + F_UI + RESUME_BUTTON);
 	}
-	else
+	else//プレイ中なら、ポーズを行う
 	{
 		this->resume();
 		mainCharacter->resume();
@@ -579,7 +581,8 @@ void Game::setCharacterDefault()
 		auto animation = Animation::create();
 		for (int i = 0; i < Parameter::ANIMATION_MAX_NUM; ++i)
 			animation->addSpriteFrameWithFile(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png");
-		if (score % 10 == 0)
+		//スコアが10の倍数になった際、主人公のアニメーション速度を加速させる
+		if (score % 10 == 0)//
 		{
 			float acceleration = score / 7500.0f;
 			if (animeSpeed - acceleration > 0.02f)
