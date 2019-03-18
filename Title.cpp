@@ -5,7 +5,6 @@
 #include "GenericFunction.h"
 #include "SimpleAudioEngine.h"
 #include "IntroductionScene.h"
-#include "HowToScene.h"
 #include "Converter.h"
 
 using namespace CocosDenshion;
