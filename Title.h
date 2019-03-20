@@ -16,8 +16,6 @@ public:
 
 	CREATE_FUNC(Title);
 
-	cocos2d::Menu* Title::createButton(const std::string fileName, const  cocos2d::ccMenuCallback& callback);//ボタン生成用関数
-
 	void characterImageChange();//表示キャラ変更用関数
 	void callOPScene(cocos2d::Ref* sender);//OPシーン呼び出し用関数
 	void callCreditScene(cocos2d::Ref* sender);//使用素材表示用

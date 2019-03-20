@@ -30,7 +30,7 @@ bool Title::init()
 	auto directer = Director::getInstance();
 	auto visibleSize = directer->getVisibleSize();
 	auto origin = directer->getVisibleOrigin();
-	GenericFunc genericFunc;
+	GenericFunc* gf = new GenericFunc();
 #pragma endregion
 
 	auto audioEngine = SimpleAudioEngine::getInstance();
@@ -55,25 +55,25 @@ bool Title::init()
 #pragma endregion
 
 #pragma region 主人公(立ち絵)の初期設定
-	auto characterImage = genericFunc.setMainCharacterImage(visibleSize, origin, F_IMAGE + F_MAIN_CHARACTER + SMILE);
+	auto characterImage = gf->setMainCharacterImage(visibleSize, origin, F_IMAGE + F_MAIN_CHARACTER + SMILE);
 	characterImage->setTag(2);
 	this->addChild(characterImage, 3);
 #pragma endregion
 
 #pragma region 終了ボタン配置
-	auto endButton = createButton(F_IMAGE + F_UI + END_BUTTON, CC_CALLBACK_1(Title::closeGame, this));
+	auto endButton = gf->createButton(F_IMAGE + F_UI + END_BUTTON, CC_CALLBACK_1(Title::closeGame, this));
 	setButtonPosition(endButton);
 	this->addChild(endButton, 2);
 #pragma endregion
 
 #pragma region クレジットボタン配置
-	auto creditButton = createButton(F_IMAGE + F_UI + CREDIT_IMAGE, CC_CALLBACK_1(Title::callCreditScene, this));
+	auto creditButton = gf->createButton(F_IMAGE + F_UI + CREDIT_IMAGE, CC_CALLBACK_1(Title::callCreditScene, this));
 	setButtonPosition(endButton, creditButton);
 	this->addChild(creditButton, 2);
 #pragma endregion
 
 #pragma region スタートボタン配置
-	auto startButton = createButton(F_IMAGE + F_UI + START_BUTTON, CC_CALLBACK_1(Title::callOPScene, this));
+	auto startButton = gf->createButton(F_IMAGE + F_UI + START_BUTTON, CC_CALLBACK_1(Title::callOPScene, this));
 	setButtonPosition(creditButton,startButton);
 	this->addChild(startButton, 2);
 #pragma endregion
@@ -83,33 +83,6 @@ bool Title::init()
 	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName, true);
 
 	return true;
-}
-
-Menu* Title::createButton(const std::string fileName,const ccMenuCallback& callback)
-{
-	
-	auto directer = Director::getInstance();
-	auto visibleSize = directer->getVisibleSize();
-	auto origin = directer->getVisibleOrigin();
-	//ボタンサイズを画面サイズに合わせて設定
-	auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
-
-	auto button = Sprite::create(fileName);
-	button->setContentSize(BUTTON_SIZE);
-
-	auto selectedButton = Sprite::create(fileName);
-	selectedButton->setOpacity(128);
-	selectedButton->setContentSize(BUTTON_SIZE);
-	
-	auto item = MenuItemSprite::create(button, selectedButton, callback);
-	//Menuクラスからコンテンツサイズを取得するためにタグ設定
-	item->setTag(1);
-	
-	auto menu = Menu::create(item, NULL);
-	menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	
-	return menu;
-
 }
 
 void Title::characterImageChange()
