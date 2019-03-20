@@ -5,6 +5,11 @@
 
 USING_NS_CC;
 
+GenericFunc::GenericFunc()
+{
+
+}
+
 Sprite* GenericFunc::setMainCharacterImage(Size visibleSize, Vec2 origin,std::string imgPath)
 {
 	auto characterImage = Sprite::create(imgPath);
@@ -98,3 +103,31 @@ Vec2 GenericFunc::setWindowCenter(Size visibleSize, Vec2 origin)
 {
 	return Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 }
+
+Menu* GenericFunc::createButton(const std::string fileName, const ccMenuCallback& callback)
+{
+
+	auto directer = Director::getInstance();
+	auto visibleSize = directer->getVisibleSize();
+	auto origin = directer->getVisibleOrigin();
+	//ボタンサイズを画面サイズに合わせて設定
+	auto BUTTON_SIZE = Size(visibleSize.width + origin.x, visibleSize.height / 10 + origin.y);
+
+	auto button = Sprite::create(fileName);
+	button->setContentSize(BUTTON_SIZE);
+
+	auto selectedButton = Sprite::create(fileName);
+	selectedButton->setOpacity(128);
+	selectedButton->setContentSize(BUTTON_SIZE);
+
+	auto item = MenuItemSprite::create(button, selectedButton, callback);
+	//Menuクラスからコンテンツサイズを取得するためにタグ設定
+	item->setTag(1);
+
+	auto menu = Menu::create(item, NULL);
+	menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+
+	return menu;
+
+}
+
