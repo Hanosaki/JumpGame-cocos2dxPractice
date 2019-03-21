@@ -120,7 +120,7 @@ bool Game::init()
 	auto hitDeterminationBox = Rect(0, 0,
 		mainCharacter->getContentSize().width / 5.5f * mainCharacter->getScaleX(),
 		mainCharacter->getContentSize().height / 2.5f * mainCharacter->getScaleY());
-	auto hitDetermination = gf->4createSpriteWithRect(hitDeterminationBox,
+	auto hitDetermination = gf->createSpriteWithRect(hitDeterminationBox,
 		mainCharacter->getPositionX(), 0, Vec2::ANCHOR_MIDDLE_BOTTOM, Color3B::BLACK, 11);
 	hitDetermination->setVisible(false);
 	this->addChild(hitDetermination);
@@ -157,7 +157,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 敵の初期設定
-	auto enemy = genericFunc.createSprite(F_IMAGE + F_RIVAL + ENEMY_IMAGE,
+	auto enemy = gf->createSprite(F_IMAGE + F_RIVAL + ENEMY_IMAGE,
 		 enemyDefaultPos.x*1.25f, enemyDefaultPos.y, Vec2::ANCHOR_MIDDLE_RIGHT,
 		 scaleFactor + 0.75*scaleFactor, 31);
 	this->addChild(enemy, 1);
@@ -167,7 +167,7 @@ bool Game::init()
 	//予測線用のボックスを作成
 	auto noticeRect = Rect(0, 0, visibleSize.width + origin.x,
 		enemy->getContentSize().height * enemy->getScale());
-	auto noticeLine = genericFunc.createSpriteWithRect(noticeRect,
+	auto noticeLine = gf->createSpriteWithRect(noticeRect,
 		origin.x + visibleSize.width / 2, enemy->getPositionY(),
 		Vec2::ANCHOR_MIDDLE, Color3B(255, 182, 193), 32);
 	auto sequence = Sequence::create(FadeOut::create(0.3f), FadeIn::create(0.5f), NULL);
@@ -324,8 +324,8 @@ void Game::main(float dt)
 				enemy->setVisible(false);//画面外に消えたら非表示に
 		#pragma region ホワイトアウト処理
 				auto whiteBox = Rect(0, 0, origin.x + visibleSize.width, origin.y + visibleSize.height);
-				auto genericFunc = GenericFunc();
-				auto whiteEffect = genericFunc.createSpriteWithRect(whiteBox,
+				auto gf = new GenericFunc();
+				auto whiteEffect = gf->createSpriteWithRect(whiteBox,
 					origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2,
 					Vec2::ANCHOR_MIDDLE, Color3B::WHITE, 53);
 				whiteEffect->setOpacity(0);
