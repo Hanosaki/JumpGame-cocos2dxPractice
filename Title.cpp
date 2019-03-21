@@ -3,12 +3,12 @@
 #include "Credit.h"
 #include "CharaResouse.h"
 #include "GenericFunction.h"
-#include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
 #include "IntroductionScene.h"
 #include "Converter.h"
 
-using namespace CocosDenshion;
 USING_NS_CC;
+using namespace experimental;
 
 void setButtonPosition(Menu* menu);//画面下部にボタンを設置
 void setButtonPosition(Menu* baseMenu, Menu* addMenu);//一つ目のボタンの上に二つ目のボタンを設置
@@ -33,12 +33,7 @@ bool Title::init()
 	GenericFunc* gf = new GenericFunc();
 #pragma endregion
 
-	auto audioEngine = SimpleAudioEngine::getInstance();
-
-	//BGM設定
-	audioEngine->setBackgroundMusicVolume(0.4f);
-	// SE設定
-	audioEngine->setEffectsVolume(0.8f);
+	auto audioEngine = new AudioEngine();
 
 #pragma region タイトル表記
 	auto titleLabel = Label::createWithTTF(TITLE_TEXT, F_FONTS + JPN_FONTS, 64);
@@ -78,9 +73,9 @@ bool Title::init()
 	this->addChild(startButton, 2);
 #pragma endregion
 
-	Converter converter;
-	auto bgmName = converter.replaceString2Char(F_BGM + TITLE_BGM + TYPE_MP3);
-	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName, true);
+	auto con = new Converter();
+	auto bgmName = con->replaceString2Char(F_BGM + TITLE_BGM + TYPE_MP3);
+	audioEngine->play2d(bgmName,true,0.4f,nullptr);
 
 	return true;
 }
@@ -95,9 +90,9 @@ void Title::characterImageChange()
 void Title::callOPScene(Ref* Sender)
 {
 	//OPシーンに遷移させる
-	Converter converter;
-	SimpleAudioEngine::getInstance()
-		->playEffect(converter.replaceString2Char(F_SE + START_VOICE + TYPE_MP3));
+	AudioEngine::stopAll();
+	auto seName = Converter::replaceString2Char(F_SE + START_VOICE + TYPE_MP3);
+	AudioEngine::play2d(seName,false,0.8,nullptr);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Introduction::createScene(), Color3B::BLACK));
 }
@@ -105,10 +100,9 @@ void Title::callOPScene(Ref* Sender)
 void Title::callCreditScene(Ref* Sender)
 {
 	//使用素材一覧シーンに遷移させる
-	Converter converter;
-	auto seName = converter.replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3);
-	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	SimpleAudioEngine::getInstance()->playEffect(seName);
+	auto seName = Converter::replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3);
+	AudioEngine::stopAll();
+	AudioEngine::play2d(seName,false,0.8,nullptr);
 	characterImageChange();
 	Director::getInstance()->replaceScene(TransitionFade::create(2.0f, Credit::createScene(), Color3B::WHITE));
 }
@@ -116,7 +110,7 @@ void Title::callCreditScene(Ref* Sender)
 void Title::closeGame(Ref* sender)
 {
 	//ゲームを終了させる
-	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+	AudioEngine::stopAll();
 	Director::getInstance()->purgeCachedData();//キャッシュ開放
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	Converter converter;
