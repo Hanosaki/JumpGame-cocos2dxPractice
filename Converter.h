@@ -11,10 +11,11 @@
 class Converter
 {
 public:
-	char* replaceDATtoMP3(std::string relativePath);//Windows Only!
-	char* replaceMP3toDAT(std::string relativePath);//Windows Only!
-	char* replaceString2Char(std::string);
-	void replaceALLMP3toDAT();//Windows Only!
+	Converter();
+	static char* replaceDATtoMP3(std::string relativePath);//datファイルの拡張子をmp3にリネームする、Androidでは動作しない
+	static char* replaceMP3toDAT(std::string relativePath);//mp3ファイルの拡張子をdatにリネームする、Androidでは動作しない
+	static char* replaceString2Char(std::string);//string文字列をchar配列に置き換える、二バイト文字非対応
+	static void replaceALLMP3toDAT();//使用されているすべてのmp3ファイルの拡張子をdatにリネームする
 };
 
 
