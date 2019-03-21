@@ -49,8 +49,8 @@ bool Game::init()
 	outOfWindowBGPos = Vec2(3 * visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 #pragma endregion
 
-	GenericFunc genericFunc;
-
+	GenericFunc* gf = new GenericFunc();
+	
 	/*音量設定*/
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
@@ -71,13 +71,13 @@ bool Game::init()
 
 #pragma region 背景初期設定
 	/*ループ用に同じものを二枚設置*/
-	auto backGround = genericFunc.createSprite(F_IMAGE + F_UI + BACK_GROUND,
+	auto backGround = gf->createSprite(F_IMAGE + F_UI + BACK_GROUND,
 		origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2, 51);
 	backGround->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	backGround->setScale(scaleFactor);
 	this->addChild(backGround);
 
-	auto backGround2 = genericFunc.createSprite(F_IMAGE + F_UI + BACK_GROUND,
+	auto backGround2 = gf->createSprite(F_IMAGE + F_UI + BACK_GROUND,
 		outOfWindowBGPos.x, outOfWindowBGPos.y, 52);
 	backGround2->setScale(scaleFactor);
 	backGround2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -85,7 +85,7 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(animation)スプライトの初期設定
-	auto mainCharacter = genericFunc.createSprite(F_IMAGE + F_ANIMATION + F_RUN + DEFAULT,
+	auto mainCharacter = gf->createSprite(F_IMAGE + F_ANIMATION + F_RUN + DEFAULT,
 		defoultPos.x, defoultPos.y, Vec2::ANCHOR_MIDDLE_BOTTOM, 1);
 	mainCharacter->setScale((origin.y + visibleSize.height) / (mainCharacter->getContentSize().height * 2));
 	mainCharacter->setFlippedX(true);
@@ -120,7 +120,7 @@ bool Game::init()
 	auto hitDeterminationBox = Rect(0, 0,
 		mainCharacter->getContentSize().width / 5.5f * mainCharacter->getScaleX(),
 		mainCharacter->getContentSize().height / 2.5f * mainCharacter->getScaleY());
-	auto hitDetermination = genericFunc.createSpriteWithRect(hitDeterminationBox,
+	auto hitDetermination = gf->4createSpriteWithRect(hitDeterminationBox,
 		mainCharacter->getPositionX(), 0, Vec2::ANCHOR_MIDDLE_BOTTOM, Color3B::BLACK, 11);
 	hitDetermination->setVisible(false);
 	this->addChild(hitDetermination);
@@ -128,7 +128,7 @@ bool Game::init()
 
 #pragma region 主人公(立ち絵)の初期設定
 	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS);
-	characterImage = genericFunc.createSprite(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS,
+	characterImage = gf->createSprite(F_IMAGE + F_MAIN_CHARACTER + FACE_AWARENESS,
 		0, origin.y + visibleSize.height, Vec2::ANCHOR_TOP_LEFT, scaleFactor - 0.6*scaleFactor, 2);
 	this->addChild(characterImage, 3);
 #pragma endregion
@@ -142,7 +142,7 @@ bool Game::init()
 	for (int i = 0; i < MAX_LIFE; ++i)
 	{
 		auto scale = scaleFactor - 0.65*scaleFactor;
-		life[i] = genericFunc.createSprite(F_IMAGE + F_UI + LIFE_ICON,
+		life[i] = gf->createSprite(F_IMAGE + F_UI + LIFE_ICON,
 			origin.x + lifePostionBase.x + lifeIcon->getContentSize().width * scale * (MAX_LIFE - i),
 			origin.y + visibleSize.height - lifePostionBase.y / 2, Vec2::ANCHOR_MIDDLE, scale, 20 + i);
 		auto rollSpeed = 0.5f;
