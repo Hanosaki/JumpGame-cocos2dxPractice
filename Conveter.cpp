@@ -10,6 +10,11 @@ void replaceSet(std::string& fullPath, std::string& sFileName, std::string& fold
 char* setVoiceName(ValueMap valueMap);
 std::string searceVoice(ValueMap valueMap);
 
+Converter::Converter()
+{
+
+}
+
 #pragma region DAT‚ğMP3‚É’u‚«Š·‚¦‚éˆ—
 
 char* Converter::replaceDATtoMP3(std::string relativePath)
