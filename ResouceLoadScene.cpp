@@ -2,11 +2,11 @@
 #include "ResouceLoadScene.h"
 #include "Title.h"
 #include "CharaResouse.h"
-#include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
 #include "Converter.h"
 
-using namespace CocosDenshion;
 USING_NS_CC;
+using namespace experimental;
 
 Scene* ResouceLoad::createScene()
 {
@@ -25,10 +25,11 @@ bool ResouceLoad::init()
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	progress = 0;
 	animationNum = 0;
-	Converter converter;
+	auto con = new Converter();
 
 	//ロード画面SEのプリロード
-	auto audio = SimpleAudioEngine::getInstance();
+	auto audio = new AudioEngine();
+	audio->preload(con->replaceDATtoMP3(F_SE + LOAD_SE));
 
 	progressLabel = Label::createWithTTF(LOAD_MESSEAGE + 
 		StringUtils::toString(progress) + "%",F_FONTS + JPN_FONTS,48);
@@ -40,35 +41,34 @@ bool ResouceLoad::init()
 
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)//Windowsの処理
 
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + LOAD_SE));
-	audio->playEffect(converter.replaceString2Char(F_SE + LOAD_SE + TYPE_MP3));
+	audio->play2d(con->replaceString2Char(F_SE + LOAD_SE + TYPE_MP3),false,0.5f,nullptr);
 
-	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + OP_BGM));
-	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + MAIN_BGM));
-	audio->preloadBackgroundMusic(converter.replaceDATtoMP3(F_BGM + TITLE_BGM));
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + DAMEGE_VOICE));
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + RIVAL_VOICE));
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + START_VOICE));
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + BUTTON_SE));
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + JUMP_SE));
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + JUMP_SE2));
-	audio->preloadEffect(converter.replaceDATtoMP3(F_SE + ALERT_SE));
+	audio->preload(con->replaceDATtoMP3(F_BGM + OP_BGM));
+	audio->preload(con->replaceDATtoMP3(F_BGM + MAIN_BGM));
+	audio->preload(con->replaceDATtoMP3(F_BGM + TITLE_BGM));
+	audio->preload(con->replaceDATtoMP3(F_SE + DAMEGE_VOICE));
+	audio->preload(con->replaceDATtoMP3(F_SE + RIVAL_VOICE));
+	audio->preload(con->replaceDATtoMP3(F_SE + START_VOICE));
+	audio->preload(con->replaceDATtoMP3(F_SE + BUTTON_SE));
+	audio->preload(con->replaceDATtoMP3(F_SE + JUMP_SE));
+	audio->preload(con->replaceDATtoMP3(F_SE + JUMP_SE2));
+	audio->preload(con->replaceDATtoMP3(F_SE + ALERT_SE));
 
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Androidの場合
 
-	audio->preloadEffect(converter.replaceString2Char(F_SE + LOAD_SE+ TYPE_MP3));
-	audio->playEffect(converter.replaceString2Char(F_SE + LOAD_SE + TYPE_MP3));
+	audio->preload(F_SE + LOAD_SE+ TYPE_MP3);
+	audio->play2d(F_SE + LOAD_SE + TYPE_MP3);
 
-	audio->preloadBackgroundMusic(converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3));
-	audio->preloadBackgroundMusic(converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3));
-	audio->preloadBackgroundMusic(converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3));
-	audio->preloadEffect(converter.replaceString2Char(F_SE + DAMEGE_VOICE + TYPE_MP3));
-	audio->preloadEffect(converter.replaceString2Char(F_SE + RIVAL_VOICE + TYPE_MP3));
-	audio->preloadEffect(converter.replaceString2Char(F_SE + START_VOICE + TYPE_MP3));
-	audio->preloadEffect(converter.replaceString2Char(F_SE + BUTTON_SE + TYPE_MP3));
-	audio->preloadEffect(converter.replaceString2Char(F_SE + JUMP_SE + TYPE_MP3));
-	audio->preloadEffect(converter.replaceString2Char(F_SE + JUMP_SE2 + TYPE_MP3));
-	audio->preloadEffect(converter.replaceString2Char(F_SE + ALERT_SE + TYPE_MP3));
+	audio->preload(F_BGM + OP_BGM + TYPE_MP3);
+	audio->preload(F_BGM + OP_BGM + TYPE_MP3);
+	audio->preload(F_BGM + OP_BGM + TYPE_MP3);
+	audio->preload(F_SE + DAMEGE_VOICE + TYPE_MP3);
+	audio->preload(F_SE + RIVAL_VOICE + TYPE_MP3);
+	audio->preload(F_SE + START_VOICE + TYPE_MP3);
+	audio->preload(F_SE + BUTTON_SE + TYPE_MP3);
+	audio->preload(F_SE + JUMP_SE + TYPE_MP3);
+	audio->preload(F_SE + JUMP_SE2 + TYPE_MP3);
+	audio->preload(F_SE + ALERT_SE + TYPE_MP3);
 #endif
 
 #pragma endregion
