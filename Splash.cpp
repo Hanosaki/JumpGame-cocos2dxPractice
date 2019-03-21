@@ -1,12 +1,12 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "Splash.h"
-#include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
 #include "ResouceLoadScene.h"
 #include "CharaResouse.h"
 #include "Converter.h"
 
-using namespace CocosDenshion;
 USING_NS_CC;
+using namespace experimental;
 
 Scene* Splash::createScene()
 {
@@ -24,12 +24,12 @@ bool Splash::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
-	Converter converter;
+	auto con = new Converter();
 	char* seName;
 
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)//Windows用SEロード
 	
-	seName = converter.replaceDATtoMP3(F_SE + LOGO_SE);
+	seName = con->replaceDATtoMP3(F_SE + LOGO_SE);
 
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Android用SEロード処理
 
@@ -37,7 +37,7 @@ bool Splash::init()
 
 #endif
 	
-	SimpleAudioEngine::getInstance()->preloadEffect(seName);
+	AudioEngine::preload(F_SE + LOGO_SE);
 
 #pragma region ロゴ表示
 	auto logo = Label::createWithTTF(LOGO, F_FONTS + JPN_FONTS, 64);
@@ -54,7 +54,7 @@ bool Splash::init()
 
 #pragma endregion
 
-	SimpleAudioEngine::getInstance()->playEffect(seName);
+	auto seId = AudioEngine::play2d(seName,false,0.3f,nullptr);
 
 	this->scheduleOnce(schedule_selector(Splash::callLoadScene), 5.0f);
 
@@ -71,7 +71,7 @@ bool Splash::init()
 bool Splash::onTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event)
 {
 	this->unschedule(schedule_selector(Splash::callLoadScene));
-	SimpleAudioEngine::getInstance()->pauseAllEffects();
+	AudioEngine::stopAll();
 	Director::getInstance()->replaceScene(ResouceLoad::createScene());
 	return true;
 }
