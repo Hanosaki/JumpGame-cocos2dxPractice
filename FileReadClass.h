@@ -11,7 +11,11 @@ class FileRead
 {
 public:
 	cocos2d::ValueVector readCSV(const char* fileName);//csvファイルを読み込む用の関数
-	cocos2d::ValueVector split(const std::string str, const std::string &delim);//文字列を切り取るための関数
+	static std::map <std::string, std::string> FileRead::readFile(std::string fileName);//縦2行のcsvを連想配列に格納するための関数
+
+private:
+	static cocos2d::ValueVector split(const std::string str, const std::string &delim);//文字列を切り取るための関数
+
 };
 
 #endif

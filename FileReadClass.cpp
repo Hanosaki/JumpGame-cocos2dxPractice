@@ -7,7 +7,7 @@ const int ZERO = 0;
 
 ValueVector FileRead::readCSV(const char* fileName)
 {
-	ValueVector charcterWords;
+	ValueVector charcterWords;//List型配列
 	std::string csvStr = FileUtils::getInstance()->getStringFromFile(fileName);
 	ValueVector balls = this->split(csvStr,"\n");//一列ごとに切り分けて読み込み
 	ValueVector keys = this->split(balls.at(ZERO).asString(), ",");	//行ごとの属性付の為のキーを設定
@@ -16,7 +16,7 @@ ValueVector FileRead::readCSV(const char* fileName)
 	//セル毎に変数へ格納
 	for each (auto var in balls)
 	{
-		ValueMap wordMap;
+		ValueMap wordMap;//連想配列
 		ValueVector wordVector = split(var.asString(), ",");
 		for(int j = ZERO; j < (int)wordVector.size(); ++j)
 			wordMap[keys.at(j).asString()] = wordVector.at(j).asString();
@@ -37,4 +37,18 @@ ValueVector FileRead::split(const std::string str, const std::string &delim)
 	}
 	res.push_back(Value(std::string(str, current, str.size() - current)));
 	return res;
+}
+
+std::map<std::string,std::string> FileRead::readFile(std::string fileName)
+{
+	std::map<std::string, std::string>words;
+	std::string file = FileUtils::getInstance()->getStringFromFile(fileName);
+	ValueVector rows = split(file, "\n");
+	for each (auto var in rows)
+	{
+		ValueVector row = split(var.asString(), ",");
+		words[row.at(0).asString()] = row.at(1).asString();
+	}
+	return words;
+
 }
