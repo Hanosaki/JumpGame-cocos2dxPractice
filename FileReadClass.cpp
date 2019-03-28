@@ -1,5 +1,6 @@
 #pragma execution_character_set("utf-8")
 #include "FileReadClass.h"
+#include "GenericFunction.h"
 
 USING_NS_CC;
 
@@ -39,14 +40,18 @@ ValueVector FileRead::split(const std::string str, const std::string &delim)
 	return res;
 }
 
-std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
+std::map<std::string, std::string> FileRead::sReadFile(std::string fileName,Scene* scene)
 {
 	std::map<std::string, std::string>words;
-	std::string file = FileUtils::getInstance()->getStringFromFile(fileName);
-	ValueVector rows = split(file, "\n");
+	auto file = FileUtils::getInstance()->getStringFromFile(fileName);
+	if (file.size() <= 0)
+	{
+		GenericFunc::crashBox("sample",scene);
+	}
+	auto rows = split(file, "\n");
 	for each (auto var in rows)
 	{
-		ValueVector row = split(var.asString(), ",");
+		auto row = split(var.asString(), ",");
 		words[row.at(0).asString()] = row.at(1).asString();
 	}
 	return words;
