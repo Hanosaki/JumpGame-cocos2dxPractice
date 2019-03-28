@@ -87,6 +87,25 @@ Sprite* GenericFunc::createSprite(std::string fileName, float x, float y, Vec2 a
 	return sprite;
 }
 
+Vec2 GenericFunc::setWindowCenter()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto origin = Director::getInstance()->getVisibleOrigin();
+	return Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+}
+
+
+Sprite* GenericFunc::createSpriteWithRect(Rect rect, Color3B color, int tag)
+{
+	auto sprite = Sprite::create();
+	sprite->setTextureRect(rect);
+	sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	sprite->setPosition(setWindowCenter());
+	sprite->setColor(color);
+	sprite->setTag(tag);
+	return sprite;
+}
+
 Sprite* GenericFunc::createSpriteWithRect(Rect rect, float x, float y, Vec2 anchor, Color3B color, int tag)
 {
 	auto sprite = Sprite::create();
@@ -99,10 +118,6 @@ Sprite* GenericFunc::createSpriteWithRect(Rect rect, float x, float y, Vec2 anch
 	return sprite;
 }
 
-Vec2 GenericFunc::setWindowCenter(Size visibleSize, Vec2 origin)
-{
-	return Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
-}
 
 Menu* GenericFunc::createButton(const std::string fileName, const ccMenuCallback& callback)
 {
@@ -131,3 +146,51 @@ Menu* GenericFunc::createButton(const std::string fileName, const ccMenuCallback
 
 }
 
+void GenericFunc::crashBox(std::string errorMessage, Scene* scene)
+{
+	/*ウィンドウサイズの取得*/
+	auto directer = Director::getInstance();
+	auto visibleSize = directer->getVisibleSize();
+	auto origin = directer->getVisibleOrigin();
+
+	/*画面サイズの半分の白いボックスを中央に生成*/
+	auto rect = Rect(0.f, 0.f, visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y);
+	auto box = createSpriteWithRect(rect, Color3B::WHITE, 1);
+	auto text = Label::create();
+	text->setString(errorMessage);
+	text->setColor(Color3B::BLACK);
+	text->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	text->setPosition(box->getContentSize().width/2,box->getContentSize().height/2);//下地の真ん中にテキストを設置
+	box->addChild(text);
+
+	/*白ボックスの半分の黒いボックスを生成、確認ボタンにする*/
+	//auto rect2 = Rect(0.f, 0.f, box->getContentSize().width / 2, box->getContentSize().height / 2);
+	//auto button = createSpriteWithRect(rect2,Color3B::BLACK,1);
+	//auto selectedButton = createSpriteWithRect(rect2, Color3B::BLACK, 2);
+	//selectedButton->setOpacity(128);
+	//auto item = MenuItemSprite::create(button, selectedButton, CC_CALLBACK_1(endGame,GenericFunc()));
+	//auto menu = Menu::create(item, NULL);
+	//menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+
+	/*テキストの生成*/
+	//auto text2 = Label::create();
+	//text2->setString("OK");
+	//text2->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+	//text2->setColor(Color3B::RED);
+	//text2->setPosition(box->getContentSize().width / 2, text2->getContentSize().height / 2);//黒ボックスの下側にテキストを設置
+
+	//scene->unscheduleAllCallbacks();
+	scene->addChild(box);
+}
+
+void GenericFunc::endGame()
+{
+	//ゲームを終了させる
+	Director::getInstance()->purgeCachedData();//キャッシュ開放
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	Converter converter;
+	converter.replaceALLMP3toDAT();
+#endif
+	Director::getInstance()->end();
+
+}
