@@ -12,6 +12,8 @@ public:
 
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 
+private:
+	//ここ、enumにする
 	static const int NUM_OF_COMPOSERS;//音素材製作者人数
 	static const int NUM_OF_PAINTERS;//イラストレーター人数
 	static const int NUM_OF_VOICE_ACTERS;//音声素材人数
