@@ -24,6 +24,8 @@ public:
 	void jump();
 	void tutorial();
 
+private:
+
 	int score; //敵が画面端に到達した回数
 	int hitCounter; //敵と接触した回数
 	int jumpPower;//ジャンプ時の重力抵抗
