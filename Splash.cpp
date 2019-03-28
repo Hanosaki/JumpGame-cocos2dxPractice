@@ -4,6 +4,7 @@
 #include "ResouceLoadScene.h"
 #include "CharaResouse.h"
 #include "Converter.h"
+#include "FileReadClass.h"
 
 USING_NS_CC;
 using namespace experimental;
@@ -24,16 +25,17 @@ bool Splash::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
-	auto con = new Converter();
+	auto folder = FileRead::sReadFile("csv/folder",this->getScene());
+
 	char* seName;
 
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)//Windows用SEロード
 	
-	seName = con->replaceDATtoMP3(F_SE + LOGO_SE);
-
+	//seName = Converter::replaceDATtoMP3();
+	
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Android用SEロード処理
 
-	seName = converter.replaceString2Char(F_SE + LOGO_SE + TYPE_MP3);
+	seName = Converter::replaceString2Char(F_SE + LOGO_SE + TYPE_MP3);
 
 #endif
 	
