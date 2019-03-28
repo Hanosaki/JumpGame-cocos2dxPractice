@@ -39,7 +39,7 @@ ValueVector FileRead::split(const std::string str, const std::string &delim)
 	return res;
 }
 
-std::map<std::string,std::string> FileRead::readFile(std::string fileName)
+std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
 {
 	std::map<std::string, std::string>words;
 	std::string file = FileUtils::getInstance()->getStringFromFile(fileName);
@@ -51,4 +51,20 @@ std::map<std::string,std::string> FileRead::readFile(std::string fileName)
 	}
 	return words;
 
+}
+
+std::map < std::string, int> FileRead::iReadFile(std::string fileName)
+{
+	std::map<std::string, int>parameter;
+	std::string file = FileUtils::getInstance()->getStringFromFile(fileName);
+	ValueVector rows = split(file, "\n");
+	for each (auto var in rows)
+	{
+		ValueVector row = split(var.asString(), "=");
+		CCLOG("hi");
+		if (row.size() < 2)//空白行が読み込まれた場合、処理をスキップする
+			break;
+		parameter[row.at(0).asString()] =row.at(1).asInt();
+	}
+	return parameter;
 }
