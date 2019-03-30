@@ -146,7 +146,7 @@ Menu* GenericFunc::createButton(const std::string fileName, const ccMenuCallback
 
 }
 
-void GenericFunc::crashBox(std::string errorMessage, Scene* scene)
+void GenericFunc::crashBox(std::string errorMessage, Node* node)
 {
 	/*ウィンドウサイズの取得*/
 	auto directer = Director::getInstance();
@@ -154,7 +154,7 @@ void GenericFunc::crashBox(std::string errorMessage, Scene* scene)
 	auto origin = directer->getVisibleOrigin();
 
 	/*画面サイズの半分の白いボックスを中央に生成*/
-	auto rect = Rect(0.f, 0.f, visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y);
+	auto rect = Rect(0.f, 0.f, visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	auto box = createSpriteWithRect(rect, Color3B::WHITE, 1);
 	auto text = Label::create();
 	text->setString(errorMessage);
@@ -180,7 +180,8 @@ void GenericFunc::crashBox(std::string errorMessage, Scene* scene)
 	//text2->setPosition(box->getContentSize().width / 2, text2->getContentSize().height / 2);//黒ボックスの下側にテキストを設置
 
 	//scene->unscheduleAllCallbacks();
-	scene->addChild(box);
+	node->addChild(box);
+
 }
 
 void GenericFunc::endGame()
