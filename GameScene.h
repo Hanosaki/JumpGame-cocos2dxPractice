@@ -15,6 +15,9 @@ public:
 	virtual bool init();
 	CREATE_FUNC(Game);
 	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+
+private:
+
 	void main(float dt);
 	void moveCharacters(float dt);
 	void enemyResporn(float dt);
@@ -23,8 +26,6 @@ public:
 	void pauseGame(cocos2d::Ref* Sender);
 	void jump();
 	void tutorial();
-
-private:
 
 	int score; //敵が画面端に到達した回数
 	int hitCounter; //敵と接触した回数
