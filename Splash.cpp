@@ -6,6 +6,8 @@
 #include "Converter.h"
 #include "FileReadClass.h"
 
+#include "GenericFunction.h"
+
 USING_NS_CC;
 using namespace experimental;
 
@@ -25,9 +27,16 @@ bool Splash::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
-	auto folder = FileRead::sReadFile("csv/folder",this->getScene());
+	auto gf = new GenericFunc();
+	gf->crashBox("sample", this);
 
-	char* seName;
+	auto reader = new FileRead();
+	//auto folder = reader->sReadFile("csv/folder",this);
+	
+	CCLOG("I'm OK");
+
+
+	//char* seName;
 
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)//Windows用SEロード
 	
@@ -56,7 +65,7 @@ bool Splash::init()
 
 #pragma endregion
 
-	auto seId = AudioEngine::play2d(seName,false,0.3f,nullptr);
+	//auto seId = AudioEngine::play2d(seName,false,0.3f,nullptr);
 
 	this->scheduleOnce(schedule_selector(Splash::callLoadScene), 5.0f);
 
