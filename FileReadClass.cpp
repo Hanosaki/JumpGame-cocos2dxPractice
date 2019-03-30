@@ -40,13 +40,14 @@ ValueVector FileRead::split(const std::string str, const std::string &delim)
 	return res;
 }
 
-std::map<std::string, std::string> FileRead::sReadFile(std::string fileName,Scene* scene)
+std::map<std::string, std::string> FileRead::sReadFile(std::string fileName,Node* node)
 {
 	std::map<std::string, std::string>words;
 	auto file = FileUtils::getInstance()->getStringFromFile(fileName);
 	if (file.size() <= 0)
 	{
-		GenericFunc::crashBox("sample",scene);
+		auto gf = new GenericFunc();
+		gf->crashBox("sample",node);
 	}
 	auto rows = split(file, "\n");
 	for each (auto var in rows)
