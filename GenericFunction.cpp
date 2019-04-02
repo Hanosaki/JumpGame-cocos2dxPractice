@@ -5,9 +5,9 @@
 
 USING_NS_CC;
 
-GenericFunc::GenericFunc()
+GenericFunc::~GenericFunc()
 {
-
+	
 }
 
 Sprite* GenericFunc::setMainCharacterImage(Size visibleSize, Vec2 origin,std::string imgPath)
@@ -99,8 +99,6 @@ Sprite* GenericFunc::createSpriteWithRect(Rect rect, Color3B color, int tag)
 {
 	auto sprite = Sprite::create();
 	sprite->setTextureRect(rect);
-	sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	sprite->setPosition(setWindowCenter());
 	sprite->setColor(color);
 	sprite->setTag(tag);
 	return sprite;
@@ -154,37 +152,45 @@ void GenericFunc::crashBox(std::string errorMessage, Node* node)
 	auto origin = directer->getVisibleOrigin();
 
 	/*画面サイズの半分の白いボックスを中央に生成*/
-	auto rect = Rect(0.f, 0.f, visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+	auto rect = Rect(0.f, 0.f, 3*visibleSize.width / 4 + origin.x, 3*visibleSize.height / 4 + origin.y);
 	auto box = createSpriteWithRect(rect, Color3B::WHITE, 1);
+	box->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	box->setPosition(setWindowCenter());
 	auto text = Label::create();
 	text->setString(errorMessage);
 	text->setColor(Color3B::BLACK);
 	text->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	text->setPosition(box->getContentSize().width/2,box->getContentSize().height/2);//下地の真ん中にテキストを設置
+	text->retain();
 	box->addChild(text);
 
-	/*白ボックスの半分の黒いボックスを生成、確認ボタンにする*/
-	//auto rect2 = Rect(0.f, 0.f, box->getContentSize().width / 2, box->getContentSize().height / 2);
-	//auto button = createSpriteWithRect(rect2,Color3B::BLACK,1);
-	//auto selectedButton = createSpriteWithRect(rect2, Color3B::BLACK, 2);
-	//selectedButton->setOpacity(128);
-	//auto item = MenuItemSprite::create(button, selectedButton, CC_CALLBACK_1(endGame,GenericFunc()));
-	//auto menu = Menu::create(item, NULL);
-	//menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	/*白ボックスの1/4の黒いボックスを生成、確認ボタンにする*/
+	auto rect2 = Rect(0.f, 0.f, box->getContentSize().width / 2, box->getContentSize().height / 4);
+	auto button = createSpriteWithRect(rect2,Color3B::BLUE,1);
+	auto selectedButton = createSpriteWithRect(rect2, Color3B::BLUE, 2);
+	selectedButton->setOpacity(128);
+	auto item = MenuItemSprite::create(button, selectedButton, CC_CALLBACK_1(GenericFunc::endGame,this));
+	auto menu = Menu::create(item, NULL);
+	menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	menu->setPosition(box->getContentSize().width / 2, button->getContentSize().height / 2);
+	menu->retain();
+	box->addChild(menu,2);
 
 	/*テキストの生成*/
-	//auto text2 = Label::create();
-	//text2->setString("OK");
-	//text2->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-	//text2->setColor(Color3B::RED);
-	//text2->setPosition(box->getContentSize().width / 2, text2->getContentSize().height / 2);//黒ボックスの下側にテキストを設置
+	auto text2 = Label::create();
+	text2->setString("OK");
+	text2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	text2->setColor(Color3B::RED);
+	text2->setPosition(menu->getPosition());//黒ボックスの下側にテキストを設置
+	text2->retain();
+	box->addChild(text2,3);
 
-	//scene->unscheduleAllCallbacks();
-	node->addChild(box);
+	node->addChild(box,5);
+	node->unscheduleAllCallbacks();//全てのループ処理を解除する
 
 }
 
-void GenericFunc::endGame()
+void GenericFunc::endGame(Ref* sender)
 {
 	//ゲームを終了させる
 	Director::getInstance()->purgeCachedData();//キャッシュ開放
