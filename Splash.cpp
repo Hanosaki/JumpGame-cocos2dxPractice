@@ -30,8 +30,6 @@ bool Splash::init()
 
 		auto reader = new FileRead();
 		auto folder = reader->sReadFile("csv/folder");
-		if (folder.size() <= 0)
-			throw "ファイルが正常に読み込めませんでした。";
 		
 		//char* seName;
 
