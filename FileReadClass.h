@@ -11,7 +11,7 @@ class FileRead
 {
 public:
 	cocos2d::ValueVector readCSV(const char* fileName);//csvファイルを読み込む用の関数
-	std::map <std::string, std::string> FileRead::sReadFile(std::string fileName,cocos2d::Node* node);//縦2行のcsvを連想配列に格納するための関数
+	std::map <std::string, std::string> FileRead::sReadFile(std::string fileName);//縦2行のcsvを連想配列に格納するための関数
 	static std::map <std::string, int> FileRead::iReadFile(std::string fileName);//縦2行のcsvを連想配列に格納するための関数
 
 
