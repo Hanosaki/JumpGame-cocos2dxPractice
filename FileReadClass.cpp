@@ -45,9 +45,7 @@ std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
 	std::map<std::string, std::string>words;
 	auto file = FileUtils::getInstance()->getStringFromFile(fileName);
 	if (file.size() <= 0)
-	{
-		return words;
-	}
+		throw "ファイルが正常に読み込めませんでした。";
 	auto rows = split(file, "\n");
 	for each (auto var in rows)
 	{
