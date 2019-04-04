@@ -43,14 +43,14 @@ ValueVector FileRead::split(const std::string str, const std::string &delim)
 std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
 {
 	std::map<std::string, std::string>words;
-	auto file = FileUtils::getInstance()->getStringFromFile(fileName);
-	if (file.size() <= 0)
-		throw "ファイルが正常に読み込めませんでした。";
+	auto file = readString(fileName);
 	auto rows = split(file, "\n");
 	for each (auto var in rows)
 	{
 		auto row = split(var.asString(), ",");
-		words[row.at(0).asString()] = row.at(1).asString();
+		auto stringParam = row.at(1).asString();
+		stringParam.erase(stringParam.size() - 1, stringParam.size());
+		words[row.at(0).asString()] = stringParam;
 	}
 	return words;
 
@@ -59,7 +59,7 @@ std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
 std::map < std::string, int> FileRead::iReadFile(std::string fileName)
 {
 	std::map<std::string, int>parameter;
-	std::string file = FileUtils::getInstance()->getStringFromFile(fileName);
+	auto file = readString(fileName);
 	ValueVector rows = split(file, "\n");
 	for each (auto var in rows)
 	{
@@ -70,4 +70,12 @@ std::map < std::string, int> FileRead::iReadFile(std::string fileName)
 		parameter[row.at(0).asString()] =row.at(1).asInt();
 	}
 	return parameter;
+}
+
+std::string FileRead::readString(std::string &fileName)
+{
+	auto file = FileUtils::getInstance()->getStringFromFile(fileName);
+	if (file.size() <= 0)
+		throw "ファイルが正常に読み込めませんでした。";
+	return file;
 }
