@@ -1,6 +1,10 @@
 ﻿#ifndef __CHARA_RESOUSE_H__
 #define __CHARA_RESOUSE_H__
 
+#define CSV_FOLDER "csv/"
+#define BGM_POINT_CSV CSV_FOLDER "bgm.csv"/*bgm.csvの相対パス*/
+#define SE_POINT_CSV CSV_FOLDER "se.csv"/*se.csvの相対パス*/
+
 #include "cocos2d.h"
 
 #pragma region フォルダ名
@@ -126,6 +130,7 @@ extern const char* SCORE_KEY;
 extern const char* CONVERSATION_LIST;
 extern const char* CREDIT_LIST;
 #pragma endregion
+
 
 #pragma region ゲームパラメータ
 class Parameter
