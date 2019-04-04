@@ -6,6 +6,7 @@
 ----------------------*/
 
 #include "cocos2d.h"
+
 class GenericFunc{
 public:
 	~GenericFunc();
@@ -19,9 +20,6 @@ public:
 	static cocos2d::Sprite* createSpriteWithRect(cocos2d::Rect rect, cocos2d::Color3B color, int tag);//色付きのボックスを画面中央に生成する関数
 	static cocos2d::Sprite* createSpriteWithRect(cocos2d::Rect rect, float x, float y, cocos2d::Vec2 anchor, cocos2d::Color3B color, int tag);//色付きのボックスを生成する関数
 	cocos2d::Menu* createButton(const std::string fileName, const  cocos2d::ccMenuCallback& callback);//ボタン生成用関数
-	void crashBox(std::string errorMessage ,cocos2d::Node* node);//ユーザにエラーを通知するボックスを表示する
-
-	void endGame(cocos2d::Ref* sender);//強制終了に使用
 
 private:
 
