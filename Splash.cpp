@@ -1,15 +1,14 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "Splash.h"
-#include "AudioEngine.h"
 #include "ResouceLoadScene.h"
 #include "CharaResouse.h"
 #include "Converter.h"
 #include "FileReadClass.h"
 #include "MenuWindow.h"
 #include "createLabel.h"
+#include "sound.h"
 
 USING_NS_CC;
-using namespace experimental;
 
 Scene* Splash::createScene()
 {
@@ -29,6 +28,8 @@ bool Splash::init()
 		auto origin = Director::getInstance()->getVisibleOrigin();
 		auto winCenter = Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 
+		auto sound = new Sound(SE_POINT_CSV,"LOGO");
+
 		//ロゴ表示(ラベル生成用クラスを作成する)
 		CreateLabel::setLabel(LOGO,F_FONTS+JPN_FONTS,64,Color4B::WHITE,winCenter,1,this);
 
@@ -40,11 +41,7 @@ bool Splash::init()
 
 #pragma endregion
 
-		auto seNames = FileRead::sReadFile(SE_POINT_CSV);
-		auto seName = seNames["LOGO"];
-		AudioEngine::preload(seName);
-		AudioEngine::play2d(seName,false,0.3f,nullptr);
-
+		sound->playSE("LOGO", 0.3f);
 		this->scheduleOnce(schedule_selector(Splash::callLoadScene), 5.0f);
 
 #pragma region クリック処理の初期設定
@@ -67,7 +64,7 @@ bool Splash::init()
 bool Splash::onTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event)
 {
 	this->unschedule(schedule_selector(Splash::callLoadScene));
-	AudioEngine::stopAll();
+	Sound::stopSounds();
 	Director::getInstance()->replaceScene(ResouceLoad::createScene());
 	return true;
 }
