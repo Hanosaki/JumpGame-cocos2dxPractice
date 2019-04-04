@@ -6,8 +6,7 @@
 class Sound
 {
 public:
-	Sound(std::string csvPostion,std::string seKey);
-	~Sound();
+	Sound(std::string csvFile);//指定されたCSVに記述されている音声データをプリロードする。
 	static int playSE(std::string seKey, float volume);
 	static void stopSounds();
 };

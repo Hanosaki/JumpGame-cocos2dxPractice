@@ -2,21 +2,18 @@
 #include "FileReadClass.h"
 #include "CharaResouse.h"
 #include "AudioEngine.h"
+#include "Converter.h"
 
 USING_NS_CC;
 using namespace experimental;
 
-Sound::Sound(std::string csvPostion,std::string seKey)
+Sound::Sound(std::string csvFile)
 {
-	auto seNames = FileRead::sReadFile(SE_POINT_CSV);
-	auto seName = seNames[seKey];
-	AudioEngine::preload(seName);
-}
-
-Sound::~Sound()
-{
-	AudioEngine::stopAll();
-	AudioEngine::uncacheAll();
+	auto seNames = FileRead::sReadFile(csvFile);
+	for each(auto i in seNames)
+	{
+		AudioEngine::preload(i.second);
+	}
 }
 
 int Sound::playSE(std::string seKey,float volume)
