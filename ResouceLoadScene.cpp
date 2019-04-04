@@ -2,11 +2,10 @@
 #include "ResouceLoadScene.h"
 #include "Title.h"
 #include "CharaResouse.h"
-#include "AudioEngine.h"
 #include "Converter.h"
+#include "sound.h"
 
 USING_NS_CC;
-using namespace experimental;
 
 Scene* ResouceLoad::createScene()
 {
@@ -28,9 +27,7 @@ bool ResouceLoad::init()
 	auto con = new Converter();
 
 	//ロード画面SEのプリロード
-	auto audio = new AudioEngine();
-	audio->preload(con->replaceDATtoMP3(F_SE + LOAD_SE));
-
+	auto se = new Sound(SE_POINT_CSV);
 	progressLabel = Label::createWithTTF(LOAD_MESSEAGE + 
 		StringUtils::toString(progress) + "%",F_FONTS + JPN_FONTS,48);
 	progressLabel->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
@@ -38,38 +35,8 @@ bool ResouceLoad::init()
 
 #pragma region 音素材のプリロード&ロード中音声再生
 
-
-#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)//Windowsの処理
-
-	audio->play2d(con->replaceString2Char(F_SE + LOAD_SE + TYPE_MP3),false,0.5f,nullptr);
-
-	audio->preload(con->replaceDATtoMP3(F_BGM + OP_BGM));
-	audio->preload(con->replaceDATtoMP3(F_BGM + MAIN_BGM));
-	audio->preload(con->replaceDATtoMP3(F_BGM + TITLE_BGM));
-	audio->preload(con->replaceDATtoMP3(F_SE + DAMEGE_VOICE));
-	audio->preload(con->replaceDATtoMP3(F_SE + RIVAL_VOICE));
-	audio->preload(con->replaceDATtoMP3(F_SE + START_VOICE));
-	audio->preload(con->replaceDATtoMP3(F_SE + BUTTON_SE));
-	audio->preload(con->replaceDATtoMP3(F_SE + JUMP_SE));
-	audio->preload(con->replaceDATtoMP3(F_SE + JUMP_SE2));
-	audio->preload(con->replaceDATtoMP3(F_SE + ALERT_SE));
-
-#elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Androidの場合
-
-	audio->preload(F_SE + LOAD_SE+ TYPE_MP3);
-	audio->play2d(F_SE + LOAD_SE + TYPE_MP3);
-
-	audio->preload(F_BGM + OP_BGM + TYPE_MP3);
-	audio->preload(F_BGM + OP_BGM + TYPE_MP3);
-	audio->preload(F_BGM + OP_BGM + TYPE_MP3);
-	audio->preload(F_SE + DAMEGE_VOICE + TYPE_MP3);
-	audio->preload(F_SE + RIVAL_VOICE + TYPE_MP3);
-	audio->preload(F_SE + START_VOICE + TYPE_MP3);
-	audio->preload(F_SE + BUTTON_SE + TYPE_MP3);
-	audio->preload(F_SE + JUMP_SE + TYPE_MP3);
-	audio->preload(F_SE + JUMP_SE2 + TYPE_MP3);
-	audio->preload(F_SE + ALERT_SE + TYPE_MP3);
-#endif
+	se->playSE("LOAD",0.3f);
+	auto bgm = new Sound(BGM_POINT_CSV);
 
 #pragma endregion
 
