@@ -28,7 +28,7 @@ bool Splash::init()
 		auto origin = Director::getInstance()->getVisibleOrigin();
 		auto winCenter = Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 
-		auto sound = new Sound(SE_POINT_CSV,"LOGO");
+		auto sound = new Sound(SE_POINT_CSV);
 
 		//ロゴ表示(ラベル生成用クラスを作成する)
 		CreateLabel::setLabel(LOGO,F_FONTS+JPN_FONTS,64,Color4B::WHITE,winCenter,1,this);
@@ -65,6 +65,7 @@ bool Splash::onTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event)
 {
 	this->unschedule(schedule_selector(Splash::callLoadScene));
 	Sound::stopSounds();
+	this->unscheduleAllCallbacks();
 	Director::getInstance()->replaceScene(ResouceLoad::createScene());
 	return true;
 }
