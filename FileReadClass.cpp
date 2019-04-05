@@ -64,7 +64,6 @@ std::map < std::string, int> FileRead::iReadFile(std::string fileName)
 	for each (auto var in rows)
 	{
 		ValueVector row = split(var.asString(), "=");
-		CCLOG("hi");
 		if (row.size() < 2)//空白行が読み込まれた場合、処理をスキップする
 			break;
 		parameter[row.at(0).asString()] =row.at(1).asInt();
