@@ -49,7 +49,8 @@ std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
 	{
 		auto row = split(var.asString(), ",");
 		auto stringParam = row.at(1).asString();
-		stringParam.erase(stringParam.size() - 1, stringParam.size());
+		if (stringParam.rfind("\r") != std::string::npos )
+			stringParam.erase(stringParam.size() - 1, stringParam.size());
 		words[row.at(0).asString()] = stringParam;
 	}
 	return words;
