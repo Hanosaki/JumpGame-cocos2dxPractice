@@ -6,6 +6,7 @@
 #include "GameScene.h"
 #include "Converter.h"
 #include "GenericFunction.h"
+#include "AnimationLoad.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -48,9 +49,8 @@ bool Introduction::init()
 	
 	/*ボタン画像の登録*/
 	auto skipButton = Sprite::create(F_IMAGE + F_UI + SKIP_BUTTON);
-	skipButton->setOpacity(128);
 	auto selectedSkipButton = Sprite::create(F_IMAGE + F_UI + SKIP_BUTTON);
-	selectedSkipButton->setOpacity(64);
+	selectedSkipButton->setOpacity(128);
 
 	/*ボタンをメニューとして登録*/
 	auto skipItem = MenuItemSprite::create(skipButton, selectedSkipButton, CC_CALLBACK_1(Introduction::callGameScene, this));
@@ -59,6 +59,10 @@ bool Introduction::init()
 	skipItem->setPosition(origin.x + visibleSize.width, origin.y + visibleSize.height);
 	auto skipMenu = Menu::create(skipItem, NULL);
 	skipMenu->setPosition(Vec2::ZERO);
+	skipMenu->setOpacity(128);
+	const int skipMenuTag = 10;
+	skipMenu->setTag(skipMenuTag);
+	skipMenu->setEnabled(false);
 	this->addChild(skipMenu, 3);
 #pragma endregion
 
@@ -140,6 +144,21 @@ bool Introduction::init()
 	}
 
 #pragma endregion
+
+	auto thread = std::thread([this]()
+	{
+		AnimationLoad::load();//アニメーション画像のロード処理>
+		Director::getInstance()->getScheduler()->performFunctionInCocosThread([this]()
+		{//アニメーション画像のロードが終わったら、スキップボタンを有効化
+			auto skipMenu = (Menu*)this->getChildByTag(10);
+			skipMenu->setEnabled(true);
+			skipMenu->setOpacity(255);
+			
+		});
+	});
+	thread.detach();
+
+
 
 	// 画面遷移の為のディレイ
 	this->runAction(Sequence::create(DelayTime::create(1.5f), NULL));
