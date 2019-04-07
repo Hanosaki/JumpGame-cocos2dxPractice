@@ -23,7 +23,12 @@ int Sound::playSE(std::string seKey,float volume)
 	return AudioEngine::play2d(seName, false, volume, nullptr);
 }
 
-void Sound::stopSounds()
+void Sound::stopSound()
 {
-	AudioEngine::stopAll();
+	AudioEngine::stopAll();//âπê∫ëSí‚é~
+}
+
+void Sound::stopSound(int audioID)
+{
+	AudioEngine::stop(audioID);
 }
