@@ -13,8 +13,9 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	CREATE_FUNC(ResouceLoad);
+	void loadAnimeCache();//非同期で読み込み
 
-	virtual void loadAnimeCache(float dt);//非同期っぽく見せる同期読み込み関数
+private:
 
 	cocos2d::Label* progressLabel;//読み込み進捗を表示するためのラベル
 
