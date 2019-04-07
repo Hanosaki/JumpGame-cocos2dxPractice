@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "Splash.h"
-#include "ResouceLoadScene.h"
+#include "Title.h"
 #include "CharaResouse.h"
 #include "Converter.h"
 #include "FileReadClass.h"
@@ -66,12 +66,12 @@ bool Splash::onTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event)
 {
 	Sound::stopSound();
 	this->unscheduleAllCallbacks();//タイマー設定されたスケジュールの解除
-	Director::getInstance()->replaceScene(ResouceLoad::createScene());
+	Director::getInstance()->replaceScene(Title::createScene());
 	return true;
 }
 
 void Splash::callLoadScene(float dt)
 {
-	Director::getInstance()->replaceScene(ResouceLoad::createScene());
+	Director::getInstance()->replaceScene(Title::createScene());
 }
 
