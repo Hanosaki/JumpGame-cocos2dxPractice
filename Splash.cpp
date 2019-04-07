@@ -31,11 +31,12 @@ bool Splash::init()
 		auto sound = new Sound(SE_POINT_CSV);
 
 		//ロゴ表示(ラベル生成用クラスを作成する)
-		CreateLabel::setLabel(LOGO,F_FONTS+JPN_FONTS,64,Color4B::WHITE,winCenter,1,this);
+		int logoTag = 1;
+		CreateLabel::setLabel(LOGO,F_FONTS+JPN_FONTS,64,Color4B::WHITE,winCenter,logoTag,this);
 
 #pragma region ロゴアニメーション
 
-		auto logo = (Label*)this->getChildByTag(1);
+		auto logo = (Label*)this->getChildByTag(logoTag);
 		auto logoAction = Sequence::create(FadeIn::create(1.0f), DelayTime::create(2.0f), FadeOut::create(1.0f), NULL);
 		logo->runAction(logoAction);
 
@@ -63,9 +64,8 @@ bool Splash::init()
 
 bool Splash::onTouchBegan(cocos2d::Touch* touch,cocos2d::Event* event)
 {
-	this->unschedule(schedule_selector(Splash::callLoadScene));
-	Sound::stopSounds();
-	this->unscheduleAllCallbacks();
+	Sound::stopSound();
+	this->unscheduleAllCallbacks();//タイマー設定されたスケジュールの解除
 	Director::getInstance()->replaceScene(ResouceLoad::createScene());
 	return true;
 }
