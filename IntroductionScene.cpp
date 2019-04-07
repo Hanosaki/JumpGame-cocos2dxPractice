@@ -6,7 +6,6 @@
 #include "GameScene.h"
 #include "Converter.h"
 #include "GenericFunction.h"
-#include "AnimationLoad.h"
 
 using namespace CocosDenshion;
 USING_NS_CC;
@@ -39,14 +38,14 @@ bool Introduction::init()
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
 
 #pragma region 背景設定
-	auto backGround = Sprite::create(F_IMAGE + F_UI +OP_BACK_GROUND);
+	auto backGround = Sprite::create(F_IMAGE + F_UI + OP_BACK_GROUND);
 	backGround->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
 	backGround->setContentSize(Size(origin.x + visibleSize.width, origin.y + visibleSize.height));
 	this->addChild(backGround, 1);
 #pragma endregion
 
 #pragma region スキップボタン
-	
+
 	/*ボタン画像の登録*/
 	auto skipButton = Sprite::create(F_IMAGE + F_UI + SKIP_BUTTON);
 	auto selectedSkipButton = Sprite::create(F_IMAGE + F_UI + SKIP_BUTTON);
@@ -68,7 +67,7 @@ bool Introduction::init()
 
 #pragma region 主人公立ち絵
 	auto characterImage = Sprite::create(F_IMAGE + F_MAIN_CHARACTER + SMILE);
-	characterImage->setScale((origin.y +  visibleSize.height) / (characterImage->getContentSize().height));
+	characterImage->setScale((origin.y + visibleSize.height) / (characterImage->getContentSize().height));
 	characterImage->setPosition(origin.x + visibleSize.width / 6, Vec2::ZERO.y);
 	characterImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
 	characterImage->setOpacity(128);
@@ -107,7 +106,7 @@ bool Introduction::init()
 #pragma region 名前表示用ラベルの設定
 	characterNameLabel = Label::createWithTTF(characterWordMap.at(CHARACTER_NAME_KEY).asString()
 		, F_FONTS + JPN_FONTS, NAME_FONT_SIZE);
-	characterNameLabel->setPosition(Vec2(NAME_FONT_SIZE+NAME_FONT_SIZE/3,
+	characterNameLabel->setPosition(Vec2(NAME_FONT_SIZE + NAME_FONT_SIZE / 3,
 		textWindow->getContentSize().height - NAME_FONT_SIZE / 2));
 	characterNameLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	characterNameLabel->setColor(Color3B::WHITE);
@@ -134,34 +133,26 @@ bool Introduction::init()
 		//音声ファイル名がcsvファイルから取得できた場合、同じファイル名のmp3をプリロードする
 		if (strcmp(voiceName, "0")){
 			Converter converter;
-		#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 			voiceName = converter.replaceDATtoMP3(voiceName);
-		#elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Androidの場合
+#elif(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)//Androidの場合
 			voiceName = converter.replaceString2Char(voiceName + TYPE_MP3);
-		#endif
+#endif
 			SimpleAudioEngine::getInstance()->preloadEffect(voiceName);
 		}
 	}
 
 #pragma endregion
 
-	auto thread = std::thread([this]()
-	{
-		AnimationLoad::load();//アニメーション画像のロード処理>
-		Director::getInstance()->getScheduler()->performFunctionInCocosThread([this]()
-		{//アニメーション画像のロードが終わったら、スキップボタンを有効化
-			auto skipMenu = (Menu*)this->getChildByTag(10);
-			skipMenu->setEnabled(true);
-			skipMenu->setOpacity(255);
-			
-		});
-	});
-	thread.detach();
-
-
-
 	// 画面遷移の為のディレイ
 	this->runAction(Sequence::create(DelayTime::create(1.5f), NULL));
+
+
+	/*アクションパートのアニメーション画像を非同期で読み込み*/
+	auto parameter = FileRead::iReadFile(PARAMETER_INI);
+	auto cache = cocos2d::Director::getInstance()->getTextureCache();
+	for (int i = 0; i < parameter["ANIMATION_MAX_NUM"]; ++i)
+		cache->addImageAsync(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png", CC_CALLBACK_1(Introduction::loadAnimeCache, this));//アニメーション画像のキャッシュを作成
 
 #pragma region リスナー登録
 	auto listner = EventListenerTouchOneByOne::create();
@@ -173,8 +164,16 @@ bool Introduction::init()
 	Converter converter;
 	auto bgmName = converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3);
 	SimpleAudioEngine::getInstance()->playBackgroundMusic(bgmName, true);
-	
+
 	return true;
+}
+
+/*アニメーション画像を読み込み終えたらスキップボタンを有効化*/
+void Introduction::loadAnimeCache(Texture2D* texture)
+{
+	auto skipMenu = (Menu*)this->getChildByTag(10);
+	skipMenu->setEnabled(true);
+	skipMenu->setOpacity(255);
 }
 
 #pragma region アクションパート呼び出し
