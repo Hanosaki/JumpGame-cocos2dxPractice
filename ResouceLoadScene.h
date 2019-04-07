@@ -2,7 +2,7 @@
 #define __RESOUCE_LOAD_SCENE_H__
 
 /*
-リソースをメモリーに展開するためのクラス
+リソースをメモリーに展開するためのクラス(不要の可能性あり)
 */
 
 #include "cocos2d.h"
@@ -13,7 +13,6 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	CREATE_FUNC(ResouceLoad);
-	void loadAnimeCache();//非同期で読み込み
 
 private:
 
