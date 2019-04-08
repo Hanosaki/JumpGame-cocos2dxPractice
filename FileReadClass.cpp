@@ -43,7 +43,7 @@ ValueVector FileRead::split(const std::string str, const std::string &delim)
 std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
 {
 	std::map<std::string, std::string>words;
-//	cocos2d::Map<std::string, std::string> words;Ç»ÇÒÇ©égÇ¶Ç»Ç©Ç¡ÇΩÇÃÇ…égÇ¶ÇÈÇÊÇ§Ç…Ç»Ç¡ÇƒÇÈÇ©ÇÁÅAÇ±Ç¡ÇøÇ…Ç∑ÇÈÇ±Ç∆
+	Map < std::string, Sprite*> hoge;
 	auto file = readString(fileName);
 	auto rows = split(file, "\n");
 	for each (auto var in rows)
