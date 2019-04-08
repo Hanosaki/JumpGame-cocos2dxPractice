@@ -147,19 +147,14 @@ bool Introduction::init()
 	// 画面遷移の為のディレイ
 	this->runAction(Sequence::create(DelayTime::create(1.5f), NULL));
 
-
-	/*アクションパートのアニメーション画像を非同期で読み込み*/
-	auto parameter = FileRead::iReadFile(PARAMETER_INI);
-	auto cache = cocos2d::Director::getInstance()->getTextureCache();
-	for (int i = 0; i < parameter["ANIMATION_MAX_NUM"]; ++i)
-		cache->addImageAsync(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png", CC_CALLBACK_1(Introduction::loadAnimeCache, this));//アニメーション画像のキャッシュを作成
-
 #pragma region リスナー登録
 	auto listner = EventListenerTouchOneByOne::create();
 	listner->onTouchBegan = CC_CALLBACK_2(Introduction::onTouchBegan, this);
 	listner->onTouchEnded = CC_CALLBACK_2(Introduction::onTouchEnded, this);
 	directer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
 #pragma endregion
+
+	this->scheduleOnce(schedule_selector(Introduction::loadAnimeCache),1.0f);
 
 	Converter converter;
 	auto bgmName = converter.replaceString2Char(F_BGM + OP_BGM + TYPE_MP3);
@@ -168,8 +163,17 @@ bool Introduction::init()
 	return true;
 }
 
+void Introduction::loadAnimeCache(float dt)
+{
+	/*アクションパートのアニメーション画像を非同期で読み込み*/
+	auto parameter = FileRead::iReadFile(PARAMETER_INI);
+	auto cache = cocos2d::Director::getInstance()->getTextureCache();
+	for (int i = 0; i < parameter["ANIMATION_MAX_NUM"]; ++i)
+		cache->addImageAsync(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png", CC_CALLBACK_1(Introduction::loadComplete , this));//アニメーション画像のキャッシュを作成
+}
+
 /*アニメーション画像を読み込み終えたらスキップボタンを有効化*/
-void Introduction::loadAnimeCache(Texture2D* texture)
+void Introduction::loadComplete(Texture2D* texture)
 {
 	auto skipMenu = (Menu*)this->getChildByTag(10);
 	skipMenu->setEnabled(true);

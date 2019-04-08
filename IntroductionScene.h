@@ -20,8 +20,10 @@ public:
 	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 	void spriteChange();
 	void callGameScene(cocos2d::Ref* Sender);
-	void loadAnimeCache(cocos2d::Texture2D* texture);//非同期読み込み完了を受け付ける関数
+	void loadComplete(cocos2d::Texture2D* texture);//非同期読み込み完了を受け付ける関数
 
+private:
+	void  loadAnimeCache(float dt);
 	cocos2d::ValueVector characterWordVector;//csvファイルの内容を格納
 	cocos2d::ValueMap characterWordMap;//ValueVectorから切り出したデータを格納
 	cocos2d::Label* characterNameLabel;//ValueVectorから切り出したキャラクター名を格納
