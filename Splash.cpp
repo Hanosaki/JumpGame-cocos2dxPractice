@@ -32,7 +32,7 @@ bool Splash::init()
 
 		//ロゴ表示(ラベル生成用クラスを作成する)
 		int logoTag = 1;
-		CreateLabel::setLabel(LOGO,F_FONTS+JPN_FONTS,64,Color4B::WHITE,winCenter,logoTag,this);
+		CreateLabel::setLabel(LOGO, F_FONTS + JPN_FONTS, 64, Color4B::WHITE, winCenter, logoTag, this);
 
 #pragma region ロゴアニメーション
 
@@ -42,14 +42,18 @@ bool Splash::init()
 
 #pragma endregion
 
+#pragma region 静止画キャッシュの作成
+		auto images = FileRead::sReadFile(IMAGE_POINT_CSV);
+		auto cache = cocos2d::Director::getInstance()->getTextureCache();
+		for each(auto image in images)
+		{
+			cache->addImageAsync(image.second, CC_CALLBACK_1(Splash::loadComplete, this));//アニメーション画像のキャッシュを作成
+		}
+#pragma endregion
+
 		sound->playSE("LOGO", 0.3f);
 		this->scheduleOnce(schedule_selector(Splash::callLoadScene), 5.0f);
 
-#pragma region クリック処理の初期設定
-		auto listner = EventListenerTouchOneByOne::create();
-		listner->onTouchBegan = CC_CALLBACK_2(Splash::onTouchBegan, this);
-		Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
-#pragma endregion
 
 	}
 	catch (char* message)
@@ -75,3 +79,11 @@ void Splash::callLoadScene(float dt)
 	Director::getInstance()->replaceScene(Title::createScene());
 }
 
+void Splash::loadComplete(Texture2D* texture)//キャッシュのロードが終わったら、タッチイベントを登録
+{
+	#pragma region クリック処理の初期設定
+	auto listner = EventListenerTouchOneByOne::create();
+	listner->onTouchBegan = CC_CALLBACK_2(Splash::onTouchBegan, this);
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listner, this);
+	#pragma endregion
+}

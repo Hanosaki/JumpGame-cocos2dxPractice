@@ -17,6 +17,7 @@ public:
 
 private:
 	void callLoadScene(float dt);//ロゴ表示が終わったら、ロード画面に遷移する
+	void loadComplete(cocos2d::Texture2D* texture);
 
 };
 
