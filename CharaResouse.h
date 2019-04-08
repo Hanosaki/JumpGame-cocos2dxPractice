@@ -4,6 +4,7 @@
 #define CSV_FOLDER "csv/"
 #define BGM_POINT_CSV CSV_FOLDER "bgm.csv"/*bgm.csvの相対パス*/
 #define SE_POINT_CSV CSV_FOLDER "se.csv"/*se.csvの相対パス*/
+#define IMAGE_POINT_CSV CSV_FOLDER "images.csv"/*image.csvの相対パス*/
 #define PARAMETER_INI "parameter.ini"/*parameter.iniの相対パス*/
 
 #include "cocos2d.h"
