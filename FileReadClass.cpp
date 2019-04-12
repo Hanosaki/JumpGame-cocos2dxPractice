@@ -8,20 +8,20 @@ const int ZERO = 0;
 
 ValueVector FileRead::readCSV(const char* fileName)
 {
-	ValueVector charcterWords;//List型配列
+	ValueVector charcterWords;//複数行のValueMapを格納するベクトル配列
 	std::string csvStr = FileUtils::getInstance()->getStringFromFile(fileName);
-	ValueVector balls = this->split(csvStr,"\n");//一列ごとに切り分けて読み込み
-	ValueVector keys = this->split(balls.at(ZERO).asString(), ",");	//行ごとの属性付の為のキーを設定
-	balls.erase(balls.begin());//属性付用のデータの削除
+	ValueVector balls = this->split(csvStr,"\n");//一行ごとに文字列を読み込む
+	ValueVector keys = this->split(balls.at(ZERO).asString(), ",");	//連想配列キーを設定
+	balls.erase(balls.begin());//連想配列のKeyが記入されている部分を削除
 
 	//セル毎に変数へ格納
-	for each (auto var in balls)
+	for(auto var : balls)
 	{
-		ValueMap wordMap;//連想配列
-		ValueVector wordVector = split(var.asString(), ",");
-		for(int j = ZERO; j < (int)wordVector.size(); ++j)
-			wordMap[keys.at(j).asString()] = wordVector.at(j).asString();
-		charcterWords.push_back((Value)wordMap);
+		ValueMap words;//一行の文章をそれぞれの要素に分けて格納する連想配列
+		auto wordVector = split(var.asString(), ",");//カンマ区切りで文字列のベクトル配列を作成
+		for(int j = ZERO; j < (int)wordVector.size(); ++j)//区切られた文字列を連想配列に格納
+			words[keys.at(j).asString()] = wordVector.at(j).asString();
+		charcterWords.push_back((Value)words);//連想配列をベクトル配列に追加
 	}
 
 	return charcterWords;
@@ -40,13 +40,13 @@ ValueVector FileRead::split(const std::string str, const std::string &delim)
 	return res;
 }
 
-std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
+ValueMap FileRead::sReadFile(std::string fileName)
 {
-	std::map<std::string, std::string>words;
+	ValueMap words;
 	Map < std::string, Sprite*> hoge;
 	auto file = readString(fileName);
 	auto rows = split(file, "\n");
-	for each (auto var in rows)
+	for (auto var : rows)
 	{
 		auto row = split(var.asString(), ",");
 		auto stringParam = row.at(1).asString();
@@ -59,12 +59,12 @@ std::map<std::string, std::string> FileRead::sReadFile(std::string fileName)
 
 }
 
-std::map < std::string, int> FileRead::iReadFile(std::string fileName)
+ValueMap FileRead::iReadFile(std::string fileName)
 {
-	std::map<std::string, int>parameter;
+	ValueMap parameter;
 	auto file = readString(fileName);
 	ValueVector rows = split(file, "\n");
-	for each (auto var in rows)
+	for (auto var : rows)
 	{
 		ValueVector row = split(var.asString(), "=");
 		if (row.size() < 2)//空白行が読み込まれた場合、処理をスキップする
