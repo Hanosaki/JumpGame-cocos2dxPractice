@@ -46,8 +46,9 @@ void MenuWindow::crashBox(std::string errorMessage, Node* node)
 	text2->retain();
 	box->addChild(text2, 3);
 
-	node->addChild(box, 5);
+	node->removeAllChildren();//全ての子要素を削除する
 	node->unscheduleAllCallbacks();//全てのループ処理を解除する
+	node->addChild(box, 5);
 
 }
 
@@ -55,9 +56,5 @@ void MenuWindow::endGame(Ref* sender)
 {
 	//ゲームを終了させる
 	Director::getInstance()->purgeCachedData();//キャッシュ開放
-#if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	Converter::replaceALLMP3toDAT();
-#endif
 	Director::getInstance()->end();
-
 }
