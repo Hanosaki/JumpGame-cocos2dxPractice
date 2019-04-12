@@ -1,6 +1,5 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
-#include "ResouceLoadScene.h"
 #include "Splash.h"
 #include "CharaResouse.h"
 #include "SimpleAudioEngine.h"
