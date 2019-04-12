@@ -32,7 +32,8 @@ bool Splash::init()
 
 		//ロゴ表示(ラベル生成用クラスを作成する)
 		int logoTag = 1;
-		CreateLabel::setLabel(LOGO, F_FONTS + JPN_FONTS, 64, Color4B::WHITE, winCenter, logoTag, this);
+		auto fonts = F_FONTS + JPN_FONTS;
+		CreateLabel::setLabel(LOGO, fonts, 64, Color4B::WHITE, winCenter, logoTag, this);
 
 #pragma region ロゴアニメーション
 
@@ -45,9 +46,9 @@ bool Splash::init()
 #pragma region 静止画キャッシュの作成
 		auto images = FileRead::sReadFile(IMAGE_POINT_CSV);
 		auto cache = cocos2d::Director::getInstance()->getTextureCache();
-		for each(auto image in images)
+		for(auto image : images)
 		{
-			cache->addImageAsync(image.second, CC_CALLBACK_1(Splash::loadComplete, this));//アニメーション画像のキャッシュを作成
+			cache->addImageAsync(image.second.asString(), CC_CALLBACK_1(Splash::loadComplete, this));//アニメーション画像のキャッシュを作成
 		}
 #pragma endregion
 
