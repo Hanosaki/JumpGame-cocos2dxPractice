@@ -6,6 +6,9 @@
 #include "SimpleAudioEngine.h"
 #include "Converter.h"
 
+#include "SpriteManager.h"
+#include "FileReadClass.h"
+
 using namespace CocosDenshion;
 USING_NS_CC;
 
@@ -85,8 +88,9 @@ bool Game::init()
 #pragma endregion
 
 #pragma region 主人公(animation)スプライトの初期設定
-	auto mainCharacter = gf->createSprite(F_IMAGE + F_ANIMATION + F_RUN + DEFAULT,
-		defoultPos.x, defoultPos.y, Vec2::ANCHOR_MIDDLE_BOTTOM, 1);
+	int mainCharaTag = 1;
+	const std::string ANIME_FIRST_IMAGE = "image/animation/run/0.png";
+	auto mainCharacter = SpriteManager::createSprite(ANIME_FIRST_IMAGE, defoultPos.x, defoultPos.y, Vec2::ANCHOR_MIDDLE_BOTTOM, mainCharaTag);
 	mainCharacter->setScale((origin.y + visibleSize.height) / (mainCharacter->getContentSize().height * 2));
 	mainCharacter->setFlippedX(true);
 	this->addChild(mainCharacter, 1);
@@ -281,7 +285,7 @@ void Game::main(float dt)
 	if (isFirstPlay)
 	{
 		auto distance = mainCharacter->getPositionX() - enemy->getPositionX();
-		if (distance >= -700)
+		if (distance >= -800)
 			tutorial();
 	}
 #pragma endregion
@@ -576,11 +580,21 @@ void Game::pauseGame(Ref* Sender)
 void Game::setCharacterDefault()
 {
 	auto mainCharacter = (Sprite*)this->getChildByTag(1);
+	Vector<SpriteFrame*> animeFrames;
+	auto parameter = FileRead::iReadFile(PARAMETER_INI);
+	auto animationMaxNum = parameter["ANIMATION_MAX_NUM"].asInt();
+	int counter = 0;
+	do
+	{
+		if (counter >= animationMaxNum)
+			break;
+		std::string fileName = StringUtils::toString(counter) + ".png";
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(fileName);
+		animeFrames.pushBack(frame);
+		++counter;
+	}while(true);
+	
 	try{
-		/*主人公走りモーション設定*/
-		auto animation = Animation::create();
-		for (int i = 0; i < Parameter::ANIMATION_MAX_NUM; ++i)
-			animation->addSpriteFrameWithFile(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png");
 		//スコアが10の倍数になった際、主人公のアニメーション速度を加速させる
 		if (score % 10 == 0)//
 		{
@@ -588,11 +602,13 @@ void Game::setCharacterDefault()
 			if (animeSpeed - acceleration > 0.02f)
 				animeSpeed -= acceleration;
 		}
-		animation->setDelayPerUnit(animeSpeed);
+		/*主人公走りモーション設定*/
+		auto animation = Animation::createWithSpriteFrames(animeFrames, animeSpeed);
 		animation->setRestoreOriginalFrame(true);
 		auto runAnime = Animate::create(animation);
 		auto runAnimation = RepeatForever::create(runAnime);
-		runAnimation->setTag(101);
+		const int ANIME_TAG = 101;
+		runAnimation->setTag(ANIME_TAG);
 		mainCharacter->runAction(runAnimation);
 		/*主人公走りモーション設定*/
 	}

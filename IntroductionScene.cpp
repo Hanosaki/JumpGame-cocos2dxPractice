@@ -166,22 +166,29 @@ bool Introduction::init()
 void Introduction::loadAnimeCache(float dt)
 {
 	/*アクションパートのアニメーション画像を非同期で読み込み*/
-	auto parameter = FileRead::iReadFile(PARAMETER_INI);
+	auto param = FileRead::iReadFile(PARAMETER_INI);
 	auto cache = Director::getInstance()->getTextureCache();
-	cache->addImageAsync("image/animation/run/sprites.png", CC_CALLBACK_1(Introduction::loadComplete, this));
-	//for (int i = 0; i < parameter["ANIMATION_MAX_NUM"].asInt(); ++i)
-	//	cache->addImageAsync(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png", CC_CALLBACK_1(Introduction::loadComplete , this));//アニメーション画像のキャッシュを作成
+	//cache->addImageAsync("image/animation/run/sprites.png", CC_CALLBACK_1(Introduction::loadComplete, this));
+	for (int i = 0; i < param["ANIMATION"].asInt(); ++i)
+		cache->addImageAsync(F_IMAGE + F_ANIMATION + F_RUN + StringUtils::toString(i) + ".png", CC_CALLBACK_1(Introduction::loadComplete , this));//アニメーション画像のキャッシュを作成
 }
 
 /*アニメーション画像を読み込み終えたらスキップボタンを有効化*/
 void Introduction::loadComplete(Texture2D* texture)
 {
-	auto cache = SpriteFrameCache::getInstance();
-	cache->addSpriteFramesWithFile("image/animation/run/sprites.plist");
-	auto skipMenu = (Menu*)this->getChildByTag(10);
-	skipMenu->setEnabled(true);
-	skipMenu->setOpacity(255);
-	CCLOG("Called me!");
+	//auto cache = SpriteFrameCache::getInstance();
+	//cache->addSpriteFramesWithFile("image/animation/run/sprites.plist");
+	auto param = FileRead::iReadFile(PARAMETER_INI);
+	auto animeLastNumber = param["ANIMATION"].asInt() - 1;
+	std::string serchWord = StringUtils::toString(animeLastNumber) + ".png";
+	auto filePath = Director::getInstance()->getTextureCache()->getTextureFilePath(texture);
+	if (filePath.find(serchWord) != std::string::npos )
+	{
+		auto skipMenu = (Menu*)this->getChildByTag(10);
+		skipMenu->setEnabled(true);
+		skipMenu->setOpacity(255);
+		CCLOG("Called me!");
+	}
 }
 
 #pragma region アクションパート呼び出し
